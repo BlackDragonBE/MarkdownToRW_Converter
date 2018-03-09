@@ -76,8 +76,7 @@ namespace MarkdownToRW.Properties {
         ///    width: 50%;
         ///}
         ///code, em, strong{font-weight:700;color:#006837;}
-        ///a{color:#006837;}
-        ///.note{-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;font-family:&apos;Open Sans&apos;,sans-serif;padding:14px!important;margin-top:5px;margin-bottom:17px;line-height:25.88px;font-style:normal;color:#black;background-color:#edf0d5 [rest of string was truncated]&quot;;.
+        ///pre{white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space:-o-pre-wrap;font-family:&apos;Droid Sans Mono&apos;,sans-serif!important;width:auto;overflow:visible;font-size:12px;line-height:1.333;text-align:left;border:1px solid #aaa;margin-botto [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string rwCSS {
             get {

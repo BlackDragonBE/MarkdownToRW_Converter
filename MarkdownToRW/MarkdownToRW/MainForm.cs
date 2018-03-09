@@ -4,7 +4,6 @@ using System.IO;
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
-using System.Threading;
 using System.Windows.Forms;
 using CommonMark;
 using HtmlAgilityPack;
@@ -59,7 +58,7 @@ namespace MarkdownToRW
             ImageUploadData imageData = new ImageUploadData
             {
                 MarkdownPath = _markdownPath,
-                OldMarkdown = twtMarkdown.Text
+                OldMarkdown = txtMarkdown.Text
             };
 
             foreach (HtmlNode node in imgNodes)
@@ -91,13 +90,13 @@ namespace MarkdownToRW
 
         private void UseDataResults(ImageUploadData data)
         {
-            twtMarkdown.Text = data.NewMarkdown;
+            txtMarkdown.Text = data.NewMarkdown;
             ConvertMarkdownToHtml();
         }
 
         private void ConvertMarkdownToHtml()
         {
-            string output = CommonMarkConverter.Convert(twtMarkdown.Text);
+            string output = CommonMarkConverter.Convert(txtMarkdown.Text);
             _originalHtml = output;
             output = WebUtility.HtmlDecode(output);
 
@@ -190,7 +189,7 @@ namespace MarkdownToRW
 
                 using (StreamReader sr = new StreamReader(_markdownPath))
                 {
-                    twtMarkdown.Text = sr.ReadToEnd();
+                    txtMarkdown.Text = sr.ReadToEnd();
                     ConvertMarkdownToHtml();
                 }
             }
@@ -213,13 +212,23 @@ namespace MarkdownToRW
             using (StreamWriter sw = new StreamWriter(folderPath + "/tmp.html"))
             {
                 sw.Write(Resources.rwCSS);
-                sw.Write(_originalHtml);
+                //sw.Write(_originalHtml);
+                sw.Write(PrepareHtmlForPreview());
                 sw.Write("</body></html>");
                 sw.Flush();
                 sw.Close();
             }
 
             return folderPath + "/tmp.html";
+        }
+
+        private string PrepareHtmlForPreview()
+        {
+            string html = txtHtml.Text;
+
+            html = html.Replace("\n\n", "<p>");
+
+            return html;
         }
 
         private void DeletePreviewHtml()

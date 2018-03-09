@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.twtMarkdown = new System.Windows.Forms.RichTextBox();
+            this.txtMarkdown = new System.Windows.Forms.RichTextBox();
             this.txtHtml = new System.Windows.Forms.RichTextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -38,21 +38,21 @@
             this.btnOpenMarkdown = new System.Windows.Forms.Button();
             this.btnCopyClipboard = new System.Windows.Forms.Button();
             this.btnWordpress = new System.Windows.Forms.Button();
-            this.openMarkdownDialog = new System.Windows.Forms.OpenFileDialog();
             this.lblMarkdownPath = new System.Windows.Forms.LinkLabel();
+            this.openMarkdownDialog = new System.Windows.Forms.OpenFileDialog();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // twtMarkdown
+            // txtMarkdown
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.twtMarkdown, 2);
-            this.twtMarkdown.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.twtMarkdown.Location = new System.Drawing.Point(3, 33);
-            this.twtMarkdown.Name = "twtMarkdown";
-            this.twtMarkdown.ReadOnly = true;
-            this.twtMarkdown.Size = new System.Drawing.Size(386, 427);
-            this.twtMarkdown.TabIndex = 3;
-            this.twtMarkdown.Text = "";
+            this.tableLayoutPanel1.SetColumnSpan(this.txtMarkdown, 2);
+            this.txtMarkdown.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtMarkdown.Location = new System.Drawing.Point(3, 33);
+            this.txtMarkdown.Name = "txtMarkdown";
+            this.txtMarkdown.ReadOnly = true;
+            this.txtMarkdown.Size = new System.Drawing.Size(386, 427);
+            this.txtMarkdown.TabIndex = 3;
+            this.txtMarkdown.Text = "";
             // 
             // txtHtml
             // 
@@ -84,7 +84,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.twtMarkdown, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.txtMarkdown, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.txtHtml, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.label2, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.btnShowPreview, 3, 0);
@@ -157,13 +157,6 @@
             this.btnWordpress.UseVisualStyleBackColor = true;
             this.btnWordpress.Click += new System.EventHandler(this.btnWordpress_Click);
             // 
-            // openMarkdownDialog
-            // 
-            this.openMarkdownDialog.FileName = "tutorial.md";
-            this.openMarkdownDialog.Filter = "Markdown Files|*.md;*.markdown;*.mdown;*.mkdn;*.mkd;*.mdwn;*.mdtxt;*.mdtext;*.tex" +
-    "t;*.txt;*.rmd";
-            this.openMarkdownDialog.Title = "Select the markdown file.";
-            // 
             // lblMarkdownPath
             // 
             this.lblMarkdownPath.AutoSize = true;
@@ -174,6 +167,13 @@
             this.lblMarkdownPath.Size = new System.Drawing.Size(386, 40);
             this.lblMarkdownPath.TabIndex = 11;
             this.lblMarkdownPath.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblMarkdownPath_LinkClicked);
+            // 
+            // openMarkdownDialog
+            // 
+            this.openMarkdownDialog.FileName = "tutorial.md";
+            this.openMarkdownDialog.Filter = "Markdown Files|*.md;*.markdown;*.mdown;*.mkdn;*.mkd;*.mdwn;*.mdtxt;*.mdtext;*.tex" +
+    "t;*.txt;*.rmd";
+            this.openMarkdownDialog.Title = "Select the markdown file.";
             // 
             // MainForm
             // 
@@ -193,7 +193,7 @@
         }
 
         #endregion
-        private System.Windows.Forms.RichTextBox twtMarkdown;
+        private System.Windows.Forms.RichTextBox txtMarkdown;
         private System.Windows.Forms.RichTextBox txtHtml;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
