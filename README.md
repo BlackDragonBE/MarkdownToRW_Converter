@@ -49,3 +49,4 @@ Now copy and paste the html in your post and check if the formatting is correct.
 
 - The preview is not a 1:1 preview with what you would get on the website itself.
 - Code in the preview will appear incorrect if the following characters are used: < > &
+- Due to a mono limitation, the applications needs to be run in 32-bit mode on macOS & linux. This should be fixed by Mono somewhere this year (2018) though.
