@@ -15,7 +15,6 @@ namespace MarkdownToRW
     public partial class MainForm : Form
     {
         private string _markdownPath;
-        private string _originalHtml;
 
         public MainForm()
         {
@@ -97,7 +96,6 @@ namespace MarkdownToRW
         private void ConvertMarkdownToHtml()
         {
             string output = CommonMarkConverter.Convert(txtMarkdown.Text);
-            _originalHtml = output;
             output = WebUtility.HtmlDecode(output);
 
             // HTML readability improvements & RW specific changes
@@ -112,7 +110,7 @@ namespace MarkdownToRW
             output = output.Replace("<strong>", "<em>");
             output = output.Replace("</strong>", "</em" +
                                                  ">");
-            output = output.Replace("<blockquote>", "<div class=\"note\">");
+            output = output.Replace("<blockquote>", "\n<div class=\"note\">");
             output = output.Replace("</blockquote>", "</div>\n");
             output = output.Replace("<pre><code class=\"lang-cs\">", "\n<pre lang=\"csharp\">");
             output = output.Replace("</code></pre>", "</pre>\n");
@@ -123,6 +121,7 @@ namespace MarkdownToRW
             output = output.Replace("<ol>", "\n<ol>");
 
             AddClassToImages(ref output);
+            AddExtraAttributesToLinks(ref output);
 
             output = output.Trim();
             txtHtml.Text = output;
@@ -153,6 +152,31 @@ namespace MarkdownToRW
                     HtmlAttribute classAttribute = doc.CreateAttribute("class", "aligncenter size-full");
                     node.Attributes.Add(classAttribute);
                 }
+            }
+
+            html = doc.DocumentNode.OuterHtml;
+        }
+
+        private void AddExtraAttributesToLinks(ref string html)
+        {
+            HtmlDocument doc = new HtmlDocument();
+            doc.LoadHtml(html);
+            HtmlNodeCollection linkNodes = doc.DocumentNode.SelectNodes("//a");
+
+            if (linkNodes == null)
+            {
+                return;
+            }
+
+            for (var i = 0; i < linkNodes.Count; i++)
+            {
+                HtmlNode node = linkNodes[i];
+
+                HtmlAttribute relAttribute = doc.CreateAttribute("rel", "noopener");
+                node.Attributes.Add(relAttribute);
+
+                HtmlAttribute targetAttribute = doc.CreateAttribute("target", "_blank");
+                node.Attributes.Add(targetAttribute);
             }
 
             html = doc.DocumentNode.OuterHtml;

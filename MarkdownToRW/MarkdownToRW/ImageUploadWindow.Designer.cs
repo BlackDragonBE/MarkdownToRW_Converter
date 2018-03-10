@@ -44,12 +44,13 @@
             this.label4 = new System.Windows.Forms.Label();
             this.chkUpdateMarkdown = new System.Windows.Forms.CheckBox();
             this.listPreviews = new System.Windows.Forms.ListBox();
+            this.chkOptimizeImages = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(12, 242);
+            this.btnCancel.Location = new System.Drawing.Point(12, 346);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(200, 37);
             this.btnCancel.TabIndex = 0;
@@ -60,7 +61,7 @@
             // btnUpload
             // 
             this.btnUpload.Enabled = false;
-            this.btnUpload.Location = new System.Drawing.Point(12, 199);
+            this.btnUpload.Location = new System.Drawing.Point(12, 303);
             this.btnUpload.Name = "btnUpload";
             this.btnUpload.Size = new System.Drawing.Size(200, 37);
             this.btnUpload.TabIndex = 2;
@@ -147,16 +148,20 @@
             // 
             // progressUpload
             // 
-            this.progressUpload.Location = new System.Drawing.Point(15, 337);
+            this.progressUpload.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressUpload.Location = new System.Drawing.Point(15, 438);
             this.progressUpload.Name = "progressUpload";
             this.progressUpload.Size = new System.Drawing.Size(909, 23);
             this.progressUpload.TabIndex = 9;
             // 
             // lblStatus
             // 
+            this.lblStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblStatus.BackColor = System.Drawing.Color.Transparent;
             this.lblStatus.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblStatus.Location = new System.Drawing.Point(12, 307);
+            this.lblStatus.Location = new System.Drawing.Point(12, 408);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(912, 20);
             this.lblStatus.TabIndex = 10;
@@ -165,9 +170,11 @@
             // 
             // label4
             // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.BackColor = System.Drawing.Color.Transparent;
             this.label4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label4.Location = new System.Drawing.Point(12, 287);
+            this.label4.Location = new System.Drawing.Point(12, 388);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(912, 20);
             this.label4.TabIndex = 11;
@@ -192,15 +199,27 @@
             this.listPreviews.Location = new System.Drawing.Point(218, 28);
             this.listPreviews.Name = "listPreviews";
             this.listPreviews.ScrollAlwaysVisible = true;
-            this.listPreviews.Size = new System.Drawing.Size(706, 251);
+            this.listPreviews.Size = new System.Drawing.Size(706, 355);
             this.listPreviews.TabIndex = 13;
             this.listPreviews.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listPreviews_MouseDoubleClick);
+            // 
+            // chkOptimizeImages
+            // 
+            this.chkOptimizeImages.Checked = true;
+            this.chkOptimizeImages.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkOptimizeImages.Location = new System.Drawing.Point(12, 186);
+            this.chkOptimizeImages.Name = "chkOptimizeImages";
+            this.chkOptimizeImages.Size = new System.Drawing.Size(200, 31);
+            this.chkOptimizeImages.TabIndex = 14;
+            this.chkOptimizeImages.Text = "Optimize copies of PNG images";
+            this.chkOptimizeImages.UseVisualStyleBackColor = true;
             // 
             // ImageUploadWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(936, 366);
+            this.ClientSize = new System.Drawing.Size(936, 467);
+            this.Controls.Add(this.chkOptimizeImages);
             this.Controls.Add(this.listPreviews);
             this.Controls.Add(this.chkUpdateMarkdown);
             this.Controls.Add(this.label4);
@@ -240,5 +259,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox chkUpdateMarkdown;
         private System.Windows.Forms.ListBox listPreviews;
+        private System.Windows.Forms.CheckBox chkOptimizeImages;
     }
 }

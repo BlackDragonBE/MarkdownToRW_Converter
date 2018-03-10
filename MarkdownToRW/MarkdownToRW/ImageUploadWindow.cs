@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
 using MarkdownToRW.Properties;
+using nQuant;
 using WordPressSharp;
 using WordPressSharp.Models;
 
@@ -29,6 +31,8 @@ namespace MarkdownToRW
         }
 
         private List<int> imageIdList = new List<int>();
+        private long totalFileSizes = 0;
+        private long fileSizeSaved = 0;
 
         public ImageUploadData ImageUploadData { get; }
 
@@ -36,16 +40,14 @@ namespace MarkdownToRW
         {
             listPreviews.Items.Clear();
 
-            long size = 0;
-
             foreach (string imagePath in ImageUploadData.FullImagePaths)
             {
                 long currentSize = new FileInfo(imagePath).Length;
                 listPreviews.Items.Add(imagePath + "| ( " + currentSize / 1024 + " kB )");
-                size += currentSize;
+                totalFileSizes += currentSize;
             }
 
-            listPreviews.Items.Add("Total size: " + size / 1024 + " kB. (" + size / 1024 / 1024 + " MB)");
+            listPreviews.Items.Add("Total size: " + totalFileSizes / 1024 + " kB. (" + totalFileSizes / 1024 / 1024 + " MB)");
         }
 
         private void btnUpload_Click(object sender, EventArgs e)
@@ -69,6 +71,8 @@ namespace MarkdownToRW
 
         private void UploadImages()
         {
+            
+
             //Process.Start("mozroots", "--import --quiet"); // Import certificates (workaround for mono having no certs by default)
             lblStatus.Text = "Starting Upload...";
             imageIdList.Clear();
@@ -90,13 +94,51 @@ namespace MarkdownToRW
                     {
                         lblStatus.Text = "Uploading " + path + "...";
                         lblStatus.Refresh();
+                        string mimeType = "image/" + Path.GetExtension(path).ToLower();
 
-                        Data image = Data.CreateFromFilePath(path, "image/" + Path.GetExtension(path).ToLower());
+                        Data image = null;
+
+                        if (chkOptimizeImages.Checked && path.ToLower().EndsWith("png"))
+                        {
+                            var quantisizer = new WuQuantizer();
+                            var bitmap = new Bitmap(path);
+
+                            using (var quantized = quantisizer.QuantizeImage(bitmap))
+                            {
+                                quantized.Save(Path.GetFileName(path));
+                            }
+
+                            fileSizeSaved += (new FileInfo(path).Length - new FileInfo(Path.GetFileName(path)).Length);
+
+                            image = Data.CreateFromFilePath(Path.GetFileName(path), mimeType);
+                        }
+                        else
+                        {
+                            image = Data.CreateFromFilePath(path, mimeType);
+                        }
+
+
                         var result = client.UploadFile(image);
                         ImageUploadData.ImageUrls.Add(result.Url);
                         imageIdList.Add(Convert.ToInt32(result.Id));
                         progressUpload.Value++;
                     }
+                }
+
+                if (chkOptimizeImages.Checked)
+                {
+                    //Remove optimized images
+                    foreach (string path in ImageUploadData.FullImagePaths)
+                    {
+                        if (File.Exists(Path.GetFileName(path)))
+                        {
+                            File.Delete(Path.GetFileName(path));
+                        }
+                    }
+
+                    MessageBox.Show(
+                        "You have uploaded " + (fileSizeSaved / 1024) +
+                        " kB less because of optimization!", "Optimization Results");
                 }
 
                 lblStatus.Text = "Uploading complete!";
@@ -109,6 +151,7 @@ namespace MarkdownToRW
 
                 DialogResult = DialogResult.Abort;
                 Close();
+                return;
             }
         }
 
@@ -124,6 +167,7 @@ namespace MarkdownToRW
                     MessageBoxIcon.Error);
                 DialogResult = DialogResult.Abort;
                 Close();
+                return;
             }
 
             string markdown = ImageUploadData.OldMarkdown;
