@@ -100,28 +100,45 @@ namespace MarkdownToRW
 
             // HTML readability improvements & RW specific changes
 
-            output = output.Replace("<p>", "\n");
-            output = output.Replace("<br>", "\n");
+            // Code
+            output = output.Replace("<pre><code class=", "\r\n<pre lang=");
+            output = output.Replace("lang-", "");
+            output = output.Replace("language-", "");
+            output = output.Replace("</code></pre>", "</pre>\r\n");
+
+            // Add attributes
+            AddClassToImages(ref output);
+            AddExtraAttributesToLinks(ref output);
+
+            // Text
+            output = output.Replace("<p>", "\r\n");
+            output = output.Replace("<br>", "\r\n");
             output = output.Replace("</p>", "");
-            output = output.Replace("<h1", "\n<h1");
-            output = output.Replace("<h2", "\n<h2");
-            output = output.Replace("<h3", "\n<h3");
-            output = output.Replace("<h4", "\n<h4");
+            output = output.Replace("<h1", "\r\n<h1"); // h1 is not supported, replace with h2
+            output = output.Replace("<h2", "\r\n<h2");
+            output = output.Replace("<h3", "\r\n<h3");
+            output = output.Replace("<h4", "\r\n<h4"); // h4 is not supported, replace with h3
             output = output.Replace("<strong>", "<em>");
             output = output.Replace("</strong>", "</em" +
                                                  ">");
-            output = output.Replace("<blockquote>", "\n<div class=\"note\">");
-            output = output.Replace("</blockquote>", "</div>\n");
-            output = output.Replace("<pre><code class=\"lang-cs\">", "\n<pre lang=\"csharp\">");
-            output = output.Replace("</code></pre>", "</pre>\n");
-            //output = output.Replace("</li>", "</li>\n");
-            output = output.Replace("<ul>", "\n<ul>");
-            //output = output.Replace("</ul>", "</ul>\n");
-            //output = output.Replace("</ol>", "</ol>\n");
-            output = output.Replace("<ol>", "\n<ol>");
 
-            AddClassToImages(ref output);
-            AddExtraAttributesToLinks(ref output);
+            // List
+            output = output.Replace("<ul>", "\r\n<ul>");
+            output = output.Replace("<ol>", "\r\n<ol>");
+
+            //// Note
+            output = output.Replace("</blockquote>", "</div>");
+            output = output.Replace("<blockquote>\r\n", "\r\n<blockquote>");
+            output = output.Replace("<blockquote>\r\n<em>Note", "<div class=\"note\">\r\n<em>Note");
+            output = output.Replace("<blockquote>", "<div>");
+
+            // Spoiler
+            output = output.Replace("<blockquote>\r\n<em>Spoiler", "<div class=\"spoiler\">\r\n<em>Spoiler");
+            output = output.Replace("<div class=\"spoiler\">", "[spoiler title=\"Solution\"]");
+            // TODO: replace first </div> found after "<div class=\"spoiler\">" with </spoiler> somehow for all spoilers
+
+            // Final cleanup
+            output = output.Replace("<div></div>", "");
 
             output = output.Trim();
             txtHtml.Text = output;
@@ -238,7 +255,7 @@ namespace MarkdownToRW
                 sw.Write(Resources.rwCSS);
                 //sw.Write(_originalHtml);
                 sw.Write(PrepareHtmlForPreview());
-                sw.Write("</body></html>");
+                sw.Write("</div></body></html>");
                 sw.Flush();
                 sw.Close();
             }

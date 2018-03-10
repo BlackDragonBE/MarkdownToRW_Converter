@@ -37,16 +37,17 @@
             this.WebPreview.Dock = System.Windows.Forms.DockStyle.Fill;
             this.WebPreview.Location = new System.Drawing.Point(0, 0);
             this.WebPreview.Name = "WebPreview";
-            this.WebPreview.Size = new System.Drawing.Size(762, 503);
+            this.WebPreview.Size = new System.Drawing.Size(904, 612);
             this.WebPreview.TabIndex = 0;
             // 
             // PreviewWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(762, 503);
+            this.ClientSize = new System.Drawing.Size(904, 612);
             this.Controls.Add(this.WebPreview);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(920, 0);
             this.Name = "PreviewWindow";
             this.Text = "Preview";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.PreviewWindow_FormClosed);

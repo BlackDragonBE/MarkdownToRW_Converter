@@ -126,18 +126,19 @@
  font-size: 100%;
  font-family: Bitter,Georgia,serif
 }
-.img {
+div.content { width: 860px }
+img {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 50%;
+    max-width:700px;
 }
 em, strong{font-weight:700;color:#006837;font-style: normal;}
 pre{white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space:-o-pre-wrap;font-family:'Droid Sans Mono',sans-serif!important;width:auto;overflow:visible;font-size:12px;line-height:1.333;text-align:left;border:1px solid #aaa;margin-bottom:1em;padding:0.5em}
-code{font-size:14px;font-family:'Droid Sans Mono',monospace,sans-serif}
+code{font-size:14px;font-family:'Droid Sans Mono',monospace,sans-serif;color:#006837;}
 a{color:#006837;}
 .note{-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;font-family:'Open Sans',sans-serif;padding:14px!important;margin-top:5px;margin-bottom:17px;line-height:25.88px;font-style:normal;color:#black;background-color:#edf0d5;border:1px solid #000;}
-.windows article .content-wrapper .note{font-family:Helvetica,sans-serif;}
+.note{font-family:Helvetica,sans-serif;}
 article .content-wrapper .note p{padding:0 0 10px;}
 article .content-wrapper .note p:last-child{padding-bottom:0;}
 article .content-wrapper .note em{font-family:Helvetica,sans-serif;font-weight:700;}
@@ -172,6 +173,7 @@ h3{font-size:26px;}
 
 &lt;/style&gt;
 &lt;/head&gt;
-&lt;body&gt;</value>
+&lt;body&gt;
+&lt;div class="content"&gt;</value>
   </data>
 </root>
