@@ -20,6 +20,8 @@ namespace MarkdownToRW
         {
             InitializeComponent();
 
+            Text += " on " + Environment.OSVersion.Platform;
+
             if (MonoHelper.IsRunningOnMono)
             {
                 Text += " [MONO]";

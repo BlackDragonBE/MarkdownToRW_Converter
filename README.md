@@ -21,9 +21,10 @@ Run **MarkdownToRW.exe**.
 
 ### macOS & linux
 
-1. Download Mono: http://www.mono-project.com/download/stable/
-2. Open a terminal.
-3. Run this command: **mono --arch=32 PATH-TO-MarkdownToRW.exe**
+1. Download and install Mono: http://www.mono-project.com/download/stable/
+2. Restart your machine.
+3. Open a terminal.
+4. Run this command: **mono --arch=32 PATH-TO-MarkdownToRW.exe**
 
 You can create a shortcut to run this command to make it easier in the future.
 
