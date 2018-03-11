@@ -28,6 +28,12 @@ namespace MarkdownToRW
                 txtUsername.Text = Settings.Default.Username;
                 txtPassword.Text = Settings.Default.Password;
             }
+
+            if (MonoHelper.IsRunningOnMono)
+            {
+                chkOptimizeImages.Checked = false;
+                chkOptimizeImages.Enabled = false;
+            }
         }
 
         private List<int> imageIdList = new List<int>();
@@ -145,7 +151,7 @@ namespace MarkdownToRW
             }
             catch (Exception e)
             {
-                MessageBox.Show("Something went wrong while uploading. Press OK to attempt rollback, make sure you're connected to the internet and can access the RW WordPress before continuing.",
+                MessageBox.Show("Something went wrong while uploading. Press OK to attempt rollback, make sure you're connected to the internet and can access the RW WordPress before continuing.\n" + e.Source + " " + e.Message,
                     "Error while uploading");
                 TryToDeleteImages();
 
