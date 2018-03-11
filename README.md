@@ -28,10 +28,12 @@ Run **MarkdownToRW.exe**.
 
 ### linux
 
-1. Install the mono-complete package. (e.g. sudo apt-get install mono-complete).
-2. Run this command: **mono PATH-TO-MarkdownToRW.exe**
+1. Open a terminal
+2. Install the mono-complete package. (e.g. sudo apt-get install mono-complete).
+3. Run this command: **mono PATH-TO-MarkdownToRW.exe**
 
 You can create a shortcut to run this command to make it easier in the future.
+On linux, you can let .exe files open with the Mono Runtime by default.
 
 ## How To Use
 
@@ -53,9 +55,19 @@ If the uploading fails for any reason, a prompt will show and the rollback will 
 
 Now copy and paste the html in your post and check if the formatting is correct. There may be some edge cases where things can get weird or incorrect. If that's the case, be sure to make an issue here if there isn't one already.
 
+## To-Do & Nice To Have
+
+To-Do:
+
+- a
+
+Nice To Have:
+
+- Syntax highlighting.
+
 ## Known Issues
 
 - The preview is not a 1:1 preview with what you would get on the website itself.
 - Code in the preview will appear incorrect if the following characters are used: < > &. The converted HTML is correct, this only affects the preview.
 - Due to a mono limitation, the applications needs to be run in 32-bit mode on macOS & linux. This should be fixed by Mono somewhere this year (2018) though.
-- If the image upload fails for whatever reason, you'll get several errors instead of just one.
+- The spoiler tag isn't supported yet in markdown, you'll need to add it in as HTML for now.
