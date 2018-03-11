@@ -45,6 +45,8 @@
             this.chkUpdateMarkdown = new System.Windows.Forms.CheckBox();
             this.listPreviews = new System.Windows.Forms.ListBox();
             this.chkOptimizeImages = new System.Windows.Forms.CheckBox();
+            this.btnMacPasteUsername = new System.Windows.Forms.Button();
+            this.btnMacPastePassword = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -52,7 +54,7 @@
             // 
             this.btnCancel.Location = new System.Drawing.Point(12, 346);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(200, 37);
+            this.btnCancel.Size = new System.Drawing.Size(306, 37);
             this.btnCancel.TabIndex = 0;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -63,7 +65,7 @@
             this.btnUpload.Enabled = false;
             this.btnUpload.Location = new System.Drawing.Point(12, 303);
             this.btnUpload.Name = "btnUpload";
-            this.btnUpload.Size = new System.Drawing.Size(200, 37);
+            this.btnUpload.Size = new System.Drawing.Size(306, 37);
             this.btnUpload.TabIndex = 2;
             this.btnUpload.Text = "Upload and update Markdown";
             this.btnUpload.UseVisualStyleBackColor = true;
@@ -71,7 +73,7 @@
             // 
             // txtUsername
             // 
-            this.txtUsername.Location = new System.Drawing.Point(94, 19);
+            this.txtUsername.Location = new System.Drawing.Point(200, 19);
             this.txtUsername.Name = "txtUsername";
             this.txtUsername.Size = new System.Drawing.Size(100, 20);
             this.txtUsername.TabIndex = 5;
@@ -87,6 +89,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnMacPastePassword);
+            this.groupBox1.Controls.Add(this.btnMacPasteUsername);
             this.groupBox1.Controls.Add(this.chkSaveCredentials);
             this.groupBox1.Controls.Add(this.btnVerify);
             this.groupBox1.Controls.Add(this.label2);
@@ -95,7 +99,7 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(200, 131);
+            this.groupBox1.Size = new System.Drawing.Size(306, 131);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "RW Wordpress Login Info";
@@ -103,7 +107,7 @@
             // chkSaveCredentials
             // 
             this.chkSaveCredentials.AutoSize = true;
-            this.chkSaveCredentials.Location = new System.Drawing.Point(88, 71);
+            this.chkSaveCredentials.Location = new System.Drawing.Point(9, 77);
             this.chkSaveCredentials.Name = "chkSaveCredentials";
             this.chkSaveCredentials.Size = new System.Drawing.Size(106, 17);
             this.chkSaveCredentials.TabIndex = 10;
@@ -114,7 +118,7 @@
             // 
             this.btnVerify.Location = new System.Drawing.Point(9, 100);
             this.btnVerify.Name = "btnVerify";
-            this.btnVerify.Size = new System.Drawing.Size(185, 23);
+            this.btnVerify.Size = new System.Drawing.Size(291, 23);
             this.btnVerify.TabIndex = 9;
             this.btnVerify.Text = "Verify";
             this.btnVerify.UseVisualStyleBackColor = true;
@@ -131,7 +135,7 @@
             // 
             // txtPassword
             // 
-            this.txtPassword.Location = new System.Drawing.Point(94, 45);
+            this.txtPassword.Location = new System.Drawing.Point(200, 45);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.Size = new System.Drawing.Size(100, 20);
             this.txtPassword.TabIndex = 7;
@@ -140,7 +144,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(218, 12);
+            this.label3.Location = new System.Drawing.Point(324, 12);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(200, 13);
             this.label3.TabIndex = 8;
@@ -152,7 +156,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.progressUpload.Location = new System.Drawing.Point(15, 438);
             this.progressUpload.Name = "progressUpload";
-            this.progressUpload.Size = new System.Drawing.Size(909, 23);
+            this.progressUpload.Size = new System.Drawing.Size(1018, 23);
             this.progressUpload.TabIndex = 9;
             // 
             // lblStatus
@@ -163,7 +167,7 @@
             this.lblStatus.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblStatus.Location = new System.Drawing.Point(12, 408);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(912, 20);
+            this.lblStatus.Size = new System.Drawing.Size(1021, 20);
             this.lblStatus.TabIndex = 10;
             this.lblStatus.Text = "Please verify account";
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -176,7 +180,7 @@
             this.label4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.label4.Location = new System.Drawing.Point(12, 388);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(912, 20);
+            this.label4.Size = new System.Drawing.Size(1021, 20);
             this.label4.TabIndex = 11;
             this.label4.Text = "Status:";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -187,7 +191,7 @@
             this.chkUpdateMarkdown.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkUpdateMarkdown.Location = new System.Drawing.Point(12, 149);
             this.chkUpdateMarkdown.Name = "chkUpdateMarkdown";
-            this.chkUpdateMarkdown.Size = new System.Drawing.Size(200, 31);
+            this.chkUpdateMarkdown.Size = new System.Drawing.Size(306, 31);
             this.chkUpdateMarkdown.TabIndex = 12;
             this.chkUpdateMarkdown.Text = "Update original markdown file with uploaded image URLs";
             this.chkUpdateMarkdown.UseVisualStyleBackColor = true;
@@ -196,7 +200,7 @@
             // 
             this.listPreviews.FormattingEnabled = true;
             this.listPreviews.HorizontalScrollbar = true;
-            this.listPreviews.Location = new System.Drawing.Point(218, 28);
+            this.listPreviews.Location = new System.Drawing.Point(327, 28);
             this.listPreviews.Name = "listPreviews";
             this.listPreviews.ScrollAlwaysVisible = true;
             this.listPreviews.Size = new System.Drawing.Size(706, 355);
@@ -209,16 +213,38 @@
             this.chkOptimizeImages.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkOptimizeImages.Location = new System.Drawing.Point(12, 186);
             this.chkOptimizeImages.Name = "chkOptimizeImages";
-            this.chkOptimizeImages.Size = new System.Drawing.Size(200, 31);
+            this.chkOptimizeImages.Size = new System.Drawing.Size(306, 31);
             this.chkOptimizeImages.TabIndex = 14;
             this.chkOptimizeImages.Text = "Optimize copies of PNG images";
             this.chkOptimizeImages.UseVisualStyleBackColor = true;
+            // 
+            // btnMacPasteUsername
+            // 
+            this.btnMacPasteUsername.Location = new System.Drawing.Point(67, 19);
+            this.btnMacPasteUsername.Name = "btnMacPasteUsername";
+            this.btnMacPasteUsername.Size = new System.Drawing.Size(127, 20);
+            this.btnMacPasteUsername.TabIndex = 11;
+            this.btnMacPasteUsername.Text = "Paste from clipboard";
+            this.btnMacPasteUsername.UseVisualStyleBackColor = true;
+            this.btnMacPasteUsername.Visible = false;
+            this.btnMacPasteUsername.Click += new System.EventHandler(this.btnMacPasteUsername_Click);
+            // 
+            // btnMacPastePassword
+            // 
+            this.btnMacPastePassword.Location = new System.Drawing.Point(67, 45);
+            this.btnMacPastePassword.Name = "btnMacPastePassword";
+            this.btnMacPastePassword.Size = new System.Drawing.Size(127, 20);
+            this.btnMacPastePassword.TabIndex = 12;
+            this.btnMacPastePassword.Text = "Paste from clipboard";
+            this.btnMacPastePassword.UseVisualStyleBackColor = true;
+            this.btnMacPastePassword.Visible = false;
+            this.btnMacPastePassword.Click += new System.EventHandler(this.btnMacPastePassword_Click);
             // 
             // ImageUploadWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(936, 467);
+            this.ClientSize = new System.Drawing.Size(1045, 467);
             this.Controls.Add(this.chkOptimizeImages);
             this.Controls.Add(this.listPreviews);
             this.Controls.Add(this.chkUpdateMarkdown);
@@ -236,6 +262,7 @@
             this.Name = "ImageUploadWindow";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Image Uploader BETA";
+            this.Load += new System.EventHandler(this.ImageUploadWindow_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
@@ -260,5 +287,7 @@
         private System.Windows.Forms.CheckBox chkUpdateMarkdown;
         private System.Windows.Forms.ListBox listPreviews;
         private System.Windows.Forms.CheckBox chkOptimizeImages;
+        private System.Windows.Forms.Button btnMacPastePassword;
+        private System.Windows.Forms.Button btnMacPasteUsername;
     }
 }

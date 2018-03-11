@@ -31,6 +31,8 @@ namespace MarkdownToRW
 
             if (MonoHelper.IsRunningOnMono)
             {
+                btnMacPasteUsername.Visible = true;
+                btnMacPastePassword.Visible = true;
                 chkOptimizeImages.Checked = false;
                 chkOptimizeImages.Enabled = false;
             }
@@ -59,7 +61,7 @@ namespace MarkdownToRW
         private void btnUpload_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show(
-                    "With great power comes great responsibility.\nMake sure this is the first time you upload these images and double check that the paths are correct before continuing.\n" +
+                    "Make sure this is the first time you upload these images and double check that the paths are correct before continuing.\n" +
                     "You may have to manually delete uploaded images if anything goes wrong. \n\n" +
                     "Do you want to upload the images and update both your markdown and html?",
                     "Are you sure you want to start the upload?", MessageBoxButtons.YesNo) == DialogResult.Yes)
@@ -254,6 +256,9 @@ namespace MarkdownToRW
 
         private void btnVerify_Click(object sender, EventArgs e)
         {
+            lblStatus.Text = "Verifying...";
+            SetLoginControlsEnabledState(false);
+
             WordPressSiteConfig config = new WordPressSiteConfig();
             //config.Username = "ekerckhove";
             //config.Password = "AjRSs8HZ";
@@ -268,8 +273,7 @@ namespace MarkdownToRW
                     string name = client.GetProfile().FirstName;
                     MessageBox.Show("Thanks " + name + "!" + "\nYou're ready to upload.");
                     btnUpload.Enabled = true;
-                    txtUsername.Enabled = false;
-                    txtPassword.Enabled = false;
+                    SetLoginControlsEnabledState(false);
                     lblStatus.Text = "Ready to upload";
                 }
             }
@@ -277,6 +281,8 @@ namespace MarkdownToRW
             {
                 MessageBox.Show("Incorrect credentials or other exception was thrown:\n" + exception.Message,
                     "Can't connect to RW Wordpress!");
+                SetLoginControlsEnabledState(true);
+                lblStatus.Text = "Incorrect credentials, please try again.";
                 return;
             }
 
@@ -290,6 +296,16 @@ namespace MarkdownToRW
             }
         }
 
+
+        private void SetLoginControlsEnabledState(bool enabled)
+        {
+            txtUsername.Enabled = enabled;
+            txtPassword.Enabled = enabled;
+            btnMacPasteUsername.Enabled = enabled;
+            btnMacPastePassword.Enabled = enabled;
+            Refresh();
+        }
+
         private void listPreviews_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             int index = listPreviews.IndexFromPoint(e.Location);
@@ -297,6 +313,21 @@ namespace MarkdownToRW
             {
                 Process.Start(listPreviews.Items[index].ToString().Split('|')[0]);
             }
+        }
+
+        private void ImageUploadWindow_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnMacPasteUsername_Click(object sender, EventArgs e)
+        {
+            txtUsername.Text = MonoHelper.PasteFromMacClipboard();
+        }
+
+        private void btnMacPastePassword_Click(object sender, EventArgs e)
+        {
+            txtPassword.Text = MonoHelper.PasteFromMacClipboard();
         }
     }
 }

@@ -242,20 +242,7 @@ namespace MarkdownToRW
         {
             if (MonoHelper.IsRunningOnMono && MonoHelper.IsRunningOnMac)
             {
-                // Mac clipboard workaround from
-                // https://andydunkel.net/2017/02/23/windows_forms_on_osx_clipboard_not_working/
-
-                using (var p = new Process())
-                {
-                    p.StartInfo = new ProcessStartInfo("pbcopy", "-pboard general -Prefer txt");
-                    p.StartInfo.UseShellExecute = false;
-                    p.StartInfo.RedirectStandardOutput = false;
-                    p.StartInfo.RedirectStandardInput = true;
-                    p.Start();
-                    p.StandardInput.Write(txtHtml.Text);
-                    p.StandardInput.Close();
-                    p.WaitForExit();
-                }
+                MonoHelper.CopyToMacClipboard(txtHtml.Text);
             }
             else
             {
