@@ -240,7 +240,7 @@ namespace MarkdownToRW
 
         private void btnCopyClipboard_Click(object sender, EventArgs e)
         {
-            if (MonoHelper.IsRunningOnMono)
+            if (MonoHelper.IsRunningOnMono && MonoHelper.IsRunningOnMac)
             {
                 // Mac clipboard workaround from
                 // https://andydunkel.net/2017/02/23/windows_forms_on_osx_clipboard_not_working/
