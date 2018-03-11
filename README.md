@@ -59,4 +59,3 @@ Now copy and paste the html in your post and check if the formatting is correct.
 - Code in the preview will appear incorrect if the following characters are used: < > &. The converted HTML is correct, this only affects the preview.
 - Due to a mono limitation, the applications needs to be run in 32-bit mode on macOS & linux. This should be fixed by Mono somewhere this year (2018) though.
 - If the image upload fails for whatever reason, you'll get several errors instead of just one.
-- If a local image is not found, tha app may crash.
