@@ -186,7 +186,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(400, 250);
             this.Name = "MainForm";
-            this.Text = "Markdown To Wordpress HTML Converter v0.82";
+            this.Text = "Markdown To Wordpress HTML Converter v0.83";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
