@@ -41,6 +41,7 @@ namespace MarkdownToRW
         private List<int> imageIdList = new List<int>();
         private long totalFileSizes = 0;
         private long fileSizeSaved = 0;
+        private bool errorInUpload = false;
 
         public ImageUploadData ImageUploadData { get; }
 
@@ -60,6 +61,8 @@ namespace MarkdownToRW
 
         private void btnUpload_Click(object sender, EventArgs e)
         {
+            errorInUpload = false;
+
             if (MessageBox.Show(
                     "Make sure this is the first time you upload these images and double check that the paths are correct before continuing.\n" +
                     "You may have to manually delete uploaded images if anything goes wrong. \n\n" +
@@ -67,13 +70,18 @@ namespace MarkdownToRW
                     "Are you sure you want to start the upload?", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 UploadImages();
-                UpdateMarkdownAndHtml();
-                MessageBox.Show(
-                    "Succesfully uploaded " + ImageUploadData.FullImagePaths.Count +
-                    " images to the RW WordPress!\nYour markdown and the html preview have been updated with the image URLs. The HTML is fully ready to copy to WordPress!",
-                    "Upload complete!");
-                DialogResult = DialogResult.OK;
-                Close();
+
+                if (!errorInUpload)
+                {
+                    UpdateMarkdownAndHtml();
+                    MessageBox.Show(
+                        "Succesfully uploaded " + ImageUploadData.FullImagePaths.Count +
+                        " images to the RW WordPress!\nYour markdown and the html preview have been updated with the image URLs. The HTML is fully ready to copy to WordPress!",
+                        "Upload complete!");
+                    DialogResult = DialogResult.OK;
+                    Close();
+                }
+
             }
         }
 
@@ -153,13 +161,10 @@ namespace MarkdownToRW
             }
             catch (Exception e)
             {
+                errorInUpload = true;
                 MessageBox.Show("Something went wrong while uploading. Press OK to attempt rollback, make sure you're connected to the internet and can access the RW WordPress before continuing.\n" + e.Source + " " + e.Message,
                     "Error while uploading");
                 TryToDeleteImages();
-
-                DialogResult = DialogResult.Abort;
-                Close();
-                return;
             }
         }
 
