@@ -19,12 +19,17 @@ Releases: https://github.com/BlackDragonBE/MarkdownToRW_Converter/releases
 
 Run **MarkdownToRW.exe**.
 
-### macOS & linux
+### macOS
 
 1. Download and install Mono: http://www.mono-project.com/download/stable/
 2. Restart your machine.
 3. Open a terminal.
 4. Run this command: **mono --arch=32 PATH-TO-MarkdownToRW.exe**
+
+### linux
+
+1. Install the mono-complete package. (e.g. sudo apt-get install mono-complete).
+2. Run this command: **mono PATH-TO-MarkdownToRW.exe**
 
 You can create a shortcut to run this command to make it easier in the future.
 
@@ -54,3 +59,4 @@ Now copy and paste the html in your post and check if the formatting is correct.
 - Code in the preview will appear incorrect if the following characters are used: < > &. The converted HTML is correct, this only affects the preview.
 - Due to a mono limitation, the applications needs to be run in 32-bit mode on macOS & linux. This should be fixed by Mono somewhere this year (2018) though.
 - If the image upload fails for whatever reason, you'll get several errors instead of just one.
+- If a local image is not found, tha app may crash.
