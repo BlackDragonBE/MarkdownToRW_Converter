@@ -64,15 +64,26 @@ namespace MarkdownToRW
 
             foreach (HtmlNode node in imgNodes)
             {
-                if (node.GetAttributeValue("src", "").StartsWith("http"))
+                // Skip if web link
+                if (node.GetAttributeValue("src", "").StartsWith("http") || node.GetAttributeValue("src", "").StartsWith("www"))
                 {
                     continue;
                 }
 
                 string localPath = node.GetAttributeValue("src", null);
+                string fullPath = Path.GetDirectoryName(_markdownPath) + "/" + localPath;
 
-                imageData.LocalImagePaths.Add(localPath);
-                imageData.FullImagePaths.Add(Path.GetDirectoryName(_markdownPath) + "/" + localPath);
+                // Check if file exists
+                if (File.Exists(fullPath))
+                {
+                    imageData.LocalImagePaths.Add(localPath);
+                    imageData.FullImagePaths.Add(fullPath);
+                }
+                else
+                {
+                    MessageBox.Show("File not found: " + localPath +"\nThis file will be skipped.");
+                }
+
             }
 
             if (imageData.FullImagePaths.Count == 0)
