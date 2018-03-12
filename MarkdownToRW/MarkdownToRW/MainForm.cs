@@ -8,33 +8,82 @@ using System.Windows.Forms;
 using CommonMark;
 using HtmlAgilityPack;
 using MarkdownToRW.Properties;
+using Newtonsoft.Json;
 using HtmlDocument = HtmlAgilityPack.HtmlDocument;
 
 namespace MarkdownToRW
 {
     public partial class MainForm : Form
     {
+        private static readonly string VERSION = "0.87";
+
+        private static readonly string RELEASE_URL =
+            @"https://api.github.com/repos/BlackDragonBE/MarkdownToRW_Converter/releases/latest";
+
         private string _markdownPath;
 
         public MainForm()
         {
             InitializeComponent();
 
-            Text += " on " + Environment.OSVersion.Platform;
+            Text += " v" + VERSION + " on " + Environment.OSVersion.Platform;
 
             if (MonoHelper.IsRunningOnMono)
             {
                 Text += " [MONO]";
-                AddRwCertificateForMono();
+                AddCertificateForMono();
+            }
+
+            if (!MonoHelper.IsRunningOnMono) // Not working on mono (yet?)
+            {
+                CheckForUpdate();
             }
         }
 
-        private static void AddRwCertificateForMono()
+        private void CheckForUpdate()
         {
-            ServicePointManager.ServerCertificateValidationCallback = Validator;
-            WebRequest wr = WebRequest.Create("https://raywenderlich.com");
-            Stream stream = wr.GetResponse().GetResponseStream();
-            Console.WriteLine(new StreamReader(stream).ReadToEnd());
+            try
+            {
+                ServicePointManager.ServerCertificateValidationCallback = Validator;
+                Console.WriteLine("Creating request...");
+                HttpWebRequest wr = WebRequest.CreateHttp(RELEASE_URL);
+                wr.Method = "GET";
+                wr.UserAgent = "MarkdownToRW_Converter";
+                Console.WriteLine("Response: " + wr.GetResponse().ResponseUri);
+                Console.WriteLine("Creating stream...");
+                Stream stream = wr.GetResponse().GetResponseStream();
+                string content = new StreamReader(stream).ReadToEnd();
+
+                if (content != "")
+                {
+                    Console.WriteLine("Connected to Github");
+                    GithubRelease release = JsonConvert.DeserializeObject<GithubRelease>(content);
+                    Console.WriteLine("Latest release:\n" + release.name + "\n" + release.assets[0].browser_download_url);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Update check failed:\n" + e);
+            }
+        }
+
+        private static void AddCertificateForMono()
+        {
+            try
+            {
+                ServicePointManager.ServerCertificateValidationCallback = Validator;
+                WebRequest wr = WebRequest.Create("https://raywenderlich.com");
+                Stream stream = wr.GetResponse().GetResponseStream();
+
+                if (new StreamReader(stream).ReadToEnd() != "")
+                {
+                    Console.WriteLine("Certificate check OK, can connect to RW");
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString(), "Adding certificate failed");
+            }
         }
 
         public static bool Validator(object sender, X509Certificate certificate, X509Chain chain,
@@ -65,7 +114,8 @@ namespace MarkdownToRW
             foreach (HtmlNode node in imgNodes)
             {
                 // Skip if web link
-                if (node.GetAttributeValue("src", "").StartsWith("http") || node.GetAttributeValue("src", "").StartsWith("www"))
+                if (node.GetAttributeValue("src", "").StartsWith("http") ||
+                    node.GetAttributeValue("src", "").StartsWith("www"))
                 {
                     continue;
                 }
@@ -81,9 +131,8 @@ namespace MarkdownToRW
                 }
                 else
                 {
-                    MessageBox.Show("File not found: " + localPath +"\nThis file will be skipped.");
+                    MessageBox.Show("File not found: " + localPath + "\nThis file will be skipped.");
                 }
-
             }
 
             if (imageData.FullImagePaths.Count == 0)
@@ -259,7 +308,6 @@ namespace MarkdownToRW
             {
                 Clipboard.SetText(txtHtml.Text);
             }
-
         }
 
         private void btnWordpress_Click(object sender, EventArgs e)

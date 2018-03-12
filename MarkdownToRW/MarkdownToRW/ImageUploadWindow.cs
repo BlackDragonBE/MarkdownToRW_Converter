@@ -36,6 +36,8 @@ namespace MarkdownToRW
                 chkOptimizeImages.Checked = false;
                 chkOptimizeImages.Enabled = false;
             }
+
+            SetLoginControlsEnabledState(true);
         }
 
         private List<int> imageIdList = new List<int>();
