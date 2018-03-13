@@ -15,7 +15,7 @@ namespace MarkdownToRW
 {
     public partial class MainForm : Form
     {
-        private static readonly string VERSION = "0.87";
+        private static readonly string VERSION = "0.88";
 
         private static readonly string RELEASE_URL =
             @"https://api.github.com/repos/BlackDragonBE/MarkdownToRW_Converter/releases/latest";
@@ -25,8 +25,10 @@ namespace MarkdownToRW
         public MainForm()
         {
             InitializeComponent();
+            Console.WriteLine("Detecting OS...");
+            MonoHelper.DetectOperatingSystem();
 
-            Text += " v" + VERSION + " on " + Environment.OSVersion.Platform;
+            Text += " v" + VERSION + " on " + Environment.OSVersion.VersionString;
 
             if (MonoHelper.IsRunningOnMono)
             {
@@ -34,7 +36,7 @@ namespace MarkdownToRW
                 AddCertificateForMono();
             }
 
-            if (!MonoHelper.IsRunningOnMono) // Not working on mono (yet?)
+            if (!MonoHelper.IsRunningOnMono)
             {
                 CheckForUpdate();
             }
@@ -42,12 +44,12 @@ namespace MarkdownToRW
 
         private void CheckForUpdate()
         {
+
             try
             {
                 ServicePointManager.ServerCertificateValidationCallback = Validator;
                 Console.WriteLine("Creating request...");
                 HttpWebRequest wr = WebRequest.CreateHttp(RELEASE_URL);
-                wr.Method = "GET";
                 wr.UserAgent = "MarkdownToRW_Converter";
                 Console.WriteLine("Response: " + wr.GetResponse().ResponseUri);
                 Console.WriteLine("Creating stream...");
@@ -300,14 +302,18 @@ namespace MarkdownToRW
 
         private void btnCopyClipboard_Click(object sender, EventArgs e)
         {
-            if (MonoHelper.IsRunningOnMono && MonoHelper.IsRunningOnMac)
-            {
-                MonoHelper.CopyToMacClipboard(txtHtml.Text);
-            }
-            else
+            if (txtHtml.Text != "")
             {
                 Clipboard.SetText(txtHtml.Text);
+
+                if (MonoHelper.IsRunningOnMac)
+                {
+                    MonoHelper.CopyToMacClipboard(txtHtml.Text);
+
+                }
             }
+
+
         }
 
         private void btnWordpress_Click(object sender, EventArgs e)
