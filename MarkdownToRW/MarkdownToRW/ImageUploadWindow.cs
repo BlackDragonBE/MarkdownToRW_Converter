@@ -36,8 +36,8 @@ namespace MarkdownToRW
             {
                 btnMacPasteUsername.Visible = true;
                 btnMacPastePassword.Visible = true;
-                chkOptimizeImages.Checked = false;
-                chkOptimizeImages.Enabled = false;
+                //chkOptimizeImages.Checked = false;
+                //chkOptimizeImages.Enabled = false;
             }
 
             SetLoginControlsEnabledState(true);
@@ -146,12 +146,12 @@ namespace MarkdownToRW
 
                             using (var quantized = quantisizer.QuantizeImage(bitmap))
                             {
-                                quantized.Save(Path.GetFileName(path));
+                                quantized.Save(Application.StartupPath + "/" + Path.GetFileName(path));
                             }
 
-                            fileSizeSaved += (new FileInfo(path).Length - new FileInfo(Path.GetFileName(path)).Length);
+                            fileSizeSaved += (new FileInfo(path).Length - new FileInfo(Application.StartupPath + "/" + Path.GetFileName(path)).Length);
 
-                            image = Data.CreateFromFilePath(Path.GetFileName(path), mimeType);
+                            image = Data.CreateFromFilePath(Application.StartupPath + "/" + Path.GetFileName(path), mimeType);
                         }
                         else
                         {
@@ -171,9 +171,9 @@ namespace MarkdownToRW
                     //Remove optimized images
                     foreach (string path in ImageUploadData.FullImagePaths)
                     {
-                        if (File.Exists(Path.GetFileName(path)))
+                        if (File.Exists(Application.StartupPath + "/" + Path.GetFileName(path)))
                         {
-                            File.Delete(Path.GetFileName(path));
+                            File.Delete(Application.StartupPath + "/" + Path.GetFileName(path));
                         }
                     }
 

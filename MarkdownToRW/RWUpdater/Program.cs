@@ -33,11 +33,6 @@ namespace RWUpdater
 
             Console.WriteLine("Restarting app...");
             Process.Start(previousInstallFolderPath + "/MarkdownToRW.exe");
-
-            Console.WriteLine("Update done! Exiting in 3 seconds...");
-
-            Thread.Sleep(3000);
-
             Environment.Exit(0);
         }
     }

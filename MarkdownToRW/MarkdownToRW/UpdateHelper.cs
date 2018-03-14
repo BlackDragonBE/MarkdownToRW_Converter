@@ -48,7 +48,7 @@ namespace MarkdownToRW
                 }
                 else
                 {
-                    MessageBox.Show("This app is up to date!", "Version up to date!");
+                    Console.WriteLine("Application is up to date!");
                 }
             }
             else
@@ -63,17 +63,27 @@ namespace MarkdownToRW
             string updater = Directory.GetParent(Application.StartupPath) + "/RWUpdater.exe";
             string ziplib = Directory.GetParent(Application.StartupPath) + "/DotNetZip.dll";
 
-            if (File.Exists(updater))
+            try
             {
-                File.Delete(updater);
-                Console.WriteLine("Removed old updater");
+                if (File.Exists(updater))
+                {
+                    File.SetAttributes(updater, FileAttributes.Normal);
+                    File.Delete(updater);
+                    Console.WriteLine("Removed old updater");
+                }
+
+                if (File.Exists(ziplib))
+                {
+                    File.SetAttributes(ziplib, FileAttributes.Normal);
+                    File.Delete(ziplib);
+                    Console.WriteLine("Removed old zip DLL for updater");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Update cleanup failed. Please delete RWUpdater.exe & DotNetZip.dll from the parent folder manually.\nError: " + e);
             }
 
-            if (File.Exists(ziplib))
-            {
-                File.Delete(ziplib);
-                Console.WriteLine("Removed old zip DLL for updater");
-            }
         }
 
         private static void StartAppUpdate(GithubRelease newestRelease)
@@ -91,6 +101,7 @@ namespace MarkdownToRW
             //Download update
             MonoHelper.DownloadFile(newestRelease.assets[0].browser_download_url, zipPath,
                 "MarkdownToRW_Converter");
+
 
             // Copy updater to folder above
             if (File.Exists(newUpdaterPath))
