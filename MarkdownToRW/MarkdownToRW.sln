@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkdownToRW", "MarkdownToRW\MarkdownToRW.csproj", "{89BF1B7F-39D4-4B7C-A378-803163E3A0EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RWUpdater", "RWUpdater\RWUpdater.csproj", "{D6A12CA0-0A22-4F6E-80C9-962D1DB05DA2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,15 @@ Global
 		{89BF1B7F-39D4-4B7C-A378-803163E3A0EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89BF1B7F-39D4-4B7C-A378-803163E3A0EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89BF1B7F-39D4-4B7C-A378-803163E3A0EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6A12CA0-0A22-4F6E-80C9-962D1DB05DA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6A12CA0-0A22-4F6E-80C9-962D1DB05DA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6A12CA0-0A22-4F6E-80C9-962D1DB05DA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6A12CA0-0A22-4F6E-80C9-962D1DB05DA2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A705A323-8CA4-4BC9-81C9-29F9528B6B10}
 	EndGlobalSection
 EndGlobal

@@ -20,6 +20,9 @@ namespace MarkdownToRW
         {
             InitializeComponent();
             ImageUploadData = imageUploadData;
+            ServicePointManager.ServerCertificateValidationCallback = MonoHelper.Validator;
+            CheckConnectionToRW();
+
 
             FillImageNameList();
 
@@ -46,6 +49,26 @@ namespace MarkdownToRW
         private bool errorInUpload = false;
 
         public ImageUploadData ImageUploadData { get; }
+
+        private void CheckConnectionToRW()
+        {
+            try
+            {
+                ServicePointManager.ServerCertificateValidationCallback = MonoHelper.Validator;
+                WebRequest wr = WebRequest.Create("https://raywenderlich.com");
+                Stream stream = wr.GetResponse().GetResponseStream();
+
+                if (new StreamReader(stream).ReadToEnd() != "")
+                {
+                    Console.WriteLine("Connection to RW OK");
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString(), "Can't connect to RW! Please check your internet connection.");
+                Close();
+            }
+        }
 
         private void FillImageNameList()
         {
