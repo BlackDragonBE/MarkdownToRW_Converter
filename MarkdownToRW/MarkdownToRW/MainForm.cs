@@ -4,22 +4,15 @@ using System.IO;
 using System.Net;
 using System.Windows.Forms;
 using CommonMark;
-using EasyHttp.Http;
 using HtmlAgilityPack;
 using MarkdownToRW.Properties;
-using Newtonsoft.Json;
 using HtmlDocument = HtmlAgilityPack.HtmlDocument;
 
 namespace MarkdownToRW
 {
     public partial class MainForm : Form
     {
-        private static readonly string VERSION = "0.87";
-
-        private static readonly string RELEASE_URL =
-            @"https://api.github.com/repos/BlackDragonBE/MarkdownToRW_Converter/releases/latest";
-
-        private readonly decimal _thisVersion = Convert.ToDecimal(VERSION);
+        private static readonly string VERSION = "0.9";
 
         private string _markdownPath;
 
@@ -36,138 +29,13 @@ namespace MarkdownToRW
 
             Text += " v" + VERSION + " on " + Environment.OSVersion.VersionString;
 
-            //MessageBox.Show(File.Exists(_wgetPath).ToString());
-
             if (MonoHelper.IsRunningOnMono)
             {
                 Text += " [MONO]";
             }
 
-            CheckForUpdate();
-        }
-
-        private void CheckForUpdate()
-        {
-            Console.WriteLine("Checking for new version...");
-
-            GithubRelease newestRelease = null;
-
-            if (!MonoHelper.IsRunningOnMono) //Regular Windows
-            {
-                newestRelease = GetNewestRelease();
-            }
-            else
-            {
-                newestRelease = GetNewestReleaseMono();
-            }
-
-            if (newestRelease != null)
-            {
-                var githubNewestVersion = Convert.ToDecimal(newestRelease.tag_name);
-
-                if (githubNewestVersion > _thisVersion)
-                {
-                    if (MessageBox.Show(
-                            "New version available!\n" + newestRelease.name + " (Current: " + VERSION +
-                            ")\n\nRelease notes:\n" + newestRelease.body +
-                            "\n\nClick yes to download new release. ", "Update to " + newestRelease.name,
-                            MessageBoxButtons.YesNo) == DialogResult.Yes
-                    )
-                    {
-                        StartAppUpdate(newestRelease);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("This app is up to date!", "Version up to date!");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Couldn't download release info.");
-            }
-        }
-
-        private static void StartAppUpdate(GithubRelease newestRelease)
-        {
-            // Copy updater.exe  to folder above
-            // Run updater.exe on folder above
-            // Updater gets current folder & path to zip as arguments & starts
-            // This app exists
-            
-
-            // Preparation
-            Console.WriteLine("Downloading new release...");
-            string zipPath = Directory.GetParent(Application.StartupPath) + "/" + newestRelease.assets[0].name;
-            string newUpdaterPath = Directory.GetParent(Application.StartupPath) + "/RWUpdater.exe";
-
-            //Download update
-            MonoHelper.DownloadFile(newestRelease.assets[0].browser_download_url, zipPath,
-                "MarkdownToRW_Converter");
-            
-            // Copy updater to folder above
-            if (File.Exists(newUpdaterPath))
-            {
-                File.Delete(newUpdaterPath);
-            }
-
-            File.Copy(Application.StartupPath + "/RWUpdater.exe", newUpdaterPath);
-
-            // Run updater & quit
-            Process.Start(newUpdaterPath,
-                MonoHelper.SurroundWithQuotes(Application.StartupPath) + " " + MonoHelper.SurroundWithQuotes(zipPath));
-            Environment.Exit(0);
-        }
-
-        private static GithubRelease GetNewestRelease()
-        {
-            GithubRelease release = null;
-
-            try
-            {
-                var http = new HttpClient();
-                http.Request.UserAgent = "MarkdownToRW_Converter";
-                http.Request.Accept = HttpContentTypes.ApplicationJson;
-                var response = http.Get(RELEASE_URL);
-                release = response.StaticBody<GithubRelease>();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Update check failed:\n" + e);
-            }
-
-            return release;
-        }
-
-        private GithubRelease GetNewestReleaseMono()
-        {
-            string outputFilePath = Application.StartupPath + @"/release.json";
-            GithubRelease rel = null;
-
-            if (File.Exists(Application.StartupPath + "/release.json"))
-            {
-                File.Delete(Application.StartupPath + "/release.json");
-            }
-
-            MonoHelper.DownloadFile(
-                "https://api.github.com/repos/BlackDragonBE/MarkdownToRW_Converter/releases/latest", outputFilePath,
-                "MarkdownToRW_Converter");
-
-            // Read json
-            if (File.Exists(Application.StartupPath + "/release.json"))
-            {
-                var json = "";
-                using (StreamReader sr = new StreamReader(outputFilePath.Replace("\"", "")))
-                {
-                    json = sr.ReadToEnd();
-                }
-
-                rel = JsonConvert.DeserializeObject<GithubRelease>(json);
-
-                File.Delete(Application.StartupPath + "/release.json");
-            }
-
-            return rel;
+            UpdateHelper.DoUpdateCleanup();
+            UpdateHelper.CheckForUpdates(VERSION);
         }
 
         private void OpenImageUploadWindow()

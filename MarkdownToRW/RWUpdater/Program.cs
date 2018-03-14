@@ -12,6 +12,7 @@ namespace RWUpdater
         {
             string previousInstallFolderPath = args[0];
             string zipPath = args[1];
+            string thisFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
             Console.WriteLine("Starting update...");
 
@@ -20,20 +21,19 @@ namespace RWUpdater
             Console.WriteLine("Unzipping update: " + zipPath);
             using (ZipFile zip = ZipFile.Read(zipPath))
             {
-                foreach (ZipEntry entry in zip)
-                {
-                    entry.Extract(previousInstallFolderPath,ExtractExistingFileAction.OverwriteSilently);
-                }
+                zip.FlattenFoldersOnExtract = true;
+                zip.ExtractAll(previousInstallFolderPath,ExtractExistingFileAction.OverwriteSilently);
             }
-            
-            Console.WriteLine("Deleting zip...");
+
+            Console.WriteLine("Cleaning up...");
             File.Delete(zipPath);
-            
+            //File.Delete(thisFolder + "/DotNetZip.dll");
+
             //Console.WriteLine("Deleting orginal folder: " + previousInstallFolderPath);
 
             Console.WriteLine("Restarting app...");
             Process.Start(previousInstallFolderPath + "/MarkdownToRW.exe");
-            
+
             Console.WriteLine("Update done! Exiting in 3 seconds...");
 
             Thread.Sleep(3000);
