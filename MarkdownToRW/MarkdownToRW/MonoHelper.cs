@@ -203,7 +203,7 @@ namespace MarkdownToRW
             }
 
             ReadProcessOutput("curl",
-                "-A " + userAgentFormatted + " -o " + SurroundWithQuotes(savePath) + " " + fileToDownload);
+                "-L -A " + userAgentFormatted + " -o " + SurroundWithQuotes(savePath) + " " + fileToDownload);
 
             return File.Exists(savePath);
         }
