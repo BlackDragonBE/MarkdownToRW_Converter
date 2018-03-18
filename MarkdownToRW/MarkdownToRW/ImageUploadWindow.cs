@@ -6,10 +6,10 @@ using System.IO;
 using System.Net;
 using System.Windows.Forms;
 using DragonMarkdown;
+using DragonMarkdown.DragonWordPressXml;
+using DragonMarkdown.DragonWordPressXml.Responses;
 using MarkdownToRW.Properties;
 using nQuant;
-using WordPressSharp;
-using WordPressSharp.Models;
 
 namespace MarkdownToRW
 {
@@ -102,7 +102,7 @@ namespace MarkdownToRW
                 {
                     lblStatus.Text = "Uploading " + path + "...";
                     lblStatus.Refresh();
-                    UploadResult result = null;
+                    UploadFileResponse result = null;
 
                     if (chkOptimizeImages.Checked && path.ToLower().EndsWith("png"))
                     {
@@ -123,8 +123,8 @@ namespace MarkdownToRW
 
                     if (result != null)
                     {
-                        ImageUploadData.ImageUrls.Add(result.Url);
-                        _imageIdList.Add(Convert.ToInt32(result.Id));
+                        ImageUploadData.ImageUrls.Add(result.FileResponseStruct.Url);
+                        _imageIdList.Add(result.FileResponseStruct.Id);
                     }
                     else
                     {
@@ -210,10 +210,7 @@ namespace MarkdownToRW
         {
             lblStatus.Text = "Rolling back...";
 
-            WordPressSiteConfig config = new WordPressSiteConfig();
-            config.Username = txtUsername.Text;
-            config.Password = txtPassword.Text;
-            config.BaseUrl = "https://www.raywenderlich.com";
+            WordPressConfig config = new WordPressConfig("https://www.raywenderlich.com",txtUsername.Text,txtPassword.Text);
 
             try
             {
@@ -252,7 +249,7 @@ namespace MarkdownToRW
             lblStatus.Text = "Verifying...";
             SetLoginControlsEnabledState(false);
 
-            User user = WordPressConnector.GetUserProfile();
+            GetProfileResponse user = WordPressConnector.GetUserProfile();
 
             if (user != null)
             {

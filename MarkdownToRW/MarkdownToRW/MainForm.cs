@@ -111,16 +111,7 @@ namespace MarkdownToRW
 
             string htmlPath = CreatePreviewHtml();
 
-            if (!MonoHelper.IsRunningOnMono)
-            {
-                PreviewWindow previewWindow = new PreviewWindow(htmlPath);
-                previewWindow.ShowDialog();
-            }
-            else
-            {
-                // No solution for opening in-app webbrowser in mono yet, open html file in standard application
-                Process.Start(htmlPath);
-            }
+            PreviewCreator.OpenFileInDefaultApplication(htmlPath);
         }
 
         private void btnOpenMarkdown_Click(object sender, EventArgs e)

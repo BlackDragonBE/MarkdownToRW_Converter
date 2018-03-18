@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkdownToRW", "MarkdownToRW\MarkdownToRW.csproj", "{89BF1B7F-39D4-4B7C-A378-803163E3A0EE}"
 EndProject
@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RWUpdater", "RWUpdater\RWUp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonMarkdown", "MarkdownConverter\DragonMarkdown.csproj", "{E7829B11-31F5-480F-8584-F3633221174B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkdownToRWCore", "MarkdownToRWCore\MarkdownToRWCore.csproj", "{1CDAA2EC-915F-4AF6-A395-7EE37BE5FBD6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarkdownToRWCore", "MarkdownToRWCore\MarkdownToRWCore.csproj", "{1CDAA2EC-915F-4AF6-A395-7EE37BE5FBD6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

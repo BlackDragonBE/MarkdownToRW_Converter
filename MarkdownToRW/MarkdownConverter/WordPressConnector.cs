@@ -2,27 +2,26 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-
+using DragonMarkdown.DragonWordPressXml;
+using DragonMarkdown.DragonWordPressXml.Requests;
+using DragonMarkdown.DragonWordPressXml.Responses;
 
 namespace DragonMarkdown
 {
     public static class WordPressConnector
     {
-        private static readonly WordPressSiteConfig _config = new WordPressSiteConfig();
+        private static WordPressConfig _config;
 
         public static void InitializeWordPress(string username, string password)
         {
-            _config.Username = username;
-            _config.Password = password;
-            _config.BaseUrl = "https://www.raywenderlich.com";
+            _config = new WordPressConfig("https://www.raywenderlich.com", username, password);
 
             try
             {
-                using (WordPressClient client = new WordPressClient(_config))
-                {
-                    string name = client.GetProfile().FirstName;
-                    Console.WriteLine(name);
-                }
+                DragonWordPressClient client = new DragonWordPressClient(_config);
+
+                //string name = client.GetProfile().FirstName;
+                //Console.WriteLine(name);
             }
             catch (Exception exception)
             {
@@ -30,7 +29,7 @@ namespace DragonMarkdown
             }
         }
 
-        public static User GetUserProfile()
+        public static GetProfileResponse GetUserProfile()
         {
             //WordPressSiteConfig config = new WordPressSiteConfig();
             //config.Username = username;
@@ -39,10 +38,8 @@ namespace DragonMarkdown
 
             try
             {
-                using (WordPressClient client = new WordPressClient(_config))
-                {
-                    return client.GetProfile();
-                }
+                DragonWordPressClient client = new DragonWordPressClient(_config);
+                return client.SendGetProfileRequest(new GetProfileRequest());
             }
             catch (Exception exception)
             {
@@ -56,13 +53,11 @@ namespace DragonMarkdown
         {
             try
             {
-                WebRequest wr = WebRequest.Create("https://raywenderlich.com");
+                WebRequest wr = WebRequest.Create("https://www.raywenderlich.com");
                 Stream stream = wr.GetResponse().GetResponseStream();
 
                 if (new StreamReader(stream).ReadToEnd() != "")
-                {
                     Console.WriteLine("Connection to RW OK");
-                }
             }
             catch (Exception e)
             {
@@ -74,11 +69,11 @@ namespace DragonMarkdown
         /// </summary>
         /// <param name="fullFilePaths">A list of full file paths that need to be uploaded.</param>
         /// <param name="localFilePaths">A list of local file paths</param>
-        /// <returns>A dictionary of LocalFilePath & UploadResult that can be used for replacing or other operations.</returns>
-        public static Dictionary<string, UploadResult> UploadFiles(List<string> fullFilePaths,
+        /// <returns>A dictionary of LocalFilePath & UploadFileResponse that can be used for replacing or other operations.</returns>
+        public static Dictionary<string, UploadFileResponse> UploadFiles(List<string> fullFilePaths,
             List<string> localFilePaths)
         {
-            Dictionary<string, UploadResult> fileLinkDictionary = new Dictionary<string, UploadResult>();
+            Dictionary<string, UploadFileResponse> fileLinkDictionary = new Dictionary<string, UploadFileResponse>();
 
             for (var i = 0; i < fullFilePaths.Count; i++)
             {
@@ -89,31 +84,22 @@ namespace DragonMarkdown
             return fileLinkDictionary;
         }
 
-        public static UploadResult UploadFile(string path)
+        public static UploadFileResponse UploadFile(string path)
         {
-            using (WordPressClient client = new WordPressClient(_config))
-            {
-                //string mimeType = "image/" + Path.GetExtension(path).ToLower();
-                string mimeType = MimeMapper.MimeMap[Path.GetExtension(path).ToLower()];
+            DragonWordPressClient client = new DragonWordPressClient(_config);
 
-                var image = Data.CreateFromFilePath(path, mimeType);
-
-                var result = client.UploadFile(image);
-                return result;
-            }
+            return client.SendUploadFileRequest(new UploadFileRequest(path));
         }
 
         /// <summary>
-        /// Delete a post, attachment or page by its id
+        ///     Delete a post, attachment or page by its id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         public static bool Delete(int id)
         {
-            using (WordPressClient client = new WordPressClient(_config))
-            {
-                return client.DeletePost(id);
-            }
+            DragonWordPressClient client = new DragonWordPressClient(_config);
+            return client.SendDeletePostRequest(new DeletePostRequest(id)).Success;
         }
     }
 }

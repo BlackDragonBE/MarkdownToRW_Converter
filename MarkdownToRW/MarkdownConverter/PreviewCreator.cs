@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
 
 namespace DragonMarkdown
 {
@@ -8,9 +10,7 @@ namespace DragonMarkdown
         {
             string output = "";
 
-            Converter.ConvertMarkdownStringToHtml(markdown);
-
-            output = PrepareHtmlForPreview(output);
+            output = PrepareHtmlForPreview(Converter.ConvertMarkdownStringToHtml(markdown));
 
             return output;
         }
@@ -33,6 +33,24 @@ namespace DragonMarkdown
                 sw.Write(CreateHtmlPreviewFromMarkdown(markdown));
                 sw.Flush();
                 sw.Close();
+            }
+        }
+
+        public static void OpenFileInDefaultApplication(string path)
+        {
+            try
+            {
+                var p = new Process();
+                p.StartInfo = new ProcessStartInfo(path)
+                {
+                    UseShellExecute = true
+                };
+                p.Start();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
             }
         }
     }

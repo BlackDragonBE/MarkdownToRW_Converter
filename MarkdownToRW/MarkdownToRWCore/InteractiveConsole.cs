@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using DragonMarkdown;
-using WordPressSharp.Models;
+using DragonMarkdown.DragonWordPressXml.Responses;
 
 namespace MarkdownToRWCore
 {
@@ -14,10 +13,8 @@ namespace MarkdownToRWCore
             WordPressConnector.InitializeWordPress("ekerckhove", "AjRSs8HZ");
             var user = WordPressConnector.GetUserProfile();
 
-            if (user!=null)
-            {
+            if (user != null)
                 Console.WriteLine(user.FirstName);
-            }
 
             string markdownPath = null;
             string htmlPath = null;
@@ -40,24 +37,18 @@ namespace MarkdownToRWCore
             }
 
             if (sameFolder == "y")
-            {
                 htmlPath = Helper.GetFullPathWithoutExtension(markdownPath) + ".html";
-            }
             else
-            {
                 while (htmlPath == null || htmlPath == markdownPath)
                 {
                     if (htmlPath == markdownPath)
-                    {
                         Console.WriteLine(
                             "Output file can't be the same as the input file! This WILL lead to data loss.");
-                    }
 
                     Console.WriteLine("Please provide the location and name for the output html file:");
                     Console.WriteLine("(e.g. C:\\MyNewFile.html)");
                     htmlPath = GetNewFilePath();
                 }
-            }
 
             string uploadImages = null;
 
@@ -113,7 +104,7 @@ namespace MarkdownToRWCore
             if (uploadImages)
             {
                 Console.WriteLine("------------");
-                User user = null;
+                GetProfileResponse user = null;
                 Console.WriteLine("Starting image upload. Please enter your RW WordPress credentials:");
 
                 while (user == null)
@@ -175,9 +166,7 @@ namespace MarkdownToRWCore
                 Console.WriteLine(fullImagePaths.Count + " image paths found:");
 
                 foreach (string path in fullImagePaths)
-                {
                     Console.WriteLine(path + " (" + new FileInfo(path).Length / 1024 + " kb)");
-                }
 
                 // Upload images
                 for (var i = 0; i < fullImagePaths.Count; i++)
@@ -190,8 +179,8 @@ namespace MarkdownToRWCore
 
                     if (result != null)
                     {
-                        imageUrls.Add(result.Url);
-                        imageIDs.Add(result.Id);
+                        imageUrls.Add(result.FileResponseStruct.Url);
+                        imageIDs.Add(result.FileResponseStruct.Id.ToString());
                     }
                     else
                     {
@@ -239,13 +228,9 @@ namespace MarkdownToRWCore
             {
                 var result = WordPressConnector.Delete(Convert.ToInt32(iD));
                 if (result)
-                {
                     Console.WriteLine("Deleted file with id " + iD);
-                }
                 else
-                {
                     Console.WriteLine("Failed to delete file with id " + iD);
-                }
             }
 
             Console.WriteLine("Cleanup complete! Press any key to exit.");
@@ -267,9 +252,7 @@ namespace MarkdownToRWCore
             }
 
             if (openHtml == "y")
-            {
-                Process.Start(generatedHtmlPath);
-            }
+                PreviewCreator.OpenFileInDefaultApplication(generatedHtmlPath);
 
             Console.WriteLine("Press any key to exit.");
             Console.ReadKey();
@@ -295,9 +278,7 @@ namespace MarkdownToRWCore
             string path = Console.ReadLine().Replace("\"", "");
 
             if (File.Exists(path))
-            {
                 return path;
-            }
 
             Console.WriteLine("File " + path + " doesn't exist!");
             Console.WriteLine("");
@@ -309,9 +290,7 @@ namespace MarkdownToRWCore
             string path = Console.ReadLine().Replace("\"", "");
 
             if (Directory.Exists(Path.GetDirectoryName(path)))
-            {
                 return path;
-            }
 
             Console.WriteLine("Invalid folder!");
             Console.WriteLine("");

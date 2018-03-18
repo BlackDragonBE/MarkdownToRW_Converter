@@ -9,11 +9,17 @@
     <PackageReference Include="CommonMark.NET" Version="0.15.1" />
     <PackageReference Include="HtmlAgilityPack" Version="1.7.1" />
     <PackageReference Include="System.Reflection.Emit" Version="4.3.0" />
-    <PackageReference Include="xmlrpcnet" Version="3.0.0.266" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MarkdownConverter\DragonMarkdown.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Restsharp.Rpc">
+      <HintPath>Libs\Restsharp.Rpc.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
   </ItemGroup>
 
 </Project>
