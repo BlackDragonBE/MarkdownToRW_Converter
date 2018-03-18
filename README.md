@@ -67,7 +67,9 @@ Nice To Have:
 
 ## Known Issues
 
+- The app will take a few minutes to load the first time you open it on mono platforms (macOS & linux). This is because mono comes without any certificates and needs to download these in orde to access Github (for updates) & raywenderlich.com (for uploading images).
 - The preview is not a 1:1 preview with what you would get on the website itself.
 - Code in the preview will appear incorrect if the following characters are used: < > &. The converted HTML is correct, this only affects the preview.
 - Due to a mono limitation, the applications needs to be run in 32-bit mode on macOS & linux. This should be fixed by Mono somewhere this year (2018) though.
 - The spoiler tag isn't supported yet in markdown, you'll need to add it in as HTML for now.
+- Notes may be parsed incorrect on macOS & linux.
