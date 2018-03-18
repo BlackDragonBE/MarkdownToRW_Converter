@@ -4,9 +4,8 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Net;
-using System.Net.Security;
-using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
+using DragonMarkdown;
 using MarkdownToRW.Properties;
 using nQuant;
 using WordPressSharp;
@@ -16,13 +15,16 @@ namespace MarkdownToRW
 {
     public partial class ImageUploadWindow : Form
     {
+        private readonly List<int> _imageIdList = new List<int>();
+        private bool _errorInUpload;
+        private long _totalFileSizes;
+
         public ImageUploadWindow(ImageUploadData imageUploadData)
         {
             InitializeComponent();
             ImageUploadData = imageUploadData;
             ServicePointManager.ServerCertificateValidationCallback = MonoHelper.Validator;
             CheckConnectionToRW();
-
 
             FillImageNameList();
 
@@ -36,38 +38,16 @@ namespace MarkdownToRW
             {
                 btnMacPasteUsername.Visible = true;
                 btnMacPastePassword.Visible = true;
-                //chkOptimizeImages.Checked = false;
-                //chkOptimizeImages.Enabled = false;
             }
 
             SetLoginControlsEnabledState(true);
         }
 
-        private List<int> imageIdList = new List<int>();
-        private long totalFileSizes = 0;
-        private long fileSizeSaved = 0;
-        private bool errorInUpload = false;
-
         public ImageUploadData ImageUploadData { get; }
 
         private void CheckConnectionToRW()
         {
-            try
-            {
-                ServicePointManager.ServerCertificateValidationCallback = MonoHelper.Validator;
-                WebRequest wr = WebRequest.Create("https://raywenderlich.com");
-                Stream stream = wr.GetResponse().GetResponseStream();
-
-                if (new StreamReader(stream).ReadToEnd() != "")
-                {
-                    Console.WriteLine("Connection to RW OK");
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.ToString(), "Can't connect to RW! Please check your internet connection.");
-                Close();
-            }
+            WordPressConnector.TestConnection();
         }
 
         private void FillImageNameList()
@@ -78,15 +58,16 @@ namespace MarkdownToRW
             {
                 long currentSize = new FileInfo(imagePath).Length;
                 listPreviews.Items.Add(imagePath + "| ( " + currentSize / 1024 + " kB )");
-                totalFileSizes += currentSize;
+                _totalFileSizes += currentSize;
             }
 
-            listPreviews.Items.Add("Total size: " + totalFileSizes / 1024 + " kB. (" + totalFileSizes / 1024 / 1024 + " MB)");
+            listPreviews.Items.Add("Total size: " + _totalFileSizes / 1024 + " kB. (" + _totalFileSizes / 1024 / 1024 +
+                                   " MB)");
         }
 
         private void btnUpload_Click(object sender, EventArgs e)
         {
-            errorInUpload = false;
+            _errorInUpload = false;
 
             if (MessageBox.Show(
                     "Make sure this is the first time you upload these images and double check that the paths are correct before continuing.\n" +
@@ -96,7 +77,7 @@ namespace MarkdownToRW
             {
                 UploadImages();
 
-                if (!errorInUpload)
+                if (!_errorInUpload)
                 {
                     UpdateMarkdownAndHtml();
                     MessageBox.Show(
@@ -106,64 +87,55 @@ namespace MarkdownToRW
                     DialogResult = DialogResult.OK;
                     Close();
                 }
-
             }
         }
 
         private void UploadImages()
         {
-            
-
-            //Process.Start("mozroots", "--import --quiet"); // Import certificates (workaround for mono having no certs by default)
             lblStatus.Text = "Starting Upload...";
-            imageIdList.Clear();
-
-            WordPressSiteConfig config = new WordPressSiteConfig
-            {
-                Username = txtUsername.Text,
-                Password = txtPassword.Text,
-                BaseUrl = "https://www.raywenderlich.com"
-            };
-
+            _imageIdList.Clear();
             progressUpload.Maximum = ImageUploadData.FullImagePaths.Count;
 
             try
             {
-                using (WordPressClient client = new WordPressClient(config))
+                foreach (string path in ImageUploadData.FullImagePaths)
                 {
-                    foreach (string path in ImageUploadData.FullImagePaths)
+                    lblStatus.Text = "Uploading " + path + "...";
+                    lblStatus.Refresh();
+                    UploadResult result = null;
+
+                    if (chkOptimizeImages.Checked && path.ToLower().EndsWith("png"))
                     {
-                        lblStatus.Text = "Uploading " + path + "...";
-                        lblStatus.Refresh();
-                        string mimeType = "image/" + Path.GetExtension(path).ToLower();
+                        var quantisizer = new WuQuantizer();
+                        var bitmap = new Bitmap(path);
 
-                        Data image = null;
-
-                        if (chkOptimizeImages.Checked && path.ToLower().EndsWith("png"))
+                        using (var quantized = quantisizer.QuantizeImage(bitmap))
                         {
-                            var quantisizer = new WuQuantizer();
-                            var bitmap = new Bitmap(path);
-
-                            using (var quantized = quantisizer.QuantizeImage(bitmap))
-                            {
-                                quantized.Save(Application.StartupPath + "/" + Path.GetFileName(path));
-                            }
-
-                            fileSizeSaved += (new FileInfo(path).Length - new FileInfo(Application.StartupPath + "/" + Path.GetFileName(path)).Length);
-
-                            image = Data.CreateFromFilePath(Application.StartupPath + "/" + Path.GetFileName(path), mimeType);
-                        }
-                        else
-                        {
-                            image = Data.CreateFromFilePath(path, mimeType);
+                            quantized.Save(Application.StartupPath + "/" + Path.GetFileName(path));
                         }
 
-
-                        var result = client.UploadFile(image);
-                        ImageUploadData.ImageUrls.Add(result.Url);
-                        imageIdList.Add(Convert.ToInt32(result.Id));
-                        progressUpload.Value++;
+                        result = WordPressConnector.UploadFile(Application.StartupPath + "/" + Path.GetFileName(path));
                     }
+                    else
+                    {
+                        result = WordPressConnector.UploadFile(path);
+                    }
+
+                    if (result != null)
+                    {
+                        ImageUploadData.ImageUrls.Add(result.Url);
+                        _imageIdList.Add(Convert.ToInt32(result.Id));
+                    }
+                    else
+                    {
+                        _errorInUpload = true;
+                        MessageBox.Show(
+                            "Something went wrong while uploading. Press OK to attempt rollback, make sure you're connected to the internet and can access the RW WordPress before continuing.",
+                            "Error while uploading");
+                        TryToDeleteImages();
+                    }
+
+                    progressUpload.Value++;
                 }
 
                 if (chkOptimizeImages.Checked)
@@ -176,19 +148,14 @@ namespace MarkdownToRW
                             File.Delete(Application.StartupPath + "/" + Path.GetFileName(path));
                         }
                     }
-
-                    MessageBox.Show(
-                        "You have uploaded " + (fileSizeSaved / 1024) +
-                        " kB less because of optimization!", "Optimization Results");
                 }
 
                 lblStatus.Text = "Uploading complete!";
             }
             catch (Exception e)
             {
-                errorInUpload = true;
-                MessageBox.Show("Something went wrong while uploading. Press OK to attempt rollback, make sure you're connected to the internet and can access the RW WordPress before continuing.\n" + e.Source + " " + e.Message,
-                    "Error while uploading");
+                _errorInUpload = true;
+                Console.WriteLine(e);
                 TryToDeleteImages();
             }
         }
@@ -242,29 +209,24 @@ namespace MarkdownToRW
         private void TryToDeleteImages()
         {
             lblStatus.Text = "Rolling back...";
-            
+
             WordPressSiteConfig config = new WordPressSiteConfig();
-            //config.Username = "ekerckhove";
-            //config.Password = "AjRSs8HZ";
             config.Username = txtUsername.Text;
             config.Password = txtPassword.Text;
             config.BaseUrl = "https://www.raywenderlich.com";
 
             try
             {
-                using (WordPressClient client = new WordPressClient(config))
+                // Something went wrong, delete all uploaded images
+                for (var i = 0; i < _imageIdList.Count; i++)
                 {
-                    // Something went wrong, delete all uploaded images
-                    for (var i = 0; i < imageIdList.Count; i++)
-                    {
-                        int id = imageIdList[i];
-                        bool deleted = client.DeletePost(id);
-                        progressUpload.Value--;
+                    int id = _imageIdList[i];
+                    bool deleted = WordPressConnector.Delete(id);
+                    progressUpload.Value--;
 
-                        if (!deleted)
-                        {
-                            MessageBox.Show("Couldn't delete image: " + ImageUploadData.ImageUrls[i]);
-                        }
+                    if (!deleted)
+                    {
+                        MessageBox.Show("Couldn't delete image: " + ImageUploadData.ImageUrls[i]);
                     }
                 }
             }
@@ -275,7 +237,6 @@ namespace MarkdownToRW
             }
 
             MessageBox.Show("Rollback succesfull!");
-
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -286,33 +247,24 @@ namespace MarkdownToRW
 
         private void btnVerify_Click(object sender, EventArgs e)
         {
+            WordPressConnector.InitializeWordPress(txtUsername.Text, txtPassword.Text);
+
             lblStatus.Text = "Verifying...";
             SetLoginControlsEnabledState(false);
 
-            WordPressSiteConfig config = new WordPressSiteConfig();
-            //config.Username = "ekerckhove";
-            //config.Password = "AjRSs8HZ";
-            config.Username = txtUsername.Text;
-            config.Password = txtPassword.Text;
-            config.BaseUrl = "https://www.raywenderlich.com";
+            User user = WordPressConnector.GetUserProfile();
 
-            try
+            if (user != null)
             {
-                using (WordPressClient client = new WordPressClient(config))
-                {
-                    string name = client.GetProfile().FirstName;
-                    MessageBox.Show("Thanks " + name + "!" + "\nYou're ready to upload.");
-                    btnUpload.Enabled = true;
-                    SetLoginControlsEnabledState(false);
-                    lblStatus.Text = "Ready to upload";
-                }
+                MessageBox.Show("Thanks " + user.FirstName + "!" + "\nYou're ready to upload.");
+                btnUpload.Enabled = true;
             }
-            catch (Exception exception)
+            else
             {
-                MessageBox.Show("Incorrect credentials or other exception was thrown:\n" + exception.Message,
+                MessageBox.Show("Connection failed",
                     "Can't connect to RW Wordpress!");
                 SetLoginControlsEnabledState(true);
-                lblStatus.Text = "Incorrect credentials, please try again.";
+                lblStatus.Text = "Can't connect to RW WordPress, please try again.";
                 return;
             }
 
@@ -325,7 +277,6 @@ namespace MarkdownToRW
                 Settings.Default.Save();
             }
         }
-
 
         private void SetLoginControlsEnabledState(bool enabled)
         {
@@ -347,7 +298,6 @@ namespace MarkdownToRW
 
         private void ImageUploadWindow_Load(object sender, EventArgs e)
         {
-
         }
 
         private void btnMacPasteUsername_Click(object sender, EventArgs e)

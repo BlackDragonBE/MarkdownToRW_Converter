@@ -3,9 +3,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Windows.Forms;
-using CommonMark;
+using DragonMarkdown;
 using HtmlAgilityPack;
-using MarkdownToRW.Properties;
 using HtmlDocument = HtmlAgilityPack.HtmlDocument;
 
 namespace MarkdownToRW
@@ -36,6 +35,7 @@ namespace MarkdownToRW
 
             UpdateHelper.DoUpdateCleanup();
             UpdateHelper.CheckForUpdates(VERSION);
+
         }
 
         private void OpenImageUploadWindow()
@@ -98,113 +98,7 @@ namespace MarkdownToRW
         private void UseDataResults(ImageUploadData data)
         {
             txtMarkdown.Text = data.NewMarkdown;
-            ConvertMarkdownToHtml();
-        }
-
-        private void ConvertMarkdownToHtml()
-        {
-            string output = CommonMarkConverter.Convert(txtMarkdown.Text);
-            output = WebUtility.HtmlDecode(output);
-
-            // HTML readability improvements & RW specific changes
-
-            // Code
-            output = output.Replace("<pre><code class=", "\r\n<pre lang=");
-            output = output.Replace("lang-", "");
-            output = output.Replace("language-", "");
-            output = output.Replace("</code></pre>", "</pre>\r\n");
-
-            // Add attributes
-            AddClassToImages(ref output);
-            AddExtraAttributesToLinks(ref output);
-
-            // Text
-            output = output.Replace("<p>", "\r\n");
-            output = output.Replace("<br>", "\r\n");
-            output = output.Replace("</p>", "");
-            output = output.Replace("<h1", "\r\n<h1"); // h1 is not supported, replace with h2
-            output = output.Replace("<h2", "\r\n<h2");
-            output = output.Replace("<h3", "\r\n<h3");
-            output = output.Replace("<h4", "\r\n<h4"); // h4 is not supported, replace with h3
-            output = output.Replace("<strong>", "<em>");
-            output = output.Replace("</strong>", "</em" +
-                                                 ">");
-
-            // List
-            output = output.Replace("<ul>", "\r\n<ul>");
-            output = output.Replace("<ol>", "\r\n<ol>");
-
-            //// Note
-            output = output.Replace("</blockquote>", "</div>");
-            output = output.Replace("<blockquote>\r\n", "\r\n<blockquote>");
-            output = output.Replace("<blockquote>\r\n<em>Note", "<div class=\"note\">\r\n<em>Note");
-            output = output.Replace("<blockquote>", "<div>");
-
-            // Spoiler
-            output = output.Replace("<blockquote>\r\n<em>Spoiler", "<div class=\"spoiler\">\r\n<em>Spoiler");
-            output = output.Replace("<div class=\"spoiler\">", "[spoiler title=\"Solution\"]");
-            // TODO: replace first </div> found after "<div class=\"spoiler\">" with </spoiler> somehow for all spoilers
-
-            // Final cleanup
-            output = output.Replace("<div></div>", "");
-
-            output = output.Trim();
-            txtHtml.Text = output;
-        }
-
-        private void AddClassToImages(ref string html)
-        {
-            HtmlDocument doc = new HtmlDocument();
-            doc.LoadHtml(html);
-            HtmlNodeCollection imgNodes = doc.DocumentNode.SelectNodes("//img");
-
-            if (imgNodes == null)
-            {
-                return;
-            }
-
-            for (var i = 0; i < imgNodes.Count; i++)
-            {
-                HtmlNode node = imgNodes[i];
-
-                if (i == 0) // First image should be right aligned, it's the 250x250 image
-                {
-                    HtmlAttribute classAttribute = doc.CreateAttribute("class", "alignright size-full");
-                    node.Attributes.Add(classAttribute);
-                }
-                else
-                {
-                    HtmlAttribute classAttribute = doc.CreateAttribute("class", "aligncenter size-full");
-                    node.Attributes.Add(classAttribute);
-                }
-            }
-
-            html = doc.DocumentNode.OuterHtml;
-        }
-
-        private void AddExtraAttributesToLinks(ref string html)
-        {
-            HtmlDocument doc = new HtmlDocument();
-            doc.LoadHtml(html);
-            HtmlNodeCollection linkNodes = doc.DocumentNode.SelectNodes("//a");
-
-            if (linkNodes == null)
-            {
-                return;
-            }
-
-            for (var i = 0; i < linkNodes.Count; i++)
-            {
-                HtmlNode node = linkNodes[i];
-
-                HtmlAttribute relAttribute = doc.CreateAttribute("rel", "noopener");
-                node.Attributes.Add(relAttribute);
-
-                HtmlAttribute targetAttribute = doc.CreateAttribute("target", "_blank");
-                node.Attributes.Add(targetAttribute);
-            }
-
-            html = doc.DocumentNode.OuterHtml;
+            txtHtml.Text = Converter.ConvertMarkdownStringToHtml(txtMarkdown.Text);
         }
 
         private void btnShowPreview_Click(object sender, EventArgs e)
@@ -239,7 +133,7 @@ namespace MarkdownToRW
                 using (StreamReader sr = new StreamReader(_markdownPath))
                 {
                     txtMarkdown.Text = sr.ReadToEnd();
-                    ConvertMarkdownToHtml();
+                    txtHtml.Text = Converter.ConvertMarkdownStringToHtml(txtMarkdown.Text);
                 }
             }
         }
@@ -266,26 +160,9 @@ namespace MarkdownToRW
         {
             string folderPath = Path.GetDirectoryName(_markdownPath);
 
-            using (StreamWriter sw = new StreamWriter(folderPath + "/tmp.html"))
-            {
-                sw.Write(Resources.rwCSS);
-                //sw.Write(_originalHtml);
-                sw.Write(PrepareHtmlForPreview());
-                sw.Write("</div></body></html>");
-                sw.Flush();
-                sw.Close();
-            }
+            PreviewCreator.CreateHtmlPreviewFileFromMarkdown(txtMarkdown.Text, folderPath + "/tmp.html");
 
             return folderPath + "/tmp.html";
-        }
-
-        private string PrepareHtmlForPreview()
-        {
-            string html = txtHtml.Text;
-
-            html = html.Replace("\n\n", "<p>");
-
-            return html;
         }
 
         private void DeletePreviewHtml()

@@ -2,4 +2,4 @@ Markdown To RW
 ----
 
 Todo:
-- Test if png optimizer works now on mono with better paths
+- Notes get parsed incorrectly on macOS (and maybe linux too?) see Richard's issue on github. > parses correctly on Windows
