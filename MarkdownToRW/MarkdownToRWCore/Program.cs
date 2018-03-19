@@ -8,7 +8,11 @@ namespace MarkdownToRWCore
     {
         static void Main(string[] args)
         {
-            if (args.Length < 1)
+            Console.WriteLine("Hi there!");
+            InteractiveConsole.StartInteractive();
+            return;
+
+            if (args[0] == "interactive" ||  args.Length < 1)
             {
                 Console.WriteLine("No arguments found.\nFirst argument is markdown input path. Optional second argument is html output path.");
                 Console.WriteLine("--------------");

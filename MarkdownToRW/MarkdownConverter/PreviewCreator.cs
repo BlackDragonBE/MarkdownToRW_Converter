@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace DragonMarkdown
 {
@@ -40,12 +41,18 @@ namespace DragonMarkdown
         {
             try
             {
-                var p = new Process();
-                p.StartInfo = new ProcessStartInfo(path)
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
-                    UseShellExecute = true
-                };
-                p.Start();
+                    Process.Start(new ProcessStartInfo("cmd", $"/c start {path}"));
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    Process.Start("xdg-open", path);
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    Process.Start("open", path);
+                }
             }
             catch (Exception e)
             {

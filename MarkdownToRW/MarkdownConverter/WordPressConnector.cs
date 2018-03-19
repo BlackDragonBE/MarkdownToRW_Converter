@@ -15,38 +15,6 @@ namespace DragonMarkdown
         public static void InitializeWordPress(string username, string password)
         {
             _config = new WordPressConfig("https://www.raywenderlich.com", username, password);
-
-            try
-            {
-                DragonWordPressClient client = new DragonWordPressClient(_config);
-
-                //string name = client.GetProfile().FirstName;
-                //Console.WriteLine(name);
-            }
-            catch (Exception exception)
-            {
-                Console.Write(exception);
-            }
-        }
-
-        public static GetProfileResponse GetUserProfile()
-        {
-            //WordPressSiteConfig config = new WordPressSiteConfig();
-            //config.Username = username;
-            //config.Password = password;
-            //config.BaseUrl = "https://www.raywenderlich.com";
-
-            try
-            {
-                DragonWordPressClient client = new DragonWordPressClient(_config);
-                return client.SendGetProfileRequest(new GetProfileRequest());
-            }
-            catch (Exception exception)
-            {
-                Console.Write("Profile couldn't be loaded: " + exception);
-            }
-
-            return null;
         }
 
         public static void TestConnection()
@@ -65,6 +33,21 @@ namespace DragonMarkdown
             }
         }
 
+        public static GetProfileResponse GetUserProfile()
+        {
+            try
+            {
+                DragonWordPressClient client = new DragonWordPressClient(_config);
+                return client.SendGetProfileRequest(new GetProfileRequest());
+            }
+            catch (Exception exception)
+            {
+                Console.Write("Profile couldn't be loaded: " + exception);
+            }
+
+            return null;
+        }
+        
         /// <summary>
         /// </summary>
         /// <param name="fullFilePaths">A list of full file paths that need to be uploaded.</param>

@@ -196,6 +196,7 @@ namespace MarkdownToRW
                 }
                 catch (Exception e)
                 {
+                    Console.WriteLine(e);
                     MessageBox.Show(
                         "Failed to save file: " + ImageUploadData.MarkdownPath +
                         "\nBe sure to copy the markdown text from the main window if you don't want to lose it.",
@@ -229,6 +230,7 @@ namespace MarkdownToRW
             }
             catch (Exception exception)
             {
+                Console.WriteLine(exception);
                 MessageBox.Show("Image rollback failed. Please delete the remaining images manually.");
                 return;
             }

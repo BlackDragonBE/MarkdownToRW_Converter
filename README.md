@@ -3,12 +3,44 @@
 A portable tool to convert any markdown document to Ray Wenderlich WordPress ready HTML.
 It can also batch upload all locally sourced images and replace those sources with the image URLs.
 
+There are currently 3 versions of the app:
+
+**The .NET Framework / Mono graphical version:**
+
 ![](READMEImages/UI.png)
+
+This version has a graphical interface and runs natively on Windows. It can also run on macOS and linux with the help of the Mono Runtime.
+
+**The .NET Core Portable version:**
+
+This is a "portable" console version as in the binaries & libraries are small and can be shared between different platforms. You do need an install of the .NET Core Framework for your platform for it to work though.
+
+**The .NET Core Self Contained version:**
+
+The same console application as above, but with all the .NET Core libraries packed with it for every particular platform. 
 
 ## Requirements
 
+**.NET Framework / Mono GUI Version**
+
 - Windows: .NET Framework 4.6.1
 - macOS & linux: Mono Framework
+
+**.NET Core / Standard Portable**
+
+- Windows: https://www.microsoft.com/net/download/windows/run
+- macOS: https://www.microsoft.com/net/download/macos/run
+- linux: https://www.microsoft.com/net/download/linux/run
+
+**.NET Core Self Contained**
+
+- Windows: N/A
+- macOS: N/A
+- linux: N/A
+
+(**Note:** The self contained version is the largest by far in file size as it contains a minimal set of .NET Core 2.0 framework libraries)
+
+https://docs.microsoft.com/en-us/dotnet/core/macos-prerequisites?tabs=netcore2x
 
 ## How To Run The Application
 

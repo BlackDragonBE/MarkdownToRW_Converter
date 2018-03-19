@@ -252,7 +252,10 @@ namespace MarkdownToRWCore
             }
 
             if (openHtml == "y")
+            {
+                Console.WriteLine("Opening HTML file in default application...");
                 PreviewCreator.OpenFileInDefaultApplication(generatedHtmlPath);
+            }
 
             Console.WriteLine("Press any key to exit.");
             Console.ReadKey();
@@ -275,7 +278,7 @@ namespace MarkdownToRWCore
 
         private static string GetExistingFilePath()
         {
-            string path = Console.ReadLine().Replace("\"", "");
+            string path = CleanPath(Console.ReadLine());
 
             if (File.Exists(path))
                 return path;
@@ -287,7 +290,7 @@ namespace MarkdownToRWCore
 
         private static string GetNewFilePath()
         {
-            string path = Console.ReadLine().Replace("\"", "");
+            string path = CleanPath(Console.ReadLine());
 
             if (Directory.Exists(Path.GetDirectoryName(path)))
                 return path;
@@ -295,6 +298,11 @@ namespace MarkdownToRWCore
             Console.WriteLine("Invalid folder!");
             Console.WriteLine("");
             return null;
+        }
+
+        private static string CleanPath(string path)
+        {
+            return path.Replace("\"", "").Replace("'", "").Trim();
         }
     }
 }
