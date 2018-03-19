@@ -95,11 +95,24 @@ namespace MarkdownToRW
 
             // Preparation
             Console.WriteLine("Downloading new release...");
-            string zipPath = Directory.GetParent(Application.StartupPath) + "/" + newestRelease.assets[0].name;
+
+            string downloadUrl = "";
+            string downloadName = "";
+            
+            foreach (GithubRelease.Asset asset in newestRelease.assets)
+            {
+                if (asset.name.Contains("GUI"))
+                {
+                    downloadName = asset.name;
+                    downloadUrl = asset.browser_download_url;
+                }
+            }
+            
+            string zipPath = Directory.GetParent(Application.StartupPath) + "/" + downloadName;
             string newUpdaterPath = Directory.GetParent(Application.StartupPath) + "/RWUpdater.exe";
 
             //Download update
-            MonoHelper.DownloadFile(newestRelease.assets[0].browser_download_url, zipPath,
+            MonoHelper.DownloadFile(downloadUrl, zipPath,
                 "MarkdownToRW_Converter");
 
 

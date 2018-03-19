@@ -11,7 +11,7 @@ namespace MarkdownToRW
 {
     public partial class MainForm : Form
     {
-        private static readonly string VERSION = "0.93";
+        private static readonly string VERSION = "1.00";
 
         private string _markdownPath;
 
