@@ -40,6 +40,12 @@ Make sure to open a console/terminal afterwards and run `dotnet -v` to verify it
 
 **.NET Core Self Contained**
 
+- Windows: Windows 7 SP1 or later
+- macOS: macOS 10.12 Sierra or later
+- linux: https://docs.microsoft.com/en-us/dotnet/core/linux-prerequisites?tabs=netcore2x
+
+For up to date list, see: https://github.com/dotnet/core/blob/master/release-notes/2.0/2.0-supported-os.md
+
 The self contained version includes native binaries & libraries for your platform ans thus doesn't require any additional software.
 If it doesn't work for any reason, try the **.NET Core Portable** version instead.
 
