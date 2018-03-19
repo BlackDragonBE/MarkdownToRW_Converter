@@ -10,12 +10,6 @@ namespace MarkdownToRWCore
     {
         public static void StartInteractive()
         {
-            WordPressConnector.InitializeWordPress("ekerckhove", "AjRSs8HZ");
-            var user = WordPressConnector.GetUserProfile();
-
-            if (user != null)
-                Console.WriteLine(user.FirstName);
-
             string markdownPath = null;
             string htmlPath = null;
 

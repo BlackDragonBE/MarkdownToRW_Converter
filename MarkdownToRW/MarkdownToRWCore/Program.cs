@@ -8,7 +8,6 @@ namespace MarkdownToRWCore
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hi there!");
             InteractiveConsole.StartInteractive();
             return;
 

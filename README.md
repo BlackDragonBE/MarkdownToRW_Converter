@@ -132,6 +132,7 @@ Nice To Have:
 
 **.NET Core**:
 - No command line arguments can be given at this time, so building a native UI around it isn't possible yet. This is in research.
+- No updater (yet) for .NET Core, please download new releases manually.
 
 **All versions (shared library bugs)**:
 - The spoiler tag isn't supported yet in markdown, you'll need to add it in as HTML for now.
