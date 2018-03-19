@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace DragonMarkdown
 {
@@ -48,7 +47,7 @@ namespace DragonMarkdown
             }
         }
 
-        public static String GetFullPathWithoutExtension(String path)
+        public static string GetFullPathWithoutExtension(string path)
         {
             return Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path));
         }
@@ -59,7 +58,9 @@ namespace DragonMarkdown
             {
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
-                    Process.Start(new ProcessStartInfo("cmd", "/c " + SurroundWithQuotes("start " + path)));
+                    //Process.Start(new ProcessStartInfo("cmd", "/c " + SurroundWithQuotes("start " + SurroundWithSingleQuotes(path))));
+                    ProcessStartInfo p = new ProcessStartInfo(path) {UseShellExecute = true};
+                    Process.Start(p);
                 }
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                 {
@@ -74,6 +75,32 @@ namespace DragonMarkdown
             {
                 Console.WriteLine(e);
                 throw;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the app doesn't poop itself while trying to write a file to the folder.
+        /// </summary>
+        /// <returns></returns>
+        public static bool CheckFolderWritePermission(string folderPath)
+        {
+            try
+            {
+                string filePath = folderPath + "/test.txt";
+                
+                using (StreamWriter sw = new StreamWriter(filePath))
+                {
+                    sw.WriteLine("test");
+                    sw.Flush();
+                    sw.Close();
+                }
+
+                File.Delete(filePath);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
     }

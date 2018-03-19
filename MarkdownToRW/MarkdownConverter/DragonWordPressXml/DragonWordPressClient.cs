@@ -21,8 +21,7 @@ namespace DragonMarkdown.DragonWordPressXml
             GetMediaItemResponse response = new GetMediaItemResponse();
 
             var rpcClient = new XmlRpcRestClient(config.RequestUrl);
-            var rpcRequest = new XmlRpcRestRequest(request.RequestUrl);
-            rpcRequest.Method = Method.POST;
+            var rpcRequest = new XmlRpcRestRequest(request.RequestUrl) {Method = Method.POST};
 
             // Add request parameters
             rpcRequest.AddXmlRpcBody(config.BlogID, config.Username, config.Password, request.Id);
@@ -50,8 +49,7 @@ namespace DragonMarkdown.DragonWordPressXml
             UploadFileResponse response = new UploadFileResponse();
 
             var rpcClient = new XmlRpcRestClient(config.RequestUrl);
-            var rpcRequest = new XmlRpcRestRequest(request.RequestUrl);
-            rpcRequest.Method = Method.POST;
+            var rpcRequest = new XmlRpcRestRequest(request.RequestUrl) {Method = Method.POST};
 
             // Add request parameters
             //rpcRequest.XmlSerializer = new XmlRpcSerializer("",false);
@@ -84,8 +82,7 @@ namespace DragonMarkdown.DragonWordPressXml
             DeletePostResponse response = new DeletePostResponse();
 
             var rpcClient = new XmlRpcRestClient(config.RequestUrl);
-            var rpcRequest = new XmlRpcRestRequest(request.RequestUrl);
-            rpcRequest.Method = Method.POST;
+            var rpcRequest = new XmlRpcRestRequest(request.RequestUrl) {Method = Method.POST};
 
             // Add request parameters
             rpcRequest.AddXmlRpcBody(config.BlogID, config.Username, config.Password, request.PostId);
@@ -112,8 +109,7 @@ namespace DragonMarkdown.DragonWordPressXml
             GetProfileResponse response = new GetProfileResponse();
 
             var rpcClient = new XmlRpcRestClient(config.RequestUrl);
-            var rpcRequest = new XmlRpcRestRequest(request.RequestUrl);
-            rpcRequest.Method = Method.POST;
+            var rpcRequest = new XmlRpcRestRequest(request.RequestUrl) {Method = Method.POST};
 
             // Add request parameters
             rpcRequest.AddXmlRpcBody(config.BlogID, config.Username, config.Password);

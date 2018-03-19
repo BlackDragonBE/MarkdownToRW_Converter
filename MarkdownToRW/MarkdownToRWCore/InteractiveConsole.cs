@@ -31,18 +31,24 @@ namespace MarkdownToRWCore
             }
 
             if (sameFolder == "y")
+            {
                 htmlPath = DragonHelperUtility.GetFullPathWithoutExtension(markdownPath) + ".html";
+            }
             else
+            {
                 while (htmlPath == null || htmlPath == markdownPath)
                 {
                     if (htmlPath == markdownPath)
+                    {
                         Console.WriteLine(
                             "Output file can't be the same as the input file! This WILL lead to data loss.");
+                    }
 
                     Console.WriteLine("Please provide the location and name for the output html file:");
                     Console.WriteLine("(e.g. C:\\MyNewFile.html)");
                     htmlPath = GetNewFilePath();
                 }
+            }
 
             string uploadImages = null;
 
@@ -88,6 +94,21 @@ namespace MarkdownToRWCore
             }
         }
 
+        private static void WriteIntro()
+        {
+            Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine(" _____         _     _                  _____        _____ _ _ _ ");
+            Console.WriteLine("|     |___ ___| |_ _| |___ _ _ _ ___   |_   _|___   | __  | | | |");
+            Console.WriteLine("| | | | .'|  _| '_| . | . | | | |   |    | | | . |  |    -| | | |");
+            Console.WriteLine("|_|_|_|__,|_| |_,_|___|___|_____|_|_|    |_| |___|  |__|__|_____|");
+            Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine("Markdown To RW Wordpress HTML Converter [.NET Core Version]");
+            Console.WriteLine("Made by Eric Van de Kerckhove (BlackDragonBE)");
+            Console.WriteLine("");
+        }
+
         private static void DoConversion(string markdownPath, string htmlPath, bool uploadImages, bool onlyUpdateHtml)
         {
             Console.WriteLine("------------");
@@ -97,86 +118,97 @@ namespace MarkdownToRWCore
 
             if (uploadImages)
             {
-                Console.WriteLine("------------");
-                GetProfileResponse user = null;
-                Console.WriteLine("Starting image upload. Please enter your RW WordPress credentials:");
-
-                while (user == null)
-                {
-                    user = AskForCredentials(user);
-                }
-
-                Console.WriteLine("");
-                Console.WriteLine("Login succesful! Thanks for using the app, " + user.FirstName + "!");
-                Console.WriteLine("Gathering files...");
-                // Get image paths
-                List<string> fullImagePaths = new List<string>();
-                List<string> localImagePaths = new List<string>();
-                List<string> imageUrls = new List<string>();
-                List<string> imageIDs = new List<string>();
-
-                string markdownText = "";
-                string htmlText = "";
-
-                using (StreamReader sr = new StreamReader(markdownPath))
-                {
-                    markdownText = sr.ReadToEnd();
-                }
-
-                using (StreamReader sr = new StreamReader(htmlPath))
-                {
-                    htmlText = sr.ReadToEnd();
-                }
-
-                var links = Converter.FindAllImageLinksInHtml(htmlText, Path.GetDirectoryName(htmlPath));
-
-                if (links.Count == 0)
-                {
-                    Console.WriteLine("No images found. Skipping upload.");
-                    ConversionFinished(htmlPath);
-                    return;
-                }
-
-                foreach (ImageLinkData link in links)
-                {
-                    fullImagePaths.Add(link.FullImagePath);
-                    localImagePaths.Add(link.LocalImagePath);
-                }
-
-                Console.WriteLine("");
-                Console.WriteLine(fullImagePaths.Count + " image paths found:");
-
-                foreach (string path in fullImagePaths)
-                    Console.WriteLine(path + " (" + new FileInfo(path).Length / 1024 + " kb)");
-
-                // Upload images
-                for (var i = 0; i < fullImagePaths.Count; i++)
-                {
-                    string path = fullImagePaths[i];
-
-                    Console.WriteLine("Uploading: " + " (" + i + 1 + "/" + fullImagePaths.Count + ")" + path + "...");
-
-                    var result = WordPressConnector.UploadFile(path);
-
-                    if (result != null)
-                    {
-                        imageUrls.Add(result.FileResponseStruct.Url);
-                        imageIDs.Add(result.FileResponseStruct.Id.ToString());
-                    }
-                    else
-                    {
-                        Console.WriteLine("Image upload failed! Aborting upload and going into file cleanup mode...");
-                        StartFileDeletion(imageIDs);
-                        return;
-                    }
-                }
-
-                // Update markdown & html
-                Console.WriteLine("Starting link replacer...");
-                ReplaceLocalImageLinksWithUrls(markdownPath, htmlPath, onlyUpdateHtml, markdownText, localImagePaths, imageUrls);
+                UploadImages(markdownPath, htmlPath, onlyUpdateHtml);
             }
 
             ConversionFinished(htmlPath);
+        }
+
+        private static bool UploadImages(string markdownPath, string htmlPath, bool onlyUpdateHtml)
+        {
+            Console.WriteLine("------------");
+            GetProfileResponse user = null;
+            Console.WriteLine("Starting image upload. Please enter your RW WordPress credentials:");
+
+            while (user == null)
+            {
+                user = AskForCredentials(user);
+            }
+
+            Console.WriteLine("");
+            Console.WriteLine("Login succesful! Thanks for using the app, " + user.FirstName + "!");
+            Console.WriteLine("Gathering files...");
+            // Get image paths
+            List<string> fullImagePaths = new List<string>();
+            List<string> localImagePaths = new List<string>();
+
+
+            string markdownText = "";
+            string htmlText = "";
+
+            using (StreamReader sr = new StreamReader(markdownPath))
+            {
+                markdownText = sr.ReadToEnd();
+            }
+
+            using (StreamReader sr = new StreamReader(htmlPath))
+            {
+                htmlText = sr.ReadToEnd();
+            }
+
+            var links = Converter.FindAllImageLinksInHtml(htmlText, Path.GetDirectoryName(htmlPath));
+
+            if (links.Count == 0)
+            {
+                Console.WriteLine("No images found. Skipping upload.");
+                ConversionFinished(htmlPath);
+                return true;
+            }
+
+            foreach (ImageLinkData link in links)
+            {
+                fullImagePaths.Add(link.FullImagePath);
+                localImagePaths.Add(link.LocalImagePath);
+            }
+
+            Console.WriteLine("");
+            Console.WriteLine(fullImagePaths.Count + " image paths found:");
+
+            foreach (string path in fullImagePaths)
+            {
+                Console.WriteLine(path + " (" + new FileInfo(path).Length / 1024 + " kb)");
+            }
+
+            List<string> imageUrls = new List<string>();
+            List<string> imageIDs = new List<string>();
+
+            // Upload images
+            for (var i = 0; i < fullImagePaths.Count; i++)
+            {
+                string path = fullImagePaths[i];
+
+                Console.WriteLine("Uploading: " + " (" + i + 1 + "/" + fullImagePaths.Count + ")" + path + "...");
+
+                var result = WordPressConnector.UploadFile(path);
+
+                if (result != null)
+                {
+                    imageUrls.Add(result.FileResponseStruct.Url);
+                    imageIDs.Add(result.FileResponseStruct.Id.ToString());
+                }
+                else
+                {
+                    Console.WriteLine("Image upload failed! Aborting upload and going into file cleanup mode...");
+                    StartFileDeletion(imageIDs);
+                    return false;
+                }
+            }
+
+            // Update markdown & html
+            Console.WriteLine("Starting link replacer...");
+            ReplaceLocalImageLinksWithUrls(markdownPath, htmlPath, onlyUpdateHtml, markdownText, localImagePaths,
+                imageUrls);
+            return true;
         }
 
         private static GetProfileResponse AskForCredentials(GetProfileResponse user)
@@ -235,9 +267,13 @@ namespace MarkdownToRWCore
             {
                 var result = WordPressConnector.Delete(Convert.ToInt32(iD));
                 if (result)
+                {
                     Console.WriteLine("Deleted file with id " + iD);
+                }
                 else
+                {
                     Console.WriteLine("Failed to delete file with id " + iD);
+                }
             }
 
             Console.WriteLine("Cleanup complete! Press any key to exit.");
@@ -260,49 +296,46 @@ namespace MarkdownToRWCore
 
             if (openHtml == "y")
             {
-                Console.WriteLine("Opening HTML file in default application...");
-                DragonHelperUtility.OpenFileInDefaultApplication(generatedHtmlPath);
+                OpenHtmlResult(generatedHtmlPath);
             }
 
             Console.WriteLine("Press any key to exit.");
             Console.ReadKey();
         }
 
-        private static void WriteIntro()
+        private static void OpenHtmlResult(string generatedHtmlPath)
         {
-            Console.WriteLine("");
-            Console.WriteLine("");
-            Console.WriteLine(" _____         _     _                  _____        _____ _ _ _ ");
-            Console.WriteLine("|     |___ ___| |_ _| |___ _ _ _ ___   |_   _|___   | __  | | | |");
-            Console.WriteLine("| | | | .'|  _| '_| . | . | | | |   |    | | | . |  |    -| | | |");
-            Console.WriteLine("|_|_|_|__,|_| |_,_|___|___|_____|_|_|    |_| |___|  |__|__|_____|");
-            Console.WriteLine("");
-            Console.WriteLine("");
-            Console.WriteLine("Markdown To RW Wordpress HTML Converter [.NET Core Version]");
-            Console.WriteLine("Made by Eric Van de Kerckhove (BlackDragonBE)");
-            Console.WriteLine("");
+            Console.WriteLine("Opening HTML file in default application...");
+            DragonHelperUtility.OpenFileInDefaultApplication(generatedHtmlPath);
         }
 
         private static string GetExistingFilePath()
         {
-            string path = DragonMarkdown.DragonHelperUtility.RemoveAllQuotes(Console.ReadLine());
+            string path = DragonHelperUtility.RemoveAllQuotes(Console.ReadLine());
 
             if (File.Exists(path))
+            {
                 return path;
+            }
 
             Console.WriteLine("File " + path + " doesn't exist!");
             Console.WriteLine("");
             return null;
         }
-
+        
         private static string GetNewFilePath()
         {
-            string path = DragonMarkdown.DragonHelperUtility.RemoveAllQuotes(Console.ReadLine());
+            string path = DragonHelperUtility.RemoveAllQuotes(Console.ReadLine());
 
-            if (Directory.Exists(Path.GetDirectoryName(path)))
+            var directoryName = Path.GetDirectoryName(path);
+            
+            if (Directory.Exists(directoryName) &&
+                DragonHelperUtility.CheckFolderWritePermission(directoryName))
+            {
                 return path;
+            }
 
-            Console.WriteLine("Invalid folder!");
+            Console.WriteLine("Invalid folder, can't write to to: " + directoryName);
             Console.WriteLine("");
             return null;
         }
