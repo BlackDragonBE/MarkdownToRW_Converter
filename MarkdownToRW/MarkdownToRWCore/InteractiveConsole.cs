@@ -31,7 +31,7 @@ namespace MarkdownToRWCore
             }
 
             if (sameFolder == "y")
-                htmlPath = Helper.GetFullPathWithoutExtension(markdownPath) + ".html";
+                htmlPath = DragonHelperUtility.GetFullPathWithoutExtension(markdownPath) + ".html";
             else
                 while (htmlPath == null || htmlPath == markdownPath)
                 {
@@ -186,15 +186,15 @@ namespace MarkdownToRWCore
 
                 // Update markdown & html
                 Console.WriteLine("Starting link replacer...");
-                markdownText = Converter.BatchReplaceText(markdownText, localImagePaths, imageUrls);
+                markdownText = DragonHelperUtility.BatchReplaceText(markdownText, localImagePaths, imageUrls);
                 htmlText = Converter.ConvertMarkdownStringToHtml(markdownText);
 
-                Converter.QuickWriteFile(htmlPath, htmlText);
+                DragonHelperUtility.QuickWriteFile(htmlPath, htmlText);
                 Console.WriteLine("Replaced HTML!");
 
                 if (!onlyUpdateHtml)
                 {
-                    Converter.QuickWriteFile(markdownPath, markdownText);
+                    DragonHelperUtility.QuickWriteFile(markdownPath, markdownText);
                     Console.WriteLine("Replaced Markdown!");
                 }
             }
@@ -248,7 +248,7 @@ namespace MarkdownToRWCore
             if (openHtml == "y")
             {
                 Console.WriteLine("Opening HTML file in default application...");
-                PreviewCreator.OpenFileInDefaultApplication(generatedHtmlPath);
+                DragonHelperUtility.OpenFileInDefaultApplication(generatedHtmlPath);
             }
 
             Console.WriteLine("Press any key to exit.");
@@ -272,7 +272,7 @@ namespace MarkdownToRWCore
 
         private static string GetExistingFilePath()
         {
-            string path = CleanPath(Console.ReadLine());
+            string path = DragonMarkdown.DragonHelperUtility.CleanPath(Console.ReadLine());
 
             if (File.Exists(path))
                 return path;
@@ -284,7 +284,7 @@ namespace MarkdownToRWCore
 
         private static string GetNewFilePath()
         {
-            string path = CleanPath(Console.ReadLine());
+            string path = DragonMarkdown.DragonHelperUtility.CleanPath(Console.ReadLine());
 
             if (Directory.Exists(Path.GetDirectoryName(path)))
                 return path;
@@ -292,11 +292,6 @@ namespace MarkdownToRWCore
             Console.WriteLine("Invalid folder!");
             Console.WriteLine("");
             return null;
-        }
-
-        private static string CleanPath(string path)
-        {
-            return path.Replace("\"", "").Replace("'", "").Trim();
         }
     }
 }

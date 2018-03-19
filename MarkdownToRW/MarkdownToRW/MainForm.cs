@@ -111,7 +111,7 @@ namespace MarkdownToRW
 
             string htmlPath = CreatePreviewHtml();
 
-            PreviewCreator.OpenFileInDefaultApplication(htmlPath);
+            DragonHelperUtility.OpenFileInDefaultApplication(htmlPath);
         }
 
         private void btnOpenMarkdown_Click(object sender, EventArgs e)

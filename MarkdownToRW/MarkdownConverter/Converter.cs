@@ -169,29 +169,7 @@ namespace DragonMarkdown
             return links;
         }
 
-        public static string BatchReplaceText(string text, List<string> originals, List<string> replacements)
-        {
-            string newText = text;
 
-            for (var i = 0; i < originals.Count; i++)
-            {
-                string original = originals[i];
-                string replacement = replacements[i];
-                newText = newText.Replace(original, replacement);
-            }
-
-            return newText;
-        }
-
-        public static void QuickWriteFile(string path, string content)
-        {
-            using (StreamWriter sw = new StreamWriter(path))
-            {
-                sw.Write(content);
-                sw.Flush();
-                sw.Close();
-            }
-        }
     }
 
     public struct ImageLinkData
