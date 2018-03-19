@@ -9,7 +9,7 @@ namespace DragonMarkdown
 {
     public static class DragonHelperUtility
     {
-        public static string CleanPath(string path)
+        public static string RemoveAllQuotes(string path)
         {
             return path.Replace("\"", "").Replace("'", "").Trim();
         }

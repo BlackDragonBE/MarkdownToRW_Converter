@@ -241,7 +241,7 @@ namespace MarkdownToRWCore
             while (openHtml != "y" && openHtml != "n")
             {
                 Console.WriteLine(
-                    "Do you want to open the generated HTML file so you can copy its contents to the WordPress post now? (y/n)");
+                    "Do you want to open the generated HTML file so you can copy its source to the WordPress post now? (y/n)");
                 openHtml = Console.ReadLine();
             }
 
@@ -272,7 +272,7 @@ namespace MarkdownToRWCore
 
         private static string GetExistingFilePath()
         {
-            string path = DragonMarkdown.DragonHelperUtility.CleanPath(Console.ReadLine());
+            string path = DragonMarkdown.DragonHelperUtility.RemoveAllQuotes(Console.ReadLine());
 
             if (File.Exists(path))
                 return path;
@@ -284,7 +284,7 @@ namespace MarkdownToRWCore
 
         private static string GetNewFilePath()
         {
-            string path = DragonMarkdown.DragonHelperUtility.CleanPath(Console.ReadLine());
+            string path = DragonMarkdown.DragonHelperUtility.RemoveAllQuotes(Console.ReadLine());
 
             if (Directory.Exists(Path.GetDirectoryName(path)))
                 return path;
