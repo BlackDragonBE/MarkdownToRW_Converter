@@ -3,8 +3,6 @@
 A portable tool to convert any markdown document to Ray Wenderlich WordPress ready HTML.
 It can also batch upload all locally sourced images and replace those sources with the image URLs.
 
-**(NOTE: the .NET Core versions are still in the testing phase so the releases aren't available yet)**
-
 There are currently 3 versions of the app:
 
 **The .NET Framework / Mono GUI version:**
@@ -119,12 +117,18 @@ If you're confused about anything, be sure to tell me so I can improve the instr
 
 # To-Do & Nice To Have
 
-To-Do:
+**To-Do:**
+
+General:
 
 - Fix line ending difference between Windows & Unix based systems. Windows uses \r\n while Unix systems use \n, this can break the conversion. See the known issue about notes.
-- Command line arguments for .NET Core versions to allow for automation & building a native UI around it.
 
-Nice To Have:
+.NET Core:
+
+- Command line arguments for .NET Core versions to allow for automation & building a native UI around it.
+- Add image optimization to .NET Core versions.
+
+**Nice To Have:**
 
 - UI for .NET Core version & remove the WinForms/Mono version.
 
