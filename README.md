@@ -3,9 +3,11 @@
 A portable tool to convert any markdown document to Ray Wenderlich WordPress ready HTML.
 It can also batch upload all locally sourced images and replace those sources with the image URLs.
 
+**(NOTE: the .NET Core versions are still in the testing phase so the releases aren't available yet)**
+
 There are currently 3 versions of the app:
 
-**The .NET Framework / Mono graphical version:**
+**The .NET Framework / Mono GUI version:**
 
 ![](READMEImages/UI.png)
 
@@ -17,35 +19,40 @@ This is a "portable" console version as in the binaries & libraries are small an
 
 **The .NET Core Self Contained version:**
 
-The same console application as above, but with all the .NET Core libraries packed with it for every particular platform. 
+The same console application as above, but with all the .NET Core libraries packed with it for every particular platform. This version includes native binaries and libraries and isn't dependent on any other software, but it's the largest in size.
 
-## Requirements
+# Requirements
 
 **.NET Framework / Mono GUI Version**
 
 - Windows: .NET Framework 4.6.1
 - macOS & linux: Mono Framework
 
-**.NET Core / Standard Portable**
+**.NET Core Portable**
+
+For the portable version to work, you need the .NET Core libraries for your platform:
 
 - Windows: https://www.microsoft.com/net/download/windows/run
 - macOS: https://www.microsoft.com/net/download/macos/run
 - linux: https://www.microsoft.com/net/download/linux/run
 
+Make sure to open a console/terminal afterwards and run `dotnet -v` to verify it's installed correctly.
+
 **.NET Core Self Contained**
 
-- Windows: N/A
-- macOS: N/A
-- linux: N/A
+The self contained version includes native binaries & libraries for your platform ans thus doesn't require any additional software.
+If it doesn't work for any reason, try the **.NET Core Portable** version instead.
 
 (**Note:** The self contained version is the largest by far in file size as it contains a minimal set of .NET Core 2.0 framework libraries)
 
-https://docs.microsoft.com/en-us/dotnet/core/macos-prerequisites?tabs=netcore2x
+All of these use the same shared library for converting markdown files and communicating with WordPress so they mostly share the same functionality (and bugs).
 
-## How To Run The Application
+# How To Run The Application
 
-For all platforms, download the latest release zip and unpack it somewhere convenient.
+For all platforms and versions, download the latest release zip for your platform (if applicable) and unpack it somewhere convenient.
 Releases: https://github.com/BlackDragonBE/MarkdownToRW_Converter/releases
+
+## .NET Framework / Mono GUI
 
 ### Windows
 
@@ -56,18 +63,30 @@ Run **MarkdownToRW.exe**.
 1. Download and install Mono: http://www.mono-project.com/download/stable/
 2. Restart your machine.
 3. Open a terminal.
-4. Run this command: **mono --arch=32 PATH-TO-MarkdownToRW.exe**
+4. Run this command: `mono --arch=32 PATH-TO-MarkdownToRW.exe`
 
 ### linux
 
 1. Open a terminal
 2. Install the mono-complete package. (e.g. sudo apt-get install mono-complete).
-3. Run this command: **mono PATH-TO-MarkdownToRW.exe**
+3. Run this command: `mono PATH-TO-MarkdownToRW.exe`
 
 You can create a shortcut to run this command to make it easier in the future.
 On linux, you can let .exe files open with the Mono Runtime by default.
 
-## How To Use
+## .NET Core Portable
+
+Open a command prompt or terminal and run:
+
+`dotnet PATH-TO-MarkdownToRW.dll`
+
+## .NET Core Self Contained
+
+Run the native executable named **MarkdownToRW** in a console/terminal. You have to mark it as executable if on linux (and macOS?).
+
+# How To Use
+
+## .NET Framework / Mono GUI
 
 Click on the **Open Markdown...** button and choose a markdown file.
 The file will now be read and used as input. It will also convert it to a special RW compatible flavor of html and put that on the right side of the window.
@@ -87,21 +106,33 @@ If the uploading fails for any reason, a prompt will show and the rollback will 
 
 Now copy and paste the html in your post and check if the formatting is correct. There may be some edge cases where things can get weird or incorrect. If that's the case, be sure to make an issue here if there isn't one already.
 
-## To-Do & Nice To Have
+## .NET Core (all versions)
+
+Follow the instructions in the console. It should be pretty straight forward.
+If you're confused about anything, be sure to tell me so I can improve the instructions.
+
+# To-Do & Nice To Have
 
 To-Do:
 
-- a
+- Fix line ending difference between Windows & Unix based systems. Windows uses \r\n while Unix systems use \n, this can break the conversion. See the known issue about notes.
+- Command line arguments for .NET Core versions to allow for automation & building a native UI around it.
 
 Nice To Have:
 
-- Syntax highlighting.
+- UI for .NET Core version & remove the WinForms/Mono version.
 
-## Known Issues
+# Known Issues
 
+**.NET Framework / Mono UI Version**:
 - The app will take a few minutes to load the first time you open it on mono platforms (macOS & linux). This is because mono comes without any certificates and needs to download these in orde to access Github (for updates) & raywenderlich.com (for uploading images).
 - The preview is not a 1:1 preview with what you would get on the website itself.
 - Code in the preview will appear incorrect if the following characters are used: < > &. The converted HTML is correct, this only affects the preview.
 - Due to a mono limitation, the applications needs to be run in 32-bit mode on macOS & linux. This should be fixed by Mono somewhere this year (2018) though.
+
+**.NET Core**:
+- No command line arguments can be given at this time, so building a native UI around it isn't possible yet. This is in research.
+
+**All versions (shared library bugs)**:
 - The spoiler tag isn't supported yet in markdown, you'll need to add it in as HTML for now.
 - Notes may be parsed incorrect on macOS & linux.
