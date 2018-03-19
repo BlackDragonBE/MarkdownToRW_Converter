@@ -33,7 +33,7 @@ namespace MarkdownToRWCore
             }
             else if (args.Length == 1)
             {
-                string outputPath = Helper.GetFullPathWithoutExtension(markdownPath) + ".html";
+                string outputPath = DragonHelperUtility.GetFullPathWithoutExtension(markdownPath) + ".html";
                 Converter.ConvertMarkdownFileToHtmlFile(markdownPath, outputPath);
                 Console.WriteLine("Conversion succesful!");
                 Console.WriteLine("Saved RW ready html to " + outputPath);
