@@ -59,7 +59,7 @@ namespace DragonMarkdown
             {
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
-                    Process.Start(new ProcessStartInfo("cmd", $"/c start {SurroundWithQuotes(path)}"));
+                    Process.Start(new ProcessStartInfo("cmd", "/c " + SurroundWithQuotes("start " + path)));
                 }
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                 {
