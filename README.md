@@ -13,6 +13,8 @@ This version has a graphical interface and runs natively on Windows. It can also
 
 **The .NET Core Portable version:**
 
+![](READMEImages/CoreLinux.png)
+
 This is a "portable" console version as in the binaries & libraries are small and can be shared between different platforms. You do need an install of the .NET Core Framework for your platform for it to work though.
 
 **The .NET Core Self Contained version:**

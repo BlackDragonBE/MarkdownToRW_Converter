@@ -103,20 +103,7 @@ namespace MarkdownToRWCore
 
                 while (user == null)
                 {
-                    Console.WriteLine("Username:");
-                    string username = Console.ReadLine();
-
-                    Console.WriteLine("Pasword:");
-                    string password = Console.ReadLine();
-
-                    WordPressConnector.InitializeWordPress(username, password);
-                    user = WordPressConnector.GetUserProfile();
-
-                    if (user == null)
-                    {
-                        Console.WriteLine("Incorrect credentials / can't connect to RW WordPress.");
-                        Console.WriteLine("Please try again.");
-                    }
+                    user = AskForCredentials(user);
                 }
 
                 Console.WriteLine("");
@@ -186,20 +173,46 @@ namespace MarkdownToRWCore
 
                 // Update markdown & html
                 Console.WriteLine("Starting link replacer...");
-                markdownText = DragonHelperUtility.BatchReplaceText(markdownText, localImagePaths, imageUrls);
-                htmlText = Converter.ConvertMarkdownStringToHtml(markdownText);
-
-                DragonHelperUtility.QuickWriteFile(htmlPath, htmlText);
-                Console.WriteLine("Replaced HTML!");
-
-                if (!onlyUpdateHtml)
-                {
-                    DragonHelperUtility.QuickWriteFile(markdownPath, markdownText);
-                    Console.WriteLine("Replaced Markdown!");
-                }
+                ReplaceLocalImageLinksWithUrls(markdownPath, htmlPath, onlyUpdateHtml, markdownText, localImagePaths, imageUrls);
             }
 
             ConversionFinished(htmlPath);
+        }
+
+        private static GetProfileResponse AskForCredentials(GetProfileResponse user)
+        {
+            Console.WriteLine("Username:");
+            string username = Console.ReadLine();
+
+            Console.WriteLine("Pasword:");
+            string password = Console.ReadLine();
+
+            WordPressConnector.InitializeWordPress(username, password);
+            user = WordPressConnector.GetUserProfile();
+
+            if (user == null)
+            {
+                Console.WriteLine("Incorrect credentials / can't connect to RW WordPress.");
+                Console.WriteLine("Please try again.");
+            }
+            return user;
+        }
+
+        private static void ReplaceLocalImageLinksWithUrls(string markdownPath, string htmlPath, bool onlyUpdateHtml,
+            string markdownText, List<string> localImagePaths, List<string> imageUrls)
+        {
+            string htmlText;
+            markdownText = DragonHelperUtility.BatchReplaceText(markdownText, localImagePaths, imageUrls);
+            htmlText = Converter.ConvertMarkdownStringToHtml(markdownText);
+
+            DragonHelperUtility.QuickWriteFile(htmlPath, htmlText);
+            Console.WriteLine("Replaced HTML!");
+
+            if (!onlyUpdateHtml)
+            {
+                DragonHelperUtility.QuickWriteFile(markdownPath, markdownText);
+                Console.WriteLine("Replaced Markdown!");
+            }
         }
 
         private static void StartFileDeletion(List<string> imageIDs)
