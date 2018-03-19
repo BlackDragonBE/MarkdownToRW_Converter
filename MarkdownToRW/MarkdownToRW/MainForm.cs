@@ -111,7 +111,16 @@ namespace MarkdownToRW
 
             string htmlPath = CreatePreviewHtml();
 
-            DragonHelperUtility.OpenFileInDefaultApplication(htmlPath);
+
+            if (MonoHelper.IsRunningOnMono)
+            {
+                Process.Start(htmlPath);
+            }
+            else
+            {
+                DragonHelperUtility.OpenFileInDefaultApplication(htmlPath);
+            }
+
         }
 
         private void btnOpenMarkdown_Click(object sender, EventArgs e)
