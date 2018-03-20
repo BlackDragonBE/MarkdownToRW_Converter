@@ -61,7 +61,7 @@ namespace MarkdownToRWCore
         [ArgDescription("RW WordPress Password. Needs to be suuplied when uploading images.")]
         [ArgPosition(4)]
         public string Password { get; set; }
-
+      
         // This non-static Main method will be called and it will be able to access the parsed and populated instance level properties.
         public void Main()
         {
@@ -77,6 +77,7 @@ namespace MarkdownToRWCore
                 return;
             }
         }
+        
     }
 
     internal class Program
@@ -100,35 +101,6 @@ namespace MarkdownToRWCore
                     Console.WriteLine("Enter -? for help on the proper usage.");
                 }
             }
-            /*
-                        if (args[0] == "interactive" ||  args.Length < 1)
-                        {
-                            Console.WriteLine("No arguments found.\nFirst argument is markdown input path. Optional second argument is html output path.");
-                            Console.WriteLine("--------------");
-                            Console.WriteLine("Starting in interactive mode....");
-                            Console.WriteLine("--------------");
-
-                            InteractiveConsole.StartInteractive();
-                            return;
-                        }
-
-                        string markdownPath = args[0];
-                        Console.WriteLine("Starting conversion...");
-
-                        if (args.Length == 2) // 2 arguments
-                        {
-                            Converter.ConvertMarkdownFileToHtmlFile(markdownPath, args[1]);
-                            Console.WriteLine("Conversion succesful!");
-                            Console.WriteLine("Saved RW ready html to " + args[1]);
-                        }
-                        else if (args.Length == 1)
-                        {
-                            string outputPath = DragonHelperUtility.GetFullPathWithoutExtension(markdownPath) + ".html";
-                            Converter.ConvertMarkdownFileToHtmlFile(markdownPath, outputPath);
-                            Console.WriteLine("Conversion succesful!");
-                            Console.WriteLine("Saved RW ready html to " + outputPath);
-                        }
-            */
         }
     }
 }
