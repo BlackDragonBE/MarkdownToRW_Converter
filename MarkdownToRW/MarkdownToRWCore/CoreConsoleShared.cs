@@ -10,6 +10,7 @@ namespace MarkdownToRWCore
     {
         public static void WriteIntro()
         {
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("");
             Console.WriteLine(" ┌───────────────────────────────────────────────────────────────────┐");
             Console.WriteLine(" │  _____         _     _                  _____        _____ _ _ _  │");
@@ -19,8 +20,10 @@ namespace MarkdownToRWCore
             Console.WriteLine(" │                                                                   │");
             Console.WriteLine(" │ CORE VERSION                                                vx.xx │".Replace("x.xx",DragonVersion.VERSION.ToString()));
             Console.WriteLine(" └───────────────────────────────────────────────────────────────────┘");
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("                    Developed by Eric Van de Kerckhove (BlackDragonBE)");
             Console.WriteLine("");
+            Console.ResetColor();
         }
 
         public static void OpenHtmlResult(string generatedHtmlPath)
@@ -38,7 +41,9 @@ namespace MarkdownToRWCore
                 return path;
             }
 
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("File " + path + " doesn't exist!");
+            Console.ResetColor();
             Console.WriteLine("");
             return null;
         }
@@ -55,7 +60,9 @@ namespace MarkdownToRWCore
                 return path;
             }
 
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Invalid folder, can't write to to: " + directoryName);
+            Console.ResetColor();
             Console.WriteLine("");
             return null;
         }
