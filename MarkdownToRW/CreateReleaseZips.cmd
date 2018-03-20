@@ -5,6 +5,7 @@ mkdir Release
 
 REM GUI
 REM Build Release in Visual Studio first
+"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\devenv.exe" "%~dp0\MarkdownToRW.sln" /Build Release
 "%~dp0/7z/7za.exe" a -tzip "%~dp0\Release\MarkdownToRW_DotNetFramework_Mono_GUI_%version%.zip" "%~dp0\MarkdownToRW\bin\Release\*"
 
 REM Portable
