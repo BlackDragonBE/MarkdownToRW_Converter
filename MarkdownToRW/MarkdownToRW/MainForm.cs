@@ -11,8 +11,6 @@ namespace MarkdownToRW
 {
     public partial class MainForm : Form
     {
-        private static readonly string VERSION = "1.01";
-
         private string _markdownPath;
 
         public MainForm()
@@ -26,7 +24,7 @@ namespace MarkdownToRW
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 |
                                                    SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
 
-            Text += " v" + VERSION + " on " + Environment.OSVersion.VersionString;
+            Text += " v" + DragonVersion.VERSION + " on " + Environment.OSVersion.VersionString;
 
             if (MonoHelper.IsRunningOnMono)
             {
@@ -34,7 +32,7 @@ namespace MarkdownToRW
             }
 
             UpdateHelper.DoUpdateCleanup();
-            UpdateHelper.CheckForUpdates(VERSION);
+            UpdateHelper.CheckForUpdates();
 
         }
 

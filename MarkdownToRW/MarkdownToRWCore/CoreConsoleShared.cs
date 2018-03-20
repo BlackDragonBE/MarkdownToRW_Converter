@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using DragonMarkdown;
 
 namespace MarkdownToRWCore
 {
@@ -15,12 +17,47 @@ namespace MarkdownToRWCore
             Console.WriteLine(" │ | | | | .'|  _| '_| . | . | | | |   |    | | | . |  |    ─| | | | │");
             Console.WriteLine(" │ |_|_|_|__,|_| |_,_|___|___|_____|_|_|    |_| |___|  |__|__|_____| │");
             Console.WriteLine(" │                                                                   │");
-            Console.WriteLine(" │ CORE VERSION                                                vx.xx │".Replace("x.xx","1.01"));
+            Console.WriteLine(" │ CORE VERSION                                                vx.xx │".Replace("x.xx",DragonVersion.VERSION.ToString()));
             Console.WriteLine(" └───────────────────────────────────────────────────────────────────┘");
-            Console.WriteLine(" ");
-            Console.WriteLine("Markdown To RW Wordpress HTML Converter [.NET Core Version]");
-            Console.WriteLine("Made by Eric Van de Kerckhove (BlackDragonBE)");
+            Console.WriteLine("                    Developed by Eric Van de Kerckhove (BlackDragonBE)");
             Console.WriteLine("");
+        }
+
+        public static void OpenHtmlResult(string generatedHtmlPath)
+        {
+            Console.WriteLine("Opening HTML file in default application...");
+            DragonHelperUtility.OpenFileInDefaultApplication(generatedHtmlPath);
+        }
+
+        public static string GetExistingFilePath()
+        {
+            string path = DragonHelperUtility.RemoveAllQuotes(Console.ReadLine());
+
+            if (File.Exists(path))
+            {
+                return path;
+            }
+
+            Console.WriteLine("File " + path + " doesn't exist!");
+            Console.WriteLine("");
+            return null;
+        }
+
+        public static string GetNewFilePath()
+        {
+            string path = DragonHelperUtility.RemoveAllQuotes(Console.ReadLine());
+
+            var directoryName = Path.GetDirectoryName(path);
+
+            if (Directory.Exists(directoryName) &&
+                DragonHelperUtility.CheckFolderWritePermission(directoryName))
+            {
+                return path;
+            }
+
+            Console.WriteLine("Invalid folder, can't write to to: " + directoryName);
+            Console.WriteLine("");
+            return null;
         }
     }
 }

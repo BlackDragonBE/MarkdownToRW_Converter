@@ -79,31 +79,49 @@ namespace MarkdownToRWCore
         }
     }
 
+    [ArgExceptionBehavior(ArgExceptionPolicy.StandardExceptionHandling)]
+    [TabCompletion]
+    public class MarkDownToRWProgram
+    {
+        [HelpHook]
+        [ArgShortcut("-?")]
+        [ArgDescription("Shows this help")]
+        public bool Help { get; set; }
+
+        [ArgActionMethod]
+        [ArgDescription("Start the interactive wizard. (recommended)")]
+        public void Wizard()
+        {
+            InteractiveConsole.StartInteractive();
+        }
+    }
+
     internal class Program
     {
         private static void Main(string[] args)
         {
             CoreConsoleShared.WriteIntro();
+            Console.WriteLine(ArgUsage.GenerateUsageFromTemplate<MarkDownToRWProgram>());
+            Args.InvokeAction<MarkDownToRWProgram>(args);
 
-            if (args.Length == 0)
-            {
-                InteractiveConsole.StartInteractive();
-            }
-            else
-            {
-                try
-                {
-                    Args.InvokeMain<ConvertAndUploadArguments>(args);
-                }
-                catch (ArgException e)
-                {
-                    Console.WriteLine(e.Message);
-                    Console.WriteLine("");
-                    Console.WriteLine("Enter -? for help on the proper usage.");
-                }
-            }
+
+            //if (args.Length == 0)
+            //{
+            //    InteractiveConsole.StartInteractive();
+            //}
+            //else
+            //{
+            //    try
+            //    {
+            //        Args.InvokeMain<ConvertAndUploadArguments>(args);
+            //    }
+            //    catch (ArgException e)
+            //    {
+            //        Console.WriteLine(e.Message);
+            //        Console.WriteLine("");
+            //        Console.WriteLine("Enter -? for help on the proper usage.");
+            //    }
+            //}
         }
-
     }
-
 }

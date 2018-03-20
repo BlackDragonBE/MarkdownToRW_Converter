@@ -15,9 +15,9 @@ namespace MarkdownToRW
         private static readonly string RELEASE_URL =
             @"https://api.github.com/repos/BlackDragonBE/MarkdownToRW_Converter/releases/latest";
 
-        public static void CheckForUpdates(string version)
+        public static void CheckForUpdates()
         {
-            _thisVersion = Convert.ToDecimal(version);
+            _thisVersion = DragonVersion.VERSION;
             Console.WriteLine("Checking for new version...");
 
             GithubRelease newestRelease = null;
@@ -38,7 +38,7 @@ namespace MarkdownToRW
                 if (githubNewestVersion > _thisVersion)
                 {
                     if (MessageBox.Show(
-                            "New version available!\n" + newestRelease.name + " (Current: " + version +
+                            "New version available!\n" + newestRelease.name + " (Current: v" + _thisVersion +
                             ")\n\nRelease notes:\n" + newestRelease.body +
                             "\n\nClick yes to download and install new release. ", "Update to " + newestRelease.name,
                             MessageBoxButtons.YesNo) == DialogResult.Yes

@@ -16,7 +16,7 @@ namespace MarkdownToRWCore
             while (markdownPath == null)
             {
                 Console.WriteLine("Please provide the path to the markdown file:");
-                markdownPath = GetExistingFilePath();
+                markdownPath = CoreConsoleShared.GetExistingFilePath();
             }
 
             string sameFolder = null;
@@ -44,7 +44,7 @@ namespace MarkdownToRWCore
 
                     Console.WriteLine("Please provide the location and name for the output html file:");
                     Console.WriteLine("(e.g. C:\\MyNewFile.html)");
-                    htmlPath = GetNewFilePath();
+                    htmlPath = CoreConsoleShared.GetNewFilePath();
                 }
             }
 
@@ -281,48 +281,13 @@ namespace MarkdownToRWCore
 
             if (openHtml == "y")
             {
-                OpenHtmlResult(generatedHtmlPath);
+                CoreConsoleShared.OpenHtmlResult(generatedHtmlPath);
             }
 
             Console.WriteLine("Press any key to exit.");
             Console.ReadKey();
         }
 
-        private static void OpenHtmlResult(string generatedHtmlPath)
-        {
-            Console.WriteLine("Opening HTML file in default application...");
-            DragonHelperUtility.OpenFileInDefaultApplication(generatedHtmlPath);
-        }
 
-        private static string GetExistingFilePath()
-        {
-            string path = DragonHelperUtility.RemoveAllQuotes(Console.ReadLine());
-
-            if (File.Exists(path))
-            {
-                return path;
-            }
-
-            Console.WriteLine("File " + path + " doesn't exist!");
-            Console.WriteLine("");
-            return null;
-        }
-        
-        private static string GetNewFilePath()
-        {
-            string path = DragonHelperUtility.RemoveAllQuotes(Console.ReadLine());
-
-            var directoryName = Path.GetDirectoryName(path);
-            
-            if (Directory.Exists(directoryName) &&
-                DragonHelperUtility.CheckFolderWritePermission(directoryName))
-            {
-                return path;
-            }
-
-            Console.WriteLine("Invalid folder, can't write to to: " + directoryName);
-            Console.WriteLine("");
-            return null;
-        }
     }
 }
