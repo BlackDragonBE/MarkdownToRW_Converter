@@ -61,7 +61,7 @@ namespace MarkdownToRWCore
         [ArgDescription("RW WordPress Password. Needs to be suuplied when uploading images.")]
         [ArgPosition(4)]
         public string Password { get; set; }
-      
+
         // This non-static Main method will be called and it will be able to access the parsed and populated instance level properties.
         public void Main()
         {
@@ -73,17 +73,18 @@ namespace MarkdownToRWCore
 
             if (UploadImages && (Username == null || Password == null))
             {
-                Console.WriteLine("The upload flag was set to True, but the username and/or password wasn't provided (-user & -pw). Aborting.");
-                return;
+                Console.WriteLine(
+                    "The upload flag was set to True, but the username and/or password wasn't provided (-user & -pw). Aborting.");
             }
         }
-        
     }
 
     internal class Program
     {
         private static void Main(string[] args)
         {
+            CoreConsoleShared.WriteIntro();
+
             if (args.Length == 0)
             {
                 InteractiveConsole.StartInteractive();
@@ -102,5 +103,7 @@ namespace MarkdownToRWCore
                 }
             }
         }
+
     }
+
 }

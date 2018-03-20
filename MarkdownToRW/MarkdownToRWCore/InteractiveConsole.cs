@@ -13,8 +13,6 @@ namespace MarkdownToRWCore
             string markdownPath = null;
             string htmlPath = null;
 
-            ConsoleHelper.WriteIntro();
-
             while (markdownPath == null)
             {
                 Console.WriteLine("Please provide the path to the markdown file:");
