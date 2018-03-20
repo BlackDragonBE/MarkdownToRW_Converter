@@ -10,6 +10,12 @@ namespace MarkdownToRWCore
     {
         public static void StartInteractive()
         {
+            Console.WriteLine(" +-------------------------------------+");
+            Console.WriteLine(" |                                     |");
+            Console.WriteLine(" |          Interactive Wizard         |");
+            Console.WriteLine(" |                                     |");
+            Console.WriteLine(" +-------------------------------------+");
+
             string markdownPath = null;
             string htmlPath = null;
 
