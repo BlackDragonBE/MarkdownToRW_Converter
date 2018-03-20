@@ -79,6 +79,18 @@ namespace MarkdownToRWCore
         }
     }
 
+    public class ConvertArguments
+    {
+        [ArgRequired(PromptIfMissing = true)]
+        [ArgDescription("Markdown file path.")]
+        [ArgPosition(1)]
+        public string MarkdownPath { get; set;}
+
+        [ArgDescription("(optional) HTML output path. Include .html in the path like so: PATH-TO-HTML-FOLDER/FILE.html. If this argument is omitted, the html file is saved next to the markdown file.")]
+        [ArgPosition(2)]
+        public string HtmlPath { get; set; }
+    }
+
     [ArgExceptionBehavior(ArgExceptionPolicy.StandardExceptionHandling)]
     [TabCompletion]
     public class MarkDownToRWProgram
@@ -94,6 +106,18 @@ namespace MarkdownToRWCore
         {
             InteractiveConsole.StartInteractive();
         }
+
+        [ArgActionMethod]
+        [ArgDescription("Convert a markdown file to HTML.")]
+        public void SimpleConvert(ConvertArguments args)
+        {
+            Console.WriteLine("Converting " + args.MarkdownPath + " to RW WordPress ready HTML...");
+
+            if (args.HtmlPath != null)
+            {
+                Console.WriteLine("Saving HTML to custom location: " + args.HtmlPath);
+            }
+        }
     }
 
     internal class Program
@@ -102,9 +126,12 @@ namespace MarkdownToRWCore
         {
             CoreConsoleShared.WriteIntro();
             Console.WriteLine(ArgUsage.GenerateUsageFromTemplate<MarkDownToRWProgram>());
+            Console.WriteLine(
+                "Tab completion mode is active. Choose an action to execute and provide the needed arguments or only call the action and fill in the arguments seperately. You can also run actions from a console or terminal directly.");
+            Console.WriteLine("Choose action: ");
             Args.InvokeAction<MarkDownToRWProgram>(args);
 
-
+            Console.ReadKey();
             //if (args.Length == 0)
             //{
             //    InteractiveConsole.StartInteractive();
