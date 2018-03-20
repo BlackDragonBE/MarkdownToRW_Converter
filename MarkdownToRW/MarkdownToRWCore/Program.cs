@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using DragonMarkdown;
 using PowerArgs;
 
 namespace MarkdownToRWCore
@@ -10,29 +8,80 @@ namespace MarkdownToRWCore
 
     // A class that describes the command line arguments for this program
     [ArgExceptionBehavior(ArgExceptionPolicy.StandardExceptionHandling)]
-    public class MyArgs
+    [TabCompletion]
+    public class ConvertAndUploadArguments
     {
-        [HelpHook, ArgShortcut("-?"), ArgDescription("Shows this help")]
-        public bool Help { get; set; }
+        [HelpHook]
+        [ArgShortcut("-?")]
+        [ArgShortcut("-help")]
+        [ArgDescription("Shows this help")]
+        public bool ShowHelp { get; set; }
 
-        // This argument is required and if not specified the user will 
-        // be prompted.
-        [ArgRequired(PromptIfMissing = true), ArgShortcut("i"), ArgDescription("The path to the markdown file.")]
+        [ArgRequired(PromptIfMissing = true)]
+        [ArgShortcut("i")]
+        [ArgShortcut("input")]
+        [ArgDescription("The path to the markdown file. (e.g. 'C:\\Users\\Me\\Desktop\\file.md')")]
+        [PromptIfEmpty]
+        [ArgPosition(0)]
         public string MarkdownPath { get; set; }
 
-        [ArgRequired(PromptIfMissing = true), ArgShortcut("s"), ArgDescription("Put the html file in the same directory as the markdown file?")]
-        public bool SameDir { get; set; }
+        [ArgRequired(PromptIfMissing = false)]
+        [ArgDefaultValue(true)]
+        [ArgShortcut("sameDir")]
+        [ArgDescription("Put the html file in the same directory as the markdown file? (true/false)")]
+        public bool SameFolderOutput { get; set; }
+
+        [ArgShortcut("htmlFolder")]
+        [ArgShortcut("o")]
+        [ArgDescription("The path to the folder to save the html file. (e.g. 'C:\\Users\\Me\\Desktop\\')")]
+        public string HtmlPath { get; set; }
+
+        [ArgShortcut("upload")]
+        [ArgDefaultValue("False")]
+        [ArgDescription("Upload images to WordPress and replace links in files? (true/false)")]
+        [ArgPosition(1)]
+        public bool UploadImages { get; set; }
+
+        //[ArgRequired(PromptIfMissing = true, If = "UploadImages")]
+        [ArgDefaultValue(true)]
+        [ArgShortcut("onlyHTML")]
+        [ArgDescription(
+            "After uploading the images, should only the html file be updated with new links? If false, the original markdown will be updated as well. (true/false)")]
+        [ArgPosition(2)]
+        public bool OnlyUpdateHtmlFile { get; set; }
+
+        //[ArgRequired(PromptIfMissing = true, If = "UploadImages")]
+        [ArgShortcut("user")]
+        [ArgDescription("RW WordPress Username. Needs to be suuplied when uploading images.")]
+        [ArgPosition(3)]
+        public string Username { get; set; }
+
+        //[ArgRequired(PromptIfMissing = true, If = "UploadImages")]
+        [ArgShortcut("pw")]
+        [ArgDescription("RW WordPress Password. Needs to be suuplied when uploading images.")]
+        [ArgPosition(4)]
+        public string Password { get; set; }
 
         // This non-static Main method will be called and it will be able to access the parsed and populated instance level properties.
         public void Main()
         {
-            Console.WriteLine("You entered '{0}' and '{1}'", this.MarkdownPath, this.SameDir);
+            Console.WriteLine(
+                "Markdown File Path: '{0}'\nSame Folder: '{1}'\nUpload Images: '{2}'\nHtml Ouput Folder: '{3}'\nOnly Update HTML: '{4}'",
+                MarkdownPath, SameFolderOutput, UploadImages, HtmlPath, OnlyUpdateHtmlFile);
+
+            Console.WriteLine((Username == null) + " " + (Password == null));
+
+            if (UploadImages && (Username == null || Password == null))
+            {
+                Console.WriteLine("The upload flag was set to True, but the username and/or password wasn't provided (-user & -pw). Aborting.");
+                return;
+            }
         }
     }
 
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             if (args.Length == 0)
             {
@@ -42,7 +91,7 @@ namespace MarkdownToRWCore
             {
                 try
                 {
-                    Args.InvokeMain<MyArgs>(args);
+                    Args.InvokeMain<ConvertAndUploadArguments>(args);
                 }
                 catch (ArgException e)
                 {
@@ -51,40 +100,35 @@ namespace MarkdownToRWCore
                     Console.WriteLine("Enter -? for help on the proper usage.");
                 }
             }
-/*
-            if (args[0] == "interactive" ||  args.Length < 1)
-            {
-                Console.WriteLine("No arguments found.\nFirst argument is markdown input path. Optional second argument is html output path.");
-                Console.WriteLine("--------------");
-                Console.WriteLine("Starting in interactive mode....");
-                Console.WriteLine("--------------");
+            /*
+                        if (args[0] == "interactive" ||  args.Length < 1)
+                        {
+                            Console.WriteLine("No arguments found.\nFirst argument is markdown input path. Optional second argument is html output path.");
+                            Console.WriteLine("--------------");
+                            Console.WriteLine("Starting in interactive mode....");
+                            Console.WriteLine("--------------");
 
-                InteractiveConsole.StartInteractive();
-                return;
-            }
+                            InteractiveConsole.StartInteractive();
+                            return;
+                        }
 
-            string markdownPath = args[0];
-            Console.WriteLine("Starting conversion...");
+                        string markdownPath = args[0];
+                        Console.WriteLine("Starting conversion...");
 
-            if (args.Length == 2) // 2 arguments
-            {
-                Converter.ConvertMarkdownFileToHtmlFile(markdownPath, args[1]);
-                Console.WriteLine("Conversion succesful!");
-                Console.WriteLine("Saved RW ready html to " + args[1]);
-            }
-            else if (args.Length == 1)
-            {
-                string outputPath = DragonHelperUtility.GetFullPathWithoutExtension(markdownPath) + ".html";
-                Converter.ConvertMarkdownFileToHtmlFile(markdownPath, outputPath);
-                Console.WriteLine("Conversion succesful!");
-                Console.WriteLine("Saved RW ready html to " + outputPath);
-            }
-*/
+                        if (args.Length == 2) // 2 arguments
+                        {
+                            Converter.ConvertMarkdownFileToHtmlFile(markdownPath, args[1]);
+                            Console.WriteLine("Conversion succesful!");
+                            Console.WriteLine("Saved RW ready html to " + args[1]);
+                        }
+                        else if (args.Length == 1)
+                        {
+                            string outputPath = DragonHelperUtility.GetFullPathWithoutExtension(markdownPath) + ".html";
+                            Converter.ConvertMarkdownFileToHtmlFile(markdownPath, outputPath);
+                            Console.WriteLine("Conversion succesful!");
+                            Console.WriteLine("Saved RW ready html to " + outputPath);
+                        }
+            */
         }
-
-
-
-
-
     }
 }

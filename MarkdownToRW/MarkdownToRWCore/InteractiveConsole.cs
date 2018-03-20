@@ -13,7 +13,7 @@ namespace MarkdownToRWCore
             string markdownPath = null;
             string htmlPath = null;
 
-            WriteIntro();
+            ConsoleHelper.WriteIntro();
 
             while (markdownPath == null)
             {
@@ -94,20 +94,7 @@ namespace MarkdownToRWCore
             }
         }
 
-        private static void WriteIntro()
-        {
-            Console.WriteLine("");
-            Console.WriteLine("");
-            Console.WriteLine(" _____         _     _                  _____        _____ _ _ _ ");
-            Console.WriteLine("|     |___ ___| |_ _| |___ _ _ _ ___   |_   _|___   | __  | | | |");
-            Console.WriteLine("| | | | .'|  _| '_| . | . | | | |   |    | | | . |  |    -| | | |");
-            Console.WriteLine("|_|_|_|__,|_| |_,_|___|___|_____|_|_|    |_| |___|  |__|__|_____|");
-            Console.WriteLine("");
-            Console.WriteLine("");
-            Console.WriteLine("Markdown To RW Wordpress HTML Converter [.NET Core Version]");
-            Console.WriteLine("Made by Eric Van de Kerckhove (BlackDragonBE)");
-            Console.WriteLine("");
-        }
+
 
         private static void DoConversion(string markdownPath, string htmlPath, bool uploadImages, bool onlyUpdateHtml)
         {
