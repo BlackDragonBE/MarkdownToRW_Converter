@@ -11,25 +11,61 @@ namespace MarkdownToRWGUI.Models
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
-        private string _greeting;
         private bool _onlyHtml;
         private bool _uploadImages;
-        private string _name;
+        private bool _saveOutputToHtml;
         private string _markdownText;
         private string _htmlText;
         private string _status;
 
         private bool _allowInput = true;
+        private bool _markdownLoaded = false;
 
         private ICommand _startConvertCommand;
-        private ICommand _testCommand;
 
         public Window ThisWindow;
         
         public ICommand StartConvertCommand =>
-            _startConvertCommand ?? (_startConvertCommand = new CommandHandler(Convert, _allowInput));
+            _startConvertCommand ?? (_startConvertCommand = new CommandHandler(Convert, AllowInput));
 
-        public ICommand TestCommand => _testCommand ?? (_testCommand = new CommandHandler(DoTest, _allowInput));
+        public bool AllowInput
+        {
+            get => _allowInput;
+            set
+            {
+                if (value != _allowInput)
+                {
+                    _allowInput = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool MarkdownLoaded
+        {
+            get => _markdownLoaded;
+            set
+            {
+                if (value != _markdownLoaded)
+                {
+                    _markdownLoaded = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool OnlyHtml
+        {
+            get => _onlyHtml;
+            set
+            {
+                if (value != _onlyHtml)
+                {
+                    _onlyHtml = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public string MarkdownText
         {
@@ -83,42 +119,15 @@ namespace MarkdownToRWGUI.Models
             }
         }
 
-        public string Greeting
+        public bool SaveOutputToHtml
         {
-            get => _greeting;
+            get => _saveOutputToHtml;
             set
             {
-                if (value != _greeting)
+                if (value != _saveOutputToHtml)
                 {
-                    _greeting = value;
+                    _saveOutputToHtml = value;
                     OnPropertyChanged();
-                }
-            }
-        }
-
-        public string Name
-        {
-            get => _name;
-            set
-            {
-                if (value != _name)
-                {
-                    _name = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public bool OnlyHtml
-        {
-            get => _onlyHtml;
-            set
-            {
-                if (value != _onlyHtml)
-                {
-                    _onlyHtml = value;
-                    OnPropertyChanged();
-                    Name = "Classy as fuck: " + _onlyHtml;
                 }
             }
         }
@@ -139,7 +148,7 @@ namespace MarkdownToRWGUI.Models
                         MarkdownText = sr.ReadToEnd().Replace("\t","  ");
                         HtmlText = Converter.ConvertMarkdownStringToHtml(MarkdownText);
                         Status = "Converted markdown to HTML!";
-                        
+                        MarkdownLoaded = true;
                     }
                 }
 
@@ -183,11 +192,6 @@ namespace MarkdownToRWGUI.Models
             }
             
             return null;
-        }
-
-        public void DoTest()
-        {
-            Status = "Test succesful";
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

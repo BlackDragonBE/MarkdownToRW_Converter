@@ -10,7 +10,7 @@ namespace MarkdownToRWGUI
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainWindowViewModel {Greeting = "Enter a name and click the button.", ThisWindow = this, Status = "Ready to convert!"};
+            DataContext = new MainWindowViewModel { ThisWindow = this, Status = "Ready to convert!"};
 #if DEBUG
             this.AttachDevTools();
 #endif
@@ -19,12 +19,6 @@ namespace MarkdownToRWGUI
         private void InitializeComponent()
         {
             AvaloniaXamlLoaderPortableXaml.Load(this);
-        }
-
-        public void OnButtonClicked(object sender, RoutedEventArgs args)
-        {
-            var context = DataContext as MainWindowViewModel;
-            context.Status = "Hi " + context.Name + " !";
         }
     }
 }
