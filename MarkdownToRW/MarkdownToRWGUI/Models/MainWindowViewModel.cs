@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -6,7 +7,7 @@ using Avalonia.Controls;
 
 namespace MarkdownToRWGUI.Models
 {
-    internal class HelloViewModel : INotifyPropertyChanged
+    public class MainWindowViewModel : INotifyPropertyChanged
     {
         private string _greeting;
         private bool _isClassy;
@@ -16,6 +17,8 @@ namespace MarkdownToRWGUI.Models
         private ICommand _startConvertCommand;
         private ICommand _testCommand;
 
+        public Window ThisWindow;
+        
         public ICommand StartConvertCommand =>
             _startConvertCommand ?? (_startConvertCommand = new CommandHandler(Convert, true));
 
@@ -76,7 +79,18 @@ namespace MarkdownToRWGUI.Models
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void Convert()
+        public async void Convert()
+        {
+            string path = await ChooseFile();
+
+            if (path != null)
+            {
+                Result = "Converting " + path;
+            }
+
+        }
+
+        public async Task<string> ChooseFile()
         {
             OpenFileDialog openDialog = new OpenFileDialog();
             openDialog.AllowMultiple = false;
@@ -94,12 +108,14 @@ namespace MarkdownToRWGUI.Models
 
             openDialog.Filters.Add(markdownFilter);
             openDialog.Filters.Add(allFilter);
-            Task<string[]> resultString = openDialog.ShowAsync();
+            string[] resultString = await openDialog.ShowAsync(Window.OpenWindows.FirstOrDefault());
 
-            if (resultString.Result != null && resultString.Result.Length > 0)
+            if (resultString != null && resultString.Length > 0)
             {
-                Result = "Converting " + resultString.Result[0];
+                return resultString[0];
             }
+            
+            return null;
         }
 
         public void DoTest()
