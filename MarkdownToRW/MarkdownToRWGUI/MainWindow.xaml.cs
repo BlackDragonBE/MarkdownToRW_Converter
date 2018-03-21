@@ -10,7 +10,7 @@ namespace MarkdownToRWGUI
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new HelloViewModel {Greeting = "Enter a name and click the button."};
+            DataContext = new MainWindowViewModel {Greeting = "Enter a name and click the button.",ThisWindow = this};
             Width = MinWidth = 650;
             Height = MinHeight = 400;
 #if DEBUG
@@ -25,7 +25,7 @@ namespace MarkdownToRWGUI
 
         public void OnButtonClicked(object sender, RoutedEventArgs args)
         {
-            var context = DataContext as HelloViewModel;
+            var context = DataContext as MainWindowViewModel;
             context.Result = "Hi " + context.Name + " !";
         }
     }
