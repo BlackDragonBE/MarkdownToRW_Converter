@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonMarkdown", "MarkdownC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarkdownToRWCore", "MarkdownToRWCore\MarkdownToRWCore.csproj", "{1CDAA2EC-915F-4AF6-A395-7EE37BE5FBD6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkdownToRWGUI", "MarkdownToRWGUI\MarkdownToRWGUI.csproj", "{AB32B3FC-7C14-41D2-9B9A-99B7F064DAFF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{1CDAA2EC-915F-4AF6-A395-7EE37BE5FBD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CDAA2EC-915F-4AF6-A395-7EE37BE5FBD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1CDAA2EC-915F-4AF6-A395-7EE37BE5FBD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB32B3FC-7C14-41D2-9B9A-99B7F064DAFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB32B3FC-7C14-41D2-9B9A-99B7F064DAFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB32B3FC-7C14-41D2-9B9A-99B7F064DAFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB32B3FC-7C14-41D2-9B9A-99B7F064DAFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
