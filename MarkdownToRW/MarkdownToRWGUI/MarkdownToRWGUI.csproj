@@ -15,4 +15,7 @@
     <PackageReference Include="Avalonia" Version="0.6.1" />
     <PackageReference Include="Avalonia.Desktop" Version="0.6.1" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MarkdownConverter\DragonMarkdown.csproj" />
+  </ItemGroup>
 </Project>

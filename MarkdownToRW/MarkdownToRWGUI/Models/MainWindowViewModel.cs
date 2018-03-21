@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Controls;
+using DragonMarkdown;
 
 namespace MarkdownToRWGUI.Models
 {
@@ -11,7 +13,10 @@ namespace MarkdownToRWGUI.Models
     {
         private string _greeting;
         private bool _isClassy;
+        private bool _uploadImages;
         private string _name;
+        private string _markdownText;
+        private string _htmlText;
         private string _result;
 
         private ICommand _startConvertCommand;
@@ -23,6 +28,45 @@ namespace MarkdownToRWGUI.Models
             _startConvertCommand ?? (_startConvertCommand = new CommandHandler(Convert, true));
 
         public ICommand TestCommand => _testCommand ?? (_testCommand = new CommandHandler(DoTest, true));
+
+        public string MarkdownText
+        {
+            get => _markdownText;
+            set
+            {
+                if (value != _markdownText)
+                {
+                    _markdownText = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public string HtmlText
+        {
+            get => _htmlText;
+            set
+            {
+                if (value != _htmlText)
+                {
+                    _htmlText = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool UploadImages
+        {
+            get => _uploadImages;
+            set
+            {
+                if (value != _uploadImages)
+                {
+                    _uploadImages = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public string Greeting
         {
@@ -85,7 +129,20 @@ namespace MarkdownToRWGUI.Models
 
             if (path != null)
             {
-                Result = "Converting " + path;
+
+                if (File.Exists(path))
+                {
+                    using (StreamReader sr = new StreamReader(path))
+                    {
+                        MarkdownText = sr.ReadToEnd().Replace("\t","  ");
+                        HtmlText = Converter.ConvertMarkdownStringToHtml(MarkdownText);
+                    }
+                }
+
+            }
+            else
+            {
+                Result = "No valid markdown chosen!";
             }
 
         }
@@ -98,9 +155,15 @@ namespace MarkdownToRWGUI.Models
             FileDialogFilter markdownFilter = new FileDialogFilter();
             markdownFilter.Extensions.Add("md");
             markdownFilter.Extensions.Add("markdown");
-            markdownFilter.Extensions.Add("txt");
+            markdownFilter.Extensions.Add("mdown");
+            markdownFilter.Extensions.Add("mkdn");
+            markdownFilter.Extensions.Add("mkd");
+            markdownFilter.Extensions.Add("mdwn");
             markdownFilter.Extensions.Add("mdtxt");
-            markdownFilter.Name = "Markdown Files";
+            markdownFilter.Extensions.Add("mdtext");
+            markdownFilter.Extensions.Add("text");
+            markdownFilter.Extensions.Add("txt");
+            markdownFilter.Extensions.Add("rmd"); markdownFilter.Name = "Markdown Files";
 
             FileDialogFilter allFilter = new FileDialogFilter();
             allFilter.Extensions.Add("*");
