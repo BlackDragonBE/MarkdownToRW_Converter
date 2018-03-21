@@ -139,6 +139,7 @@ namespace MarkdownToRWGUI.Models
                         MarkdownText = sr.ReadToEnd().Replace("\t","  ");
                         HtmlText = Converter.ConvertMarkdownStringToHtml(MarkdownText);
                         Status = "Converted markdown to HTML!";
+                        
                     }
                 }
 

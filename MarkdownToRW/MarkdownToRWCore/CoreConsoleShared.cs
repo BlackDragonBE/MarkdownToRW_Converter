@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using DragonMarkdown;
+using DragonMarkdown.Utility;
 
 namespace MarkdownToRWCore
 {
@@ -29,12 +30,12 @@ namespace MarkdownToRWCore
         public static void OpenHtmlResult(string generatedHtmlPath)
         {
             Console.WriteLine("Opening HTML file in default application...");
-            DragonHelperUtility.OpenFileInDefaultApplication(generatedHtmlPath);
+            DragonUtil.OpenFileInDefaultApplication(generatedHtmlPath);
         }
 
         public static string GetExistingFilePath()
         {
-            string path = DragonHelperUtility.RemoveAllQuotes(Console.ReadLine());
+            string path = DragonUtil.RemoveAllQuotes(Console.ReadLine());
 
             if (File.Exists(path))
             {
@@ -50,12 +51,12 @@ namespace MarkdownToRWCore
 
         public static string GetNewFilePath()
         {
-            string path = DragonHelperUtility.RemoveAllQuotes(Console.ReadLine());
+            string path = DragonUtil.RemoveAllQuotes(Console.ReadLine());
 
             var directoryName = Path.GetDirectoryName(path);
 
             if (Directory.Exists(directoryName) &&
-                DragonHelperUtility.CheckFolderWritePermission(directoryName))
+                DragonUtil.CheckFolderWritePermission(directoryName))
             {
                 return path;
             }

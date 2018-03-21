@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Windows.Forms;
 using DragonMarkdown;
+using DragonMarkdown.Utility;
 using HtmlAgilityPack;
 using HtmlDocument = HtmlAgilityPack.HtmlDocument;
 
@@ -116,7 +117,7 @@ namespace MarkdownToRW
             }
             else
             {
-                DragonHelperUtility.OpenFileInDefaultApplication(htmlPath);
+                DragonUtil.OpenFileInDefaultApplication(htmlPath);
             }
 
         }

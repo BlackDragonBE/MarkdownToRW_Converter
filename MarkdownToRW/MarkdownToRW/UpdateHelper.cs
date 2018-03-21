@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using DragonMarkdown;
+using DragonMarkdown.Utility;
 using EasyHttp.Http;
 using Newtonsoft.Json;
 
@@ -129,7 +130,7 @@ namespace MarkdownToRW
 
             // Run updater & quit
             Process.Start(newUpdaterPath,
-                DragonHelperUtility.SurroundWithQuotes(Application.StartupPath) + " " + DragonHelperUtility.SurroundWithQuotes(zipPath));
+                DragonUtil.SurroundWithQuotes(Application.StartupPath) + " " + DragonUtil.SurroundWithQuotes(zipPath));
             Environment.Exit(0);
         }
 

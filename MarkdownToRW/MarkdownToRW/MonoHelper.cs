@@ -6,6 +6,7 @@ using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
 using DragonMarkdown;
+using DragonMarkdown.Utility;
 
 namespace MarkdownToRW
 {
@@ -187,7 +188,7 @@ namespace MarkdownToRW
             }
 
             ReadProcessOutput(Application.StartupPath + "/wget.exe",
-                @"--user-agent=" + userAgentFormatted + " -O " + DragonHelperUtility.SurroundWithQuotes(savePath) + " " + fileToDownload);
+                @"--user-agent=" + userAgentFormatted + " -O " + DragonUtil.SurroundWithQuotes(savePath) + " " + fileToDownload);
 
             return File.Exists(savePath);
         }
@@ -204,7 +205,7 @@ namespace MarkdownToRW
             }
 
             ReadProcessOutput("curl",
-                "-L -A " + userAgentFormatted + " -o " + DragonHelperUtility.SurroundWithQuotes(savePath) + " " + fileToDownload);
+                "-L -A " + userAgentFormatted + " -o " + DragonUtil.SurroundWithQuotes(savePath) + " " + fileToDownload);
 
             return File.Exists(savePath);
         }
@@ -221,7 +222,7 @@ namespace MarkdownToRW
             }
 
             ReadProcessOutput("wget",
-                @"--user-agent=" + userAgentFormatted + " -O " + DragonHelperUtility.SurroundWithQuotes(savePath) + " " + fileToDownload);
+                @"--user-agent=" + userAgentFormatted + " -O " + DragonUtil.SurroundWithQuotes(savePath) + " " + fileToDownload);
 
             return File.Exists(savePath);
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using DragonMarkdown;
 using DragonMarkdown.DragonWordPressXml.Responses;
+using DragonMarkdown.Utility;
 
 namespace MarkdownToRWCore
 {
@@ -36,7 +37,7 @@ namespace MarkdownToRWCore
 
             if (sameFolder == "y")
             {
-                htmlPath = DragonHelperUtility.GetFullPathWithoutExtension(markdownPath) + ".html";
+                htmlPath = DragonUtil.GetFullPathWithoutExtension(markdownPath) + ".html";
             }
             else
             {
@@ -225,15 +226,15 @@ namespace MarkdownToRWCore
             string markdownText, List<string> localImagePaths, List<string> imageUrls)
         {
             string htmlText;
-            markdownText = DragonHelperUtility.BatchReplaceText(markdownText, localImagePaths, imageUrls);
+            markdownText = DragonUtil.BatchReplaceText(markdownText, localImagePaths, imageUrls);
             htmlText = Converter.ConvertMarkdownStringToHtml(markdownText);
 
-            DragonHelperUtility.QuickWriteFile(htmlPath, htmlText);
+            DragonUtil.QuickWriteFile(htmlPath, htmlText);
             Console.WriteLine("Replaced HTML!");
 
             if (!onlyUpdateHtml)
             {
-                DragonHelperUtility.QuickWriteFile(markdownPath, markdownText);
+                DragonUtil.QuickWriteFile(markdownPath, markdownText);
                 Console.WriteLine("Replaced Markdown!");
             }
         }

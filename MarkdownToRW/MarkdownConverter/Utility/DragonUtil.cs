@@ -4,10 +4,24 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace DragonMarkdown
+namespace DragonMarkdown.Utility
 {
-    public static class DragonHelperUtility
+    public static class DragonUtil
     {
+        public static class CurrentOperatingSystem
+        {
+            public static bool IsWindows() =>
+                RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+
+            public static bool IsMacOS() =>
+                RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+
+            public static bool IsLinux() =>
+                RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
+        }
+
+
+
         public static string RemoveAllQuotes(string path)
         {
             return path.Replace("\"", "").Replace("'", "").Trim();
