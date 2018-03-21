@@ -12,7 +12,7 @@ namespace MarkdownToRWGUI.Models
     public class MainWindowViewModel : INotifyPropertyChanged
     {
         private string _greeting;
-        private bool _isClassy;
+        private bool _onlyHtml;
         private bool _uploadImages;
         private string _name;
         private string _markdownText;
@@ -109,16 +109,16 @@ namespace MarkdownToRWGUI.Models
             }
         }
 
-        public bool IsClassy
+        public bool OnlyHtml
         {
-            get => _isClassy;
+            get => _onlyHtml;
             set
             {
-                if (value != _isClassy)
+                if (value != _onlyHtml)
                 {
-                    _isClassy = value;
+                    _onlyHtml = value;
                     OnPropertyChanged();
-                    Name = "Classy as fuck: " + _isClassy;
+                    Name = "Classy as fuck: " + _onlyHtml;
                 }
             }
         }

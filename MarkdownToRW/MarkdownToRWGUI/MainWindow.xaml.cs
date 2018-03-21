@@ -10,7 +10,7 @@ namespace MarkdownToRWGUI
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainWindowViewModel {Greeting = "Enter a name and click the button.", ThisWindow = this};
+            DataContext = new MainWindowViewModel {Greeting = "Enter a name and click the button.", ThisWindow = this, Status = "Ready to convert!"};
 #if DEBUG
             this.AttachDevTools();
 #endif

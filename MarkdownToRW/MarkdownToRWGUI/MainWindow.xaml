@@ -19,9 +19,9 @@
   <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5 5 5 5">
     <StackPanel Orientation="Horizontal" Grid.Column="0" VerticalAlignment="Stretch">
       <Button Content="Open and convert markdown file..." Command="{Binding StartConvertCommand}"  Margin="0 5 0 0" Width="200"></Button>
+      <CheckBox IsChecked="{Binding OnlyHtml}" Margin="10 5 0 0" Content="Save output to file" VerticalAlignment="Center"></CheckBox>
     </StackPanel>
   </StackPanel>
-
 
     <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5 5 5 5">
       <StackPanel Orientation="Horizontal" Grid.Column="0">
@@ -32,7 +32,7 @@
     <TextBox IsReadOnly="True" Text="{Binding MarkdownText}" Margin="0 5 5 0" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
     <TextBox IsReadOnly="True" Text="{Binding HtmlText}" Margin="5 5 0 0" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
 
-    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0 5 0 0" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2">
+    <Grid IsEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0 5 0 0" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Background="Beige">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*"/>
         <ColumnDefinition Width="*"/>
@@ -43,14 +43,15 @@
       </Grid.ColumnDefinitions>
 
       <StackPanel Orientation="Horizontal" Grid.ColumnSpan="4">
-        <TextBlock Margin="0 5 0 0" Grid.Column="0"  Text="Username" VerticalAlignment="Center" HorizontalAlignment="Right" ></TextBlock>
-        <TextBox Watermark="Username" Text="" Margin="5 5 5 0" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" Width="150"></TextBox>
+        <TextBlock Margin="5 0 10 0" Grid.Column="0" FontWeight="Bold" Text="RW Wordpress Credentials:" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
+        <TextBlock Margin="5 0 0 0" Grid.Column="0"  Text="Username" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
+        <TextBox Watermark="Username" Text="" Margin="5 3 5 3" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" Width="150"></TextBox>
         <TextBlock Margin="10 5 0 0" Grid.Column="2"  Text="Password" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
-        <TextBox Watermark="Password" Text="" Margin="5 5 5 0" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Stretch" Width="150"></TextBox>
+        <TextBox Watermark="Password" Text="" Margin="5 3 5 3" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Stretch" Width="150"></TextBox>
       </StackPanel>
       
-      <CheckBox IsChecked="{Binding IsClassy}" Margin="0 5 10 0" Content="Only replace links in HTML" Grid.Column="3" Grid.ColumnSpan="2" HorizontalAlignment="Right"></CheckBox>
-      <Button Content="Upload images" Command="{Binding StartConvertCommand}"  Margin="0 5 0 0" Grid.Column="5"></Button>
+      <CheckBox IsChecked="{Binding OnlyHtml}" Margin="0 2 10 2" Content="Only replace links in HTML" Grid.Column="3" Grid.ColumnSpan="2" HorizontalAlignment="Right"></CheckBox>
+      <Button Content="Upload images" Command="{Binding StartConvertCommand}"  Margin="0 2 0 2" Grid.Column="5"></Button>
     </Grid>
 
     <TextBlock Margin="0 5 0 0" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Text="{Binding Status}"></TextBlock>
