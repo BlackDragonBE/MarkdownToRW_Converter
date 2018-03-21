@@ -16,21 +16,23 @@
       <RowDefinition Height="20" />
     </Grid.RowDefinitions>
 
-  <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5 5 5 5">
+  <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2 5 2 5">
     <StackPanel Orientation="Horizontal" Grid.Column="0" VerticalAlignment="Stretch">
-      <Button Content="Open and convert markdown file..." Command="{Binding StartConvertCommand}"  Margin="0 5 0 0" Width="200"></Button>
+      <Button Content="Open and convert markdown file..." Command="{Binding StartConvertCommand}"  Margin="0 5 0 0" Width="200" Height="30"></Button>
       <CheckBox IsChecked="{Binding OnlyHtml}" Margin="10 5 0 0" Content="Save output to file" VerticalAlignment="Center"></CheckBox>
     </StackPanel>
   </StackPanel>
 
     <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5 5 5 5">
       <StackPanel Orientation="Horizontal" Grid.Column="0">
-        <Button Content="Preview HTML (don't copy)" Command="{Binding StartConvertCommand}"  Margin="0 5 0 0" Width="200"></Button>
+        <TextBlock Margin="0 20 0 0" Text="Copy HTML below and paste to RW Wordpress" VerticalAlignment="Bottom" Background="yellow"></TextBlock>
       </StackPanel>
     </StackPanel>
+    <Button Grid.Column="1" Content="Preview HTML (don't copy)" Command="{Binding StartConvertCommand}" HorizontalAlignment="Right"  Margin="0 5 0 0" Width="200" Height="30"></Button>
 
-    <TextBox IsReadOnly="True" Text="{Binding MarkdownText}" Margin="0 5 5 0" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
-    <TextBox IsReadOnly="True" Text="{Binding HtmlText}" Margin="5 5 0 0" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
+
+    <TextBox IsReadOnly="True" Text="{Binding MarkdownText}" Margin="0 5 5 5" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
+    <TextBox IsReadOnly="True" Text="{Binding HtmlText}" Margin="5 5 0 5" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
 
     <Grid IsEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0 5 0 0" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Background="Beige">
       <Grid.ColumnDefinitions>
