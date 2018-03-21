@@ -1,6 +1,6 @@
 ﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Markdown To Wordpress CORE GUI" Padding="5 5 5 5" Width="800" Height="400" MinWidth="800" MinHeight="400">
+        Title="Markdown To Wordpress CORE GUI" Padding="5 5 5 5" Width="1000" Height="200" MinWidth="1000" MinHeight="200">
 
 
   <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -13,27 +13,41 @@
       <RowDefinition Height="auto" />
       <RowDefinition Height="*" />
       <RowDefinition Height="40" />
+      <RowDefinition Height="20" />
     </Grid.RowDefinitions>
 
   <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5 5 5 5">
     <StackPanel Orientation="Horizontal" Grid.Column="0" VerticalAlignment="Stretch">
-      <Button Content="Open Markdown File..." Command="{Binding StartConvertCommand}"  Margin="0 5 0 0" Width="200"></Button>
+      <Button Content="Open And Convert Markdown File..." Command="{Binding StartConvertCommand}"  Margin="0 5 0 0" Width="200"></Button>
     </StackPanel>
-    <CheckBox IsChecked="{Binding IsClassy}" Margin="0 5 0 0">Upload Images</CheckBox>
   </StackPanel>
 
 
     <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5 5 5 5">
       <StackPanel Orientation="Horizontal" Grid.Column="0">
-        <Button Content="Preview HTML..." Command="{Binding StartConvertCommand}"  Margin="0 5 0 0" Width="200"></Button>
+        <Button Content="Preview HTML (don't copy)" Command="{Binding StartConvertCommand}"  Margin="0 5 0 0" Width="200"></Button>
       </StackPanel>
     </StackPanel>
 
-    <TextBox Text="{Binding MarkdownText}" Margin="0 5 5 0" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
-    <TextBox Text="{Binding HtmlText}" Margin="5 5 0 0" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
+    <TextBox IsReadOnly="True" Text="{Binding MarkdownText}" Margin="0 5 5 0" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
+    <TextBox IsReadOnly="True" Text="{Binding HtmlText}" Margin="5 5 0 0" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
 
-    <Button Content="Upload images..." Command="{Binding StartConvertCommand}"  Margin="0 5 0 0" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"></Button>
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0 5 0 0" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
 
+      <CheckBox IsChecked="{Binding IsClassy}" Margin="0 5 0 0" Content="Only replace links in HTML" Grid.Column="4"></CheckBox>
+      <Button Content="Upload Images" Command="{Binding StartConvertCommand}"  Margin="0 5 0 0" Grid.Column="5"></Button>
+
+    </Grid>
+
+    <TextBlock Margin="0 5 0 0" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Text="{Binding Status}"></TextBlock>
   </Grid>
 
 </Window>

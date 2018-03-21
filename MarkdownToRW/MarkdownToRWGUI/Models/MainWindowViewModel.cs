@@ -17,7 +17,9 @@ namespace MarkdownToRWGUI.Models
         private string _name;
         private string _markdownText;
         private string _htmlText;
-        private string _result;
+        private string _status;
+
+        private bool _allowInput = true;
 
         private ICommand _startConvertCommand;
         private ICommand _testCommand;
@@ -25,9 +27,9 @@ namespace MarkdownToRWGUI.Models
         public Window ThisWindow;
         
         public ICommand StartConvertCommand =>
-            _startConvertCommand ?? (_startConvertCommand = new CommandHandler(Convert, true));
+            _startConvertCommand ?? (_startConvertCommand = new CommandHandler(Convert, _allowInput));
 
-        public ICommand TestCommand => _testCommand ?? (_testCommand = new CommandHandler(DoTest, true));
+        public ICommand TestCommand => _testCommand ?? (_testCommand = new CommandHandler(DoTest, _allowInput));
 
         public string MarkdownText
         {
@@ -50,6 +52,19 @@ namespace MarkdownToRWGUI.Models
                 if (value != _htmlText)
                 {
                     _htmlText = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public string Status
+        {
+            get => _status;
+            set
+            {
+                if (value != _status)
+                {
+                    _status = value;
                     OnPropertyChanged();
                 }
             }
@@ -94,19 +109,6 @@ namespace MarkdownToRWGUI.Models
             }
         }
 
-        public string Result
-        {
-            get => _result;
-            set
-            {
-                if (value != _result)
-                {
-                    _result = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
         public bool IsClassy
         {
             get => _isClassy;
@@ -136,13 +138,14 @@ namespace MarkdownToRWGUI.Models
                     {
                         MarkdownText = sr.ReadToEnd().Replace("\t","  ");
                         HtmlText = Converter.ConvertMarkdownStringToHtml(MarkdownText);
+                        Status = "Converted markdown to HTML!";
                     }
                 }
 
             }
             else
             {
-                Result = "No valid markdown chosen!";
+                Status = "No valid markdown chosen!";
             }
 
         }
@@ -183,7 +186,7 @@ namespace MarkdownToRWGUI.Models
 
         public void DoTest()
         {
-            Result = "Test succesful";
+            Status = "Test succesful";
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

@@ -24,7 +24,7 @@ namespace MarkdownToRWGUI
         public void OnButtonClicked(object sender, RoutedEventArgs args)
         {
             var context = DataContext as MainWindowViewModel;
-            context.Result = "Hi " + context.Name + " !";
+            context.Status = "Hi " + context.Name + " !";
         }
     }
 }
