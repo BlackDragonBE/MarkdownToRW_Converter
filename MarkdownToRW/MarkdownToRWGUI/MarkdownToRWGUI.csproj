@@ -19,4 +19,9 @@
   <ItemGroup>
     <ProjectReference Include="..\MarkdownConverter\DragonMarkdown.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="rw-logo_250.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

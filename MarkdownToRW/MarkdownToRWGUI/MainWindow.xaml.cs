@@ -1,6 +1,8 @@
-﻿using Avalonia.Controls;
+﻿using System.IO;
+using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media.Imaging;
 using MarkdownToRWGUI.Models;
 
 namespace MarkdownToRWGUI
@@ -10,7 +12,13 @@ namespace MarkdownToRWGUI
         public MainWindow()
         {
             InitializeComponent();
-            Icon = new WindowIcon("");
+
+            if (File.Exists("rw-logo_250.ico"))
+            {
+                Bitmap b = new Bitmap("rw-logo_250.ico");
+                Icon = new WindowIcon(b);
+            }
+
             DataContext = new MainWindowViewModel { ThisWindow = this, Status = "Ready to convert!"};
 #if DEBUG
             this.AttachDevTools();
