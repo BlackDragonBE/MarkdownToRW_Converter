@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Controls;
 using DragonMarkdown;
+using DragonMarkdown.DragonWordPressXml.Responses;
 using DragonMarkdown.Utility;
 
 namespace MarkdownToRWGUI.Models
@@ -150,7 +151,7 @@ namespace MarkdownToRWGUI.Models
             }
         }
 
-        private async void Convert()
+        public async void Convert()
         {
             _markdownPath = null;
             _htmlPath = null;
@@ -166,7 +167,7 @@ namespace MarkdownToRWGUI.Models
 
                     using (StreamReader sr = new StreamReader(path))
                     {
-                        MarkdownText = sr.ReadToEnd().Replace("\t","  ");
+                        MarkdownText = sr.ReadToEnd().Replace("\t", "  ");
                         HtmlText = Converter.ConvertMarkdownStringToHtml(MarkdownText);
 
                         if (SaveOutputToHtml)
@@ -218,11 +219,11 @@ namespace MarkdownToRWGUI.Models
             {
                 return resultString[0];
             }
-            
+
             return null;
         }
 
-        private void ShowPreview()
+        public void ShowPreview()
         {
             Status = "Generating preview and opening...";
 
@@ -257,13 +258,32 @@ namespace MarkdownToRWGUI.Models
 
             if (WordPressConnector.CanConnectToRW())
             {
-                Status = "Initial connection to RW WordPress OK.";
+                Status = "Initial connection to RW website OK. Connecting to WordPress...";
+
+                WordPressConnector.InitializeWordPress(Username, Password);
+                GetProfileResponse profile = WordPressConnector.GetUserProfile();
+
+                if (profile != null)
+                {
+                    Status = "Thanks " + profile.FirstName + "! Gathering images...";
+                    DoUpload();
+                }
+                else
+                {
+                    Status = "Couldn't log in. Please check your credentials.";
+                }
             }
             else
             {
                 Status = "Connection failed. Can't connect to RW.";
             }
-            
+
+        }
+
+        private async void DoUpload()
+        {
+            await Task.Delay(2000);
+            Status = "Images loaded. Starting upload, please don't close this window while uploading.";
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
