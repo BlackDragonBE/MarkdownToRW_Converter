@@ -11,8 +11,8 @@ namespace MarkdownToRWGUI.Models
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
         private bool _onlyHtml;
-        private bool _uploadImages;
         private bool _saveOutputToHtml;
         private string _markdownText;
         private string _htmlText;
@@ -22,11 +22,19 @@ namespace MarkdownToRWGUI.Models
         private bool _markdownLoaded = false;
 
         private ICommand _startConvertCommand;
+        private ICommand _showPreviewCommand;
+        private ICommand _uploadImagesCommand;
 
         public Window ThisWindow;
-        
+
         public ICommand StartConvertCommand =>
             _startConvertCommand ?? (_startConvertCommand = new CommandHandler(Convert, AllowInput));
+
+        public ICommand ShowPreviewCommand =>
+            _showPreviewCommand ?? (_showPreviewCommand = new CommandHandler(ShowPreview, AllowInput));
+
+        public ICommand UploadImagesCommand =>
+            _uploadImagesCommand ?? (_uploadImagesCommand = new CommandHandler(UploadImages, AllowInput));
 
         public bool AllowInput
         {
@@ -106,19 +114,6 @@ namespace MarkdownToRWGUI.Models
             }
         }
 
-        public bool UploadImages
-        {
-            get => _uploadImages;
-            set
-            {
-                if (value != _uploadImages)
-                {
-                    _uploadImages = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
         public bool SaveOutputToHtml
         {
             get => _saveOutputToHtml;
@@ -132,9 +127,7 @@ namespace MarkdownToRWGUI.Models
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public async void Convert()
+        private async void Convert()
         {
             string path = await ChooseFile();
 
@@ -160,7 +153,7 @@ namespace MarkdownToRWGUI.Models
 
         }
 
-        public async Task<string> ChooseFile()
+        private async Task<string> ChooseFile()
         {
             OpenFileDialog openDialog = new OpenFileDialog();
             openDialog.AllowMultiple = false;
@@ -192,6 +185,16 @@ namespace MarkdownToRWGUI.Models
             }
             
             return null;
+        }
+
+        private void ShowPreview()
+        {
+            
+        }
+
+        private void UploadImages()
+        {
+            
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

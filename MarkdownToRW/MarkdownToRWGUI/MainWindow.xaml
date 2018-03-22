@@ -16,24 +16,31 @@
       <RowDefinition Height="20" />
     </Grid.RowDefinitions>
 
+    <Grid.Styles>    
+      <Style Selector="Button">
+        <Setter Property="BorderBrush" Value="DarkGreen"/>
+        <Setter Property="Background" Value="White"/>
+      </Style>
+    </Grid.Styles>
+
   <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2 5 2 5">
     <StackPanel Orientation="Horizontal" Grid.Column="0" VerticalAlignment="Stretch">
-      <Button ToolTip.Tip="Open a markdown file and convert it to HTML. The output will show on the right, copy and paste it in the WordPress post." Content="Open and convert markdown..." Command="{Binding StartConvertCommand}"  Margin="0 5 0 0" Width="200" Height="30"></Button>
+      <Button  ToolTip.Tip="Open a markdown file and convert it to HTML. The output will show on the right, copy and paste it in the WordPress post." Content="Open and convert markdown..." Command="{Binding StartConvertCommand}"  Margin="0 5 0 0" Width="200" Height="30"></Button>
       <CheckBox IsChecked="{Binding SaveOutputToHtml}" Margin="10 5 0 0" ToolTip.Tip="Save the converted HTML to a file in the same folder as the markdown file?" Content="Save output to HTML file" VerticalAlignment="Center"></CheckBox>
     </StackPanel>
   </StackPanel>
 
     <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5 5 5 5">
       <StackPanel Orientation="Horizontal" Grid.Column="0">
-        <TextBlock Margin="0 20 0 0" Text="Copy HTML below and paste to RW Wordpress" VerticalAlignment="Bottom" Background="yellow"></TextBlock>
+        <TextBlock Margin="0 20 0 0" Text="Copy HTML below and paste to RW Wordpress" VerticalAlignment="Bottom"></TextBlock>
       </StackPanel>
     </StackPanel>
-    <Button IsEnabled="{Binding MarkdownLoaded}" Grid.Column="1" ToolTip.Tip="Create a preview html file next to the markdown file, inject it with RSS to resemble the RW style and open it in the default HTML app. DO NOT COPY THIS OUTPUT TO WORDPRESS!" Content="Preview HTML (don't copy)" Command="{Binding StartConvertCommand}" HorizontalAlignment="Right"  Margin="0 5 0 0" Width="200" Height="30"></Button>
+    <Button IsEnabled="{Binding MarkdownLoaded}" Grid.Column="1" ToolTip.Tip="Create a preview html file next to the markdown file, inject it with RSS to resemble the RW style and open it in the default HTML app. DO NOT COPY THIS OUTPUT TO WORDPRESS!" Content="Preview HTML (don't copy)" Command="{Binding ShowPreviewCommand}" HorizontalAlignment="Right"  Margin="0 5 0 0" Width="200" Height="30"></Button>
 
     <TextBox IsReadOnly="True" Text="{Binding MarkdownText}" Margin="0 5 5 5" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
     <TextBox IsReadOnly="True" Text="{Binding HtmlText}" Margin="5 5 0 5" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
 
-    <Grid IsEnabled="{Binding MarkdownLoaded}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0 5 0 0" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Background="Beige">
+    <Grid IsEnabled="{Binding MarkdownLoaded}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0 5 0 0" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Background="LightGray">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*"/>
         <ColumnDefinition Width="*"/>
@@ -44,7 +51,7 @@
       </Grid.ColumnDefinitions>
 
       <StackPanel Orientation="Horizontal" Grid.ColumnSpan="4">
-        <TextBlock Margin="5 0 10 0" Grid.Column="0" FontWeight="Bold" Text="RW Wordpress Credentials:" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
+        <TextBlock Margin="5 0 10 0" Grid.Column="0" FontWeight="Bold" Text="Upload images to Wordpress" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
         <TextBlock Margin="5 0 0 0" Grid.Column="0"  Text="Username" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
         <TextBox Watermark="Username" Text="" Margin="10 3 5 3" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" Width="150"></TextBox>
         <TextBlock Margin="10 0 0 0" Grid.Column="2"  Text="Password" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
@@ -52,7 +59,7 @@
       </StackPanel>
       
       <CheckBox IsChecked="{Binding OnlyHtml}" Margin="0 2 10 2" ToolTip.Tip="Only replace links to images in the HTML above and the output file (if any). By default, the markdown file will also be updated with new URLs." Content="Only replace links in HTML" Grid.Column="3" Grid.ColumnSpan="2" HorizontalAlignment="Right"></CheckBox>
-      <Button Content="Upload images" Command="{Binding StartConvertCommand}"  Margin="0 2 0 2" Grid.Column="5"></Button>
+      <Button Content="Upload images" Command="{Binding UploadImagesCommand}"  Margin="0 2 0 2" Grid.Column="5"></Button>
     </Grid>
 
     <TextBlock Margin="0 5 0 0" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Text="{Binding Status}"></TextBlock>

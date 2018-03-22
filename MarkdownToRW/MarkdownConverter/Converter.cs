@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using CommonMark;
@@ -25,30 +26,37 @@ namespace DragonMarkdown
             AddClassToImages(ref output);
             AddExtraAttributesToLinks(ref output);
 
+            // Make new lines consistent across platforms
+            output = output.Replace("\r\n", "|||");
+            output = output.Replace("\n", "|||");
+            output = output.Replace("|||", "\n");
+
+
             // Text
-            output = output.Replace("<p>", "\r\n");
-            output = output.Replace("<br>", "\r\n");
+            output = output.Replace("<p>", "\n");
+            output = output.Replace("<br>", "\n");
             output = output.Replace("</p>", "");
-            output = output.Replace("<h1", "\r\n<h1");
-            output = output.Replace("<h2", "\r\n<h2");
-            output = output.Replace("<h3", "\r\n<h3");
-            output = output.Replace("<h4", "\r\n<h4");
+            output = output.Replace("<h1", "\n<h1");
+            output = output.Replace("<h2", "\n<h2");
+            output = output.Replace("<h3", "\n<h3");
+            output = output.Replace("<h4", "\n<h4");
             output = output.Replace("<strong>", "<em>");
             output = output.Replace("</strong>", "</em" +
                                                  ">");
-
             // List
-            output = output.Replace("<ul>", "\r\n<ul>");
-            output = output.Replace("<ol>", "\r\n<ol>");
+            output = output.Replace("<ul>", "\n<ul>");
+            output = output.Replace("<ol>", "\n<ol>");
 
+            Console.WriteLine(output);
+            
             //// Note
             output = output.Replace("</blockquote>", "</div>");
-            output = output.Replace("<blockquote>\r\n", "\r\n<blockquote>");
-            output = output.Replace("<blockquote>\r\n<em>Note", "<div class=\"note\">\r\n<em>Note");
+            output = output.Replace("<blockquote>\n", "\n<blockquote>");
+            output = output.Replace("<blockquote>\n<em>Note", "<div class=\"note\">\n<em>Note");
             output = output.Replace("<blockquote>", "<div>");
 
             // Spoiler
-            output = output.Replace("<blockquote>\r\n<em>Spoiler", "<div class=\"spoiler\">\r\n<em>Spoiler");
+            output = output.Replace("<blockquote>\n<em>Spoiler", "<div class=\"spoiler\">\n<em>Spoiler");
             output = output.Replace("<div class=\"spoiler\">", "[spoiler title=\"Solution\"]");
             // TODO: replace first </div> found after "<div class=\"spoiler\">" with </spoiler> somehow for all spoilers
 
