@@ -263,7 +263,7 @@ namespace MarkdownToRWGUI.Models
             }
         }
 
-        private void UploadImages()
+        public void UploadImages()
         {
             Status = "Testing connection...";
             WordPressConnector.InitializeWordPress(Username, Password);
