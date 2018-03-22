@@ -26,25 +26,12 @@ namespace MarkdownToRWGUI.Models
         private bool _allowInput = true;
         private bool _markdownLoaded = false;
 
-        private ICommand _startConvertCommand;
-        private ICommand _showPreviewCommand;
-        private ICommand _uploadImagesCommand;
-
         // Logic
         private string _markdownPath = null;
         private string _htmlPath = null;
         private string _htmlPreviewPath = null;
 
         public Window ThisWindow;
-
-        public ICommand StartConvertCommand =>
-            _startConvertCommand ?? (_startConvertCommand = new CommandHandler(Convert, AllowInput));
-
-        public ICommand ShowPreviewCommand =>
-            _showPreviewCommand ?? (_showPreviewCommand = new CommandHandler(ShowPreview, AllowInput));
-
-        public ICommand UploadImagesCommand =>
-            _uploadImagesCommand ?? (_uploadImagesCommand = new CommandHandler(UploadImages, AllowInput));
 
         public bool AllowInput
         {
