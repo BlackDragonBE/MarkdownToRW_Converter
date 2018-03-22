@@ -1,8 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp2.0;net461</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.0</TargetFrameworks>
     <ApplicationIcon>rw-logo_250.ico</ApplicationIcon>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
   <ItemGroup>
     <Compile Update="**\*.xaml.cs">
@@ -18,6 +19,12 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MarkdownConverter\DragonMarkdown.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Restsharp.Rpc">
+      <HintPath>..\MarkdownToRWCore\Libs\Restsharp.Rpc.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Update="rw-logo_250.ico">

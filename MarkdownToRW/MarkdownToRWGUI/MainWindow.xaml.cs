@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using Avalonia.Controls;
-using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media.Imaging;
 using MarkdownToRWGUI.Models;
@@ -19,10 +18,7 @@ namespace MarkdownToRWGUI
                 Icon = new WindowIcon(b);
             }
 
-            DataContext = new MainWindowViewModel { ThisWindow = this, Status = "Ready to convert!"};
-#if DEBUG
-            this.AttachDevTools();
-#endif
+            DataContext = new MainWindowViewModel { ThisWindow = this, Status = "Ready to convert!", AllowInput = true};
         }
 
         private void InitializeComponent()

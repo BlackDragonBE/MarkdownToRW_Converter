@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Avalonia.Controls;
 using DragonMarkdown;
 using DragonMarkdown.DragonWordPressXml.Responses;
@@ -13,24 +12,24 @@ namespace MarkdownToRWGUI.Models
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        private bool _allowInput = true;
+        private string _htmlPath;
+        private string _htmlPreviewPath;
+        private string _htmlText;
+        private bool _markdownLoaded;
+
+        // Logic
+        private string _markdownPath;
+
+        private string _markdownText;
 
         // UI
         private bool _onlyHtml;
+
+        private string _password;
         private bool _saveOutputToHtml;
-        private string _markdownText;
-        private string _htmlText;
         private string _status;
         private string _username;
-        private string _password;
-
-        private bool _allowInput = true;
-        private bool _markdownLoaded = false;
-
-        // Logic
-        private string _markdownPath = null;
-        private string _htmlPath = null;
-        private string _htmlPreviewPath = null;
 
         public Window ThisWindow;
 
@@ -151,6 +150,8 @@ namespace MarkdownToRWGUI.Models
             }
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public async void Convert()
         {
             _markdownPath = null;
@@ -160,7 +161,6 @@ namespace MarkdownToRWGUI.Models
 
             if (path != null)
             {
-
                 if (File.Exists(path))
                 {
                     _markdownPath = path;
@@ -180,13 +180,11 @@ namespace MarkdownToRWGUI.Models
                         MarkdownLoaded = true;
                     }
                 }
-
             }
             else
             {
                 Status = "No valid markdown chosen!";
             }
-
         }
 
         private async Task<string> ChooseFile()
@@ -205,7 +203,8 @@ namespace MarkdownToRWGUI.Models
             markdownFilter.Extensions.Add("mdtext");
             markdownFilter.Extensions.Add("text");
             markdownFilter.Extensions.Add("txt");
-            markdownFilter.Extensions.Add("rmd"); markdownFilter.Name = "Markdown Files";
+            markdownFilter.Extensions.Add("rmd");
+            markdownFilter.Name = "Markdown Files";
 
             FileDialogFilter allFilter = new FileDialogFilter();
             allFilter.Extensions.Add("*");
@@ -251,16 +250,27 @@ namespace MarkdownToRWGUI.Models
             }
         }
 
-        public void UploadImages()
+        public async void UploadImages()
         {
+            if (Username == "" || Password == "" || Username == null || Password == null)
+            {
+                Status = "Credentials not filled in correctly!";
+                return;
+            }
+
+            AllowInput = false;
             Status = "Testing connection...";
+            await Task.Delay(25);
+
             WordPressConnector.InitializeWordPress(Username, Password);
 
             if (WordPressConnector.CanConnectToRW())
             {
                 Status = "Initial connection to RW website OK. Connecting to WordPress...";
+                await Task.Delay(25);
 
                 WordPressConnector.InitializeWordPress(Username, Password);
+
                 GetProfileResponse profile = WordPressConnector.GetUserProfile();
 
                 if (profile != null)
@@ -271,13 +281,14 @@ namespace MarkdownToRWGUI.Models
                 else
                 {
                     Status = "Couldn't log in. Please check your credentials.";
+                    AllowInput = true;
                 }
             }
             else
             {
                 Status = "Connection failed. Can't connect to RW.";
+                AllowInput = true;
             }
-
         }
 
         private async void DoUpload()
