@@ -17,7 +17,7 @@ namespace DragonMarkdown
             _config = new WordPressConfig("https://www.raywenderlich.com", username, password);
         }
 
-        public static void TestConnection()
+        public static bool CanConnectToRW()
         {
             try
             {
@@ -25,12 +25,18 @@ namespace DragonMarkdown
                 Stream stream = wr.GetResponse().GetResponseStream();
 
                 if (new StreamReader(stream).ReadToEnd() != "")
+                {
                     Console.WriteLine("Connection to RW OK");
+                    return true;
+                }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
+                return false;
             }
+
+            return false;
         }
 
         public static GetProfileResponse GetUserProfile()

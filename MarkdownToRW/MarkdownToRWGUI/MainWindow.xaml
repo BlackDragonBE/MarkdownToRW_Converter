@@ -3,7 +3,7 @@
         Title="Markdown To Wordpress CORE GUI" Padding="5 5 5 5" Width="1000" Height="400" MinWidth="1000" MinHeight="200" Background="#2D2D30">
 
 
-  <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+  <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5 5 5 5">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*"/>
       <ColumnDefinition Width="*"/>
@@ -13,7 +13,7 @@
       <RowDefinition Height="auto" />
       <RowDefinition Height="*" />
       <RowDefinition Height="40" />
-      <RowDefinition Height="20" />
+      <RowDefinition Height="22" />
     </Grid.RowDefinitions>
 
     <Grid.Styles>
@@ -65,14 +65,14 @@
       </Style>
     </Grid.Styles>
 
-  <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2 5 2 5">
+  <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
     <StackPanel Orientation="Horizontal" Grid.Column="0" VerticalAlignment="Stretch">
       <Button  ToolTip.Tip="Open a markdown file and convert it to HTML. The output will show on the right, copy and paste it in the WordPress post." Content="Open and convert markdown..." Command="{Binding StartConvertCommand}"  Margin="0 5 0 0" Width="200" Height="30"></Button>
       <CheckBox  IsChecked="{Binding SaveOutputToHtml}" Margin="10 5 0 0" ToolTip.Tip="Save the converted HTML to a file in the same folder as the markdown file?" Content="Save output to HTML file" VerticalAlignment="Center"></CheckBox>
     </StackPanel>
   </StackPanel>
 
-    <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5 5 5 5">
+    <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
       <StackPanel Orientation="Horizontal" Grid.Column="0">
         <TextBlock Margin="0 20 0 0" Text="Copy HTML below and paste to RW Wordpress" VerticalAlignment="Bottom"></TextBlock>
       </StackPanel>
@@ -97,16 +97,17 @@
       <StackPanel Orientation="Horizontal" Grid.ColumnSpan="4">
         <TextBlock Margin="5 0 10 0" Grid.Column="0" FontWeight="Bold" Text="Upload images to Wordpress" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
         <TextBlock Margin="5 0 0 0" Grid.Column="0"  Text="Username" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
-        <TextBox Watermark="Username" Text="" Margin="10 6 5 6" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" Width="150"></TextBox>
+        <TextBox Watermark="Username" Text="{Binding Username}" Margin="10 6 5 6" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" Width="150"></TextBox>
         <TextBlock Margin="10 0 0 0" Grid.Column="2"  Text="Password" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
-        <TextBox Watermark="Password" Text="" Margin="10 6 5 6" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Stretch" Width="150"></TextBox>
+        <TextBox Watermark="Password" Text="{Binding Password}" Margin="10 6 5 6" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Stretch" Width="150"></TextBox>
       </StackPanel>
       
       <CheckBox IsChecked="{Binding OnlyHtml}" Margin="0 2 10 2" ToolTip.Tip="Only replace links to images in the HTML above and the output file (if any). By default, the markdown file will also be updated with new URLs." Content="Only replace links in HTML" Grid.Column="3" Grid.ColumnSpan="2" HorizontalAlignment="Right"></CheckBox>
       <Button Content="Upload images" Command="{Binding UploadImagesCommand}"  Margin="0 5 5 5" Grid.Column="5"></Button>
     </Grid>
 
-    <TextBlock Margin="5 5 0 0" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Text="{Binding Status}"></TextBlock>
+    <ProgressBar Margin="0 5 0 0" Value="100" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Background="#565656" Foreground="#006837"></ProgressBar>
+    <TextBlock Margin="5 5 0 0" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="1" Text="{Binding Status}"></TextBlock>
   </Grid>
 
 </Window>

@@ -20,6 +20,8 @@ namespace MarkdownToRWGUI.Models
         private string _markdownText;
         private string _htmlText;
         private string _status;
+        private string _username;
+        private string _password;
 
         private bool _allowInput = true;
         private bool _markdownLoaded = false;
@@ -135,6 +137,32 @@ namespace MarkdownToRWGUI.Models
             }
         }
 
+        public string Username
+        {
+            get => _username;
+            set
+            {
+                if (value != _username)
+                {
+                    _username = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public string Password
+        {
+            get => _password;
+            set
+            {
+                if (value != _password)
+                {
+                    _password = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private async void Convert()
         {
             _markdownPath = null;
@@ -209,12 +237,16 @@ namespace MarkdownToRWGUI.Models
 
         private void ShowPreview()
         {
+            Status = "Generating preview and opening...";
+
             string folderPath = Path.GetDirectoryName(_markdownPath);
             _htmlPreviewPath = folderPath + "/tmp.html";
 
             PreviewCreator.CreateHtmlPreviewFileFromMarkdown(MarkdownText, _htmlPreviewPath);
 
             DragonUtil.OpenFileInDefaultApplication(_htmlPreviewPath);
+
+            Status = "Created preview.";
 
             WaitAndDeletePreviewAsync();
         }
@@ -226,11 +258,24 @@ namespace MarkdownToRWGUI.Models
             if (File.Exists(_htmlPreviewPath))
             {
                 File.Delete(_htmlPreviewPath);
+                Status = "Deleted preview: " + _htmlPreviewPath;
+                _htmlPreviewPath = null;
             }
         }
 
         private void UploadImages()
         {
+            Status = "Testing connection...";
+            WordPressConnector.InitializeWordPress(Username, Password);
+
+            if (WordPressConnector.CanConnectToRW())
+            {
+                Status = "Initial connection to RW WordPress OK.";
+            }
+            else
+            {
+                Status = "Connection failed. Can't connect to RW.";
+            }
             
         }
 

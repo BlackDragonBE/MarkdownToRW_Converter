@@ -47,7 +47,7 @@ namespace MarkdownToRW
 
         private void CheckConnectionToRW()
         {
-            WordPressConnector.TestConnection();
+            WordPressConnector.CanConnectToRW();
         }
 
         private void FillImageNameList()
