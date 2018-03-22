@@ -1,4 +1,4 @@
-﻿namespace DragonMarkdown
+﻿namespace DragonMarkdown.Utility
 {
     public static class PreviewHelper
     {

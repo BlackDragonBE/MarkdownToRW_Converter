@@ -1,6 +1,6 @@
 ﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Markdown To Wordpress CORE GUI" Padding="5 5 5 5" Width="1000" Height="200" MinWidth="1000" MinHeight="200">
+        Title="Markdown To Wordpress CORE GUI" Padding="5 5 5 5" Width="1000" Height="400" MinWidth="1000" MinHeight="200" Background="#2D2D30">
 
 
   <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -16,17 +16,59 @@
       <RowDefinition Height="20" />
     </Grid.RowDefinitions>
 
-    <Grid.Styles>    
+    <Grid.Styles>
+      <Style Selector="TextBlock">
+        <Setter Property="Foreground" Value="#C8C8C8"/>
+      </Style>
       <Style Selector="Button">
-        <Setter Property="BorderBrush" Value="DarkGreen"/>
-        <Setter Property="Background" Value="White"/>
+        <Setter Property="Background" Value="#006837"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground" Value="White"/>
+      </Style>
+      <Style Selector="TextBox">
+        <Setter Property="Background" Value="#1E1E1E"/>
+        <Setter Property="Foreground" Value="#C8C8C8"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="#3F3F46"/>
+      </Style>
+      <Style Selector="CheckBox">
+        <Setter Property="Foreground" Value="#C8C8C8"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="#3F3F46"/>
+        <Setter Property="Template">
+          <ControlTemplate>
+            <Grid ColumnDefinitions="Auto,*">
+              <Border Name="border"
+                      BorderBrush="#3F3F46"
+                      BorderThickness="1"
+                      Width="18"
+                      Height="18"
+                      VerticalAlignment="Center">
+                <Path Name="checkMark"
+                      Fill="#006837"
+                      Width="11"
+                      Height="10"
+                      Stretch="Uniform"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Data="M 1145.607177734375,430 C1145.607177734375,430 1141.449951171875,435.0772705078125 1141.449951171875,435.0772705078125 1141.449951171875,435.0772705078125 1139.232177734375,433.0999755859375 1139.232177734375,433.0999755859375 1139.232177734375,433.0999755859375 1138,434.5538330078125 1138,434.5538330078125 1138,434.5538330078125 1141.482177734375,438 1141.482177734375,438 1141.482177734375,438 1141.96875,437.9375 1141.96875,437.9375 1141.96875,437.9375 1147,431.34619140625 1147,431.34619140625 1147,431.34619140625 1145.607177734375,430 1145.607177734375,430 z" />
+              </Border>
+              <ContentPresenter Name="PART_ContentPresenter"
+                                Content="{TemplateBinding Content}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                Margin="6,0,0,0"
+                                VerticalAlignment="Center"
+                                Grid.Column="1" />
+            </Grid>
+          </ControlTemplate>
+        </Setter>
       </Style>
     </Grid.Styles>
 
   <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2 5 2 5">
     <StackPanel Orientation="Horizontal" Grid.Column="0" VerticalAlignment="Stretch">
       <Button  ToolTip.Tip="Open a markdown file and convert it to HTML. The output will show on the right, copy and paste it in the WordPress post." Content="Open and convert markdown..." Command="{Binding StartConvertCommand}"  Margin="0 5 0 0" Width="200" Height="30"></Button>
-      <CheckBox IsChecked="{Binding SaveOutputToHtml}" Margin="10 5 0 0" ToolTip.Tip="Save the converted HTML to a file in the same folder as the markdown file?" Content="Save output to HTML file" VerticalAlignment="Center"></CheckBox>
+      <CheckBox  IsChecked="{Binding SaveOutputToHtml}" Margin="10 5 0 0" ToolTip.Tip="Save the converted HTML to a file in the same folder as the markdown file?" Content="Save output to HTML file" VerticalAlignment="Center"></CheckBox>
     </StackPanel>
   </StackPanel>
 
@@ -35,12 +77,12 @@
         <TextBlock Margin="0 20 0 0" Text="Copy HTML below and paste to RW Wordpress" VerticalAlignment="Bottom"></TextBlock>
       </StackPanel>
     </StackPanel>
-    <Button IsEnabled="{Binding MarkdownLoaded}" Grid.Column="1" ToolTip.Tip="Create a preview html file next to the markdown file, inject it with RSS to resemble the RW style and open it in the default HTML app. DO NOT COPY THIS OUTPUT TO WORDPRESS!" Content="Preview HTML (don't copy)" Command="{Binding ShowPreviewCommand}" HorizontalAlignment="Right"  Margin="0 5 0 0" Width="200" Height="30"></Button>
+    <Button IsEnabled="{Binding MarkdownLoaded}" Grid.Column="1" ToolTip.Tip="Create a preview html file next to the markdown file named tmp.html, inject it with RSS to resemble the RW style and open it in the default HTML app. DO NOT COPY THIS OUTPUT TO WORDPRESS!" Content="Preview HTML (don't copy)" Command="{Binding ShowPreviewCommand}" HorizontalAlignment="Right"  Margin="0 5 0 0" Width="200" Height="30"></Button>
 
     <TextBox IsReadOnly="True" Text="{Binding MarkdownText}" Margin="0 5 5 5" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
     <TextBox IsReadOnly="True" Text="{Binding HtmlText}" Margin="5 5 0 5" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
 
-    <Grid IsEnabled="{Binding MarkdownLoaded}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0 5 0 0" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Background="LightGray">
+    <Grid IsEnabled="{Binding MarkdownLoaded}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0 5 0 0" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Background="#2D2D30">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*"/>
         <ColumnDefinition Width="*"/>

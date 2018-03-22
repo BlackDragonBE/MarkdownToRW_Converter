@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Controls;
 using DragonMarkdown;
+using DragonMarkdown.Utility;
 
 namespace MarkdownToRWGUI.Models
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
+        // UI
         private bool _onlyHtml;
         private bool _saveOutputToHtml;
         private string _markdownText;
@@ -24,6 +27,11 @@ namespace MarkdownToRWGUI.Models
         private ICommand _startConvertCommand;
         private ICommand _showPreviewCommand;
         private ICommand _uploadImagesCommand;
+
+        // Logic
+        private string _markdownPath = null;
+        private string _htmlPath = null;
+        private string _htmlPreviewPath = null;
 
         public Window ThisWindow;
 
@@ -129,6 +137,9 @@ namespace MarkdownToRWGUI.Models
 
         private async void Convert()
         {
+            _markdownPath = null;
+            _htmlPath = null;
+
             string path = await ChooseFile();
 
             if (path != null)
@@ -136,10 +147,19 @@ namespace MarkdownToRWGUI.Models
 
                 if (File.Exists(path))
                 {
+                    _markdownPath = path;
+
                     using (StreamReader sr = new StreamReader(path))
                     {
                         MarkdownText = sr.ReadToEnd().Replace("\t","  ");
                         HtmlText = Converter.ConvertMarkdownStringToHtml(MarkdownText);
+
+                        if (SaveOutputToHtml)
+                        {
+                            _htmlPath = DragonUtil.GetFullPathWithoutExtension(path) + ".html";
+                            Converter.ConvertMarkdownFileToHtmlFile(path, _htmlPath);
+                        }
+
                         Status = "Converted markdown to HTML!";
                         MarkdownLoaded = true;
                     }
@@ -189,7 +209,24 @@ namespace MarkdownToRWGUI.Models
 
         private void ShowPreview()
         {
-            
+            string folderPath = Path.GetDirectoryName(_markdownPath);
+            _htmlPreviewPath = folderPath + "/tmp.html";
+
+            PreviewCreator.CreateHtmlPreviewFileFromMarkdown(MarkdownText, _htmlPreviewPath);
+
+            DragonUtil.OpenFileInDefaultApplication(_htmlPreviewPath);
+
+            WaitAndDeletePreviewAsync();
+        }
+
+        private async Task WaitAndDeletePreviewAsync()
+        {
+            await Task.Delay(10000);
+
+            if (File.Exists(_htmlPreviewPath))
+            {
+                File.Delete(_htmlPreviewPath);
+            }
         }
 
         private void UploadImages()

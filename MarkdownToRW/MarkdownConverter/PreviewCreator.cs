@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using DragonMarkdown.Utility;
 
 namespace DragonMarkdown
 {

@@ -46,8 +46,6 @@ namespace DragonMarkdown
             // List
             output = output.Replace("<ul>", "\n<ul>");
             output = output.Replace("<ol>", "\n<ol>");
-
-            Console.WriteLine(output);
             
             //// Note
             output = output.Replace("</blockquote>", "</div>");
