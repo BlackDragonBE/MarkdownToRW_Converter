@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -252,8 +254,8 @@ namespace MarkdownToRWGUI.Models
 
         public async void UploadImages()
         {
-            Status = "Image uploading isn't implemented yet in this version. :(";
-            return;
+            //Status = "Image uploading isn't implemented yet :(";
+            //return;
 
             if (Username == "" || Password == "" || Username == null || Password == null)
             {
@@ -294,8 +296,75 @@ namespace MarkdownToRWGUI.Models
 
         private async void DoUpload()
         {
-            await Task.Delay(1500);
+            await Task.Delay(1000);
+            var links = Converter.FindAllImageLinksInHtml(HtmlText, Path.GetDirectoryName(_markdownPath));
+
+            if (links.Count == 0)
+            {
+                Status = "No images found to upload.";
+                return;
+            }
+
             Status = "Images loaded. Starting upload, please don't close this window while uploading.";
+            await Task.Delay(1000);
+
+            List<string> fullImagePaths = new List<string>();
+            List<string> localImagePaths = new List<string>();
+            
+            foreach (ImageLinkData link in links)
+            {
+                fullImagePaths.Add(link.FullImagePath);
+                localImagePaths.Add(link.LocalImagePath);
+            }
+
+            Console.WriteLine("");
+            Console.WriteLine(fullImagePaths.Count + " image paths found:");
+
+            foreach (string path in fullImagePaths)
+            {
+                Console.WriteLine(path + " (" + new FileInfo(path).Length / 1024 + " kb)");
+            }
+
+            List<string> imageUrls = new List<string>();
+            List<string> imageIDs = new List<string>();
+
+            // Upload images
+            for (var i = 0; i < fullImagePaths.Count; i++)
+            {
+                string path = fullImagePaths[i];
+
+                Status = "Uploading: " + " (" + i + 1 + "/" + fullImagePaths.Count + ")" + path + "...";
+                await Task.Delay(25);
+
+                var result = WordPressConnector.UploadFile(path);
+
+                if (result != null)
+                {
+                    imageUrls.Add(result.FileResponseStruct.Url);
+                    imageIDs.Add(result.FileResponseStruct.Id.ToString());
+                }
+                else
+                {
+                    Status = "Image upload failed! Rollback not implemented yet, manual cleanup on RW WordPress necessary, sorry. :(";
+                }
+            }
+
+            // Update markdown & html
+            Console.WriteLine("Starting link replacer...");
+            DragonUtil.BatchReplaceText(MarkdownText, localImagePaths, imageUrls);
+            HtmlText = Converter.ConvertMarkdownStringToHtml(MarkdownText);
+
+            if (_htmlPath != null)
+            {
+                DragonUtil.QuickWriteFile(_htmlPath, HtmlText);
+            }
+            
+            if (!OnlyHtml)
+            {
+                DragonUtil.QuickWriteFile(_markdownPath, MarkdownText);
+            }
+
+            Status = "Upload & replacement complete!";
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

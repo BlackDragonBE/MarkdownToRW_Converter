@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using CommonMark;
+using DragonMarkdown.Utility;
 using HtmlAgilityPack;
 
 namespace DragonMarkdown
@@ -134,7 +135,7 @@ namespace DragonMarkdown
             html = doc.DocumentNode.OuterHtml;
         }
 
-        public static List<ImageLinkData> FindAllImageLinksInHtml(string html, string htmlFolder)
+        public static List<ImageLinkData> FindAllImageLinksInHtml(string html, string rootFolder)
         {
             List<ImageLinkData> links = new List<ImageLinkData>();
 
@@ -157,7 +158,7 @@ namespace DragonMarkdown
                 }
 
                 string localPath = node.GetAttributeValue("src", null);
-                string fullPath = htmlFolder + "/" + localPath;
+                string fullPath = rootFolder + "/" + localPath;
 
                 // Check if file exists
                 if (File.Exists(fullPath))
@@ -175,12 +176,30 @@ namespace DragonMarkdown
             return links;
         }
 
+        public static void ReplaceLocalImageLinksWithUrls(string markdownPath, string htmlPath, bool onlyUpdateHtml,
+            string markdownText, List<string> localImagePaths, List<string> imageUrls)
+        {
+            markdownText = DragonUtil.BatchReplaceText(markdownText, localImagePaths, imageUrls);
+            var htmlText = ConvertMarkdownStringToHtml(markdownText);
 
+            DragonUtil.QuickWriteFile(htmlPath, htmlText);
+            Console.WriteLine("Replaced HTML!");
+
+            if (!onlyUpdateHtml)
+            {
+                DragonUtil.QuickWriteFile(markdownPath, markdownText);
+                Console.WriteLine("Replaced Markdown!");
+            }
+        }
     }
+    
+
 
     public struct ImageLinkData
     {
         public string FullImagePath;
         public string LocalImagePath;
     }
+
+
 }

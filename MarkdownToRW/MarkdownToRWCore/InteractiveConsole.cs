@@ -198,7 +198,7 @@ namespace MarkdownToRWCore
 
             // Update markdown & html
             Console.WriteLine("Starting link replacer...");
-            ReplaceLocalImageLinksWithUrls(markdownPath, htmlPath, onlyUpdateHtml, markdownText, localImagePaths,
+            Converter.ReplaceLocalImageLinksWithUrls(markdownPath, htmlPath, onlyUpdateHtml, markdownText, localImagePaths,
                 imageUrls);
             return true;
         }
@@ -222,22 +222,7 @@ namespace MarkdownToRWCore
             return user;
         }
 
-        private static void ReplaceLocalImageLinksWithUrls(string markdownPath, string htmlPath, bool onlyUpdateHtml,
-            string markdownText, List<string> localImagePaths, List<string> imageUrls)
-        {
-            string htmlText;
-            markdownText = DragonUtil.BatchReplaceText(markdownText, localImagePaths, imageUrls);
-            htmlText = Converter.ConvertMarkdownStringToHtml(markdownText);
 
-            DragonUtil.QuickWriteFile(htmlPath, htmlText);
-            Console.WriteLine("Replaced HTML!");
-
-            if (!onlyUpdateHtml)
-            {
-                DragonUtil.QuickWriteFile(markdownPath, markdownText);
-                Console.WriteLine("Replaced Markdown!");
-            }
-        }
 
         private static void StartFileDeletion(List<string> imageIDs)
         {
