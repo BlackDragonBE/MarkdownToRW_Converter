@@ -41,6 +41,7 @@ Lots of formats are supported, including GIFs of course:
 ![](Images/nigel.gif)
 
 Make sure to add a separate child folder of the folder your markdown is in, you can easily use subfolders in links and images.
+The converter can find all locally sourced images, upload them to WordPress and replace the local paths with the image URLs.
 
 ## Lists
 
@@ -97,11 +98,16 @@ If you add **Note:** to a quote, it gets parsed as a note by the converter.
 
 Spoilers are unique to RW and don't have an equivalent in markdown. Luckily, you can add these by using pure html (yes, markdown supports HTML as well!):
 
-[spoiler title="Solution"]
+[spoiler title="Solution inside!"]
 Put your spoiler here!
 [/spoiler]
 
-The converter can also create spoiler if you create a special kind of note:
+The converter can also create a spoiler if you create a special kind of quote:
+
+> **Spoiler:Solution inside!**
+> This will be converted to a spoiler.
+> 
+> You can add multiple lines as well.
 
 You can also add images to quotes and notes:
 
@@ -151,7 +157,16 @@ These are the supported languages:
 - **Shell**: shell
 - **Dart**: dart
 
+## Combination test
 
+Lorem **ipsum** *dolor* sit amet, ~~consectetur~~ adipiscing elit. Integer velit nisi, hendrerit ut lorem *quis*, **condimentum** volutpat ligula. 
+
+> [Phasellus](https://www.google.com) maximus nisi id accumsan **ornare**. In interdum ante ut *lectus* euismod facilisis. Nullam pretium laoreet diam, et **suscipit** ex mattis sed.
+
+> **Note:** [Phasellus](https://www.google.com) maximus nisi id accumsan **ornare**. In interdum ante ut *lectus* euismod facilisis. Nullam pretium laoreet diam, et **suscipit** ex mattis sed.
+
+> **Spoiler:Solution inside!**
+> Lorem **ipsum** *dolor* sit amet, ~~consectetur~~ adipiscing elit. Integer velit nisi, hendrerit ut lorem *quis*, **condimentum** volutpat ligula. 
 
 ## Unity specific tests
 
