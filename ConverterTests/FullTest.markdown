@@ -20,13 +20,17 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer velit nisi, hen
 
 On RW.com, only the h2, h3 and the bold tag you'll see below are supported.
 
-Formatting tags:
+## Formatting tags
 
-This **text** contains several **bold** words. They emphasize **certain** words. 
+This **text** contains several **bold** words. They emphasize **certain** words. This is also called strong emphasis. Use \*\* to create these. 
 
-The *italic* formatting can be good to use in certain, *rare* situations. There are _multiple_ ways of making words _italic_.
+The *italic* formatting can be good to use in certain, *rare* situations. There are _multiple_ ways of making words _italic_. This is called *emphasis*.
 
-[Links](https://www.google.com) are added by using both [square and round brackets](https://www.raywenderlich.com).
+Strikethrough uses two tildes. I love using ~~UE4~~ Unity to make ~~movies~~ games!
+
+Use a \*\*backslash\*\* to escape any \*unwanted\* formatting.
+
+[Links](https://www.google.com) are added by using both [square and round brackets](https://www.raywenderlich.com). If you just add the full URL like https://www.raywenderlich.com that also works.
 
 If you leave add an exclamation sign before the link, it turns into an image instead:
 
@@ -37,6 +41,8 @@ Lots of formats are supported, including GIFs of course:
 ![](Images/nigel.gif)
 
 Make sure to add a separate child folder of the folder your markdown is in, you can easily use subfolders in links and images.
+
+## Lists
 
 Lists can be used for making a collection of instructions or items:
 
@@ -50,6 +56,16 @@ Both - and * can be used to make unordered lists.
 * A pear.
 * An orange.
 
+Add subitems by adding two spaces or a tab before the line.
+
+* Top level.
+* Another top level.
+	* Second level
+		* Third level.
+		* Third level again.
+	* Another second level.
+* Last top level
+
 To make an ordered (or numbered) list, simply add numbers.
 
 1. Hit the gym.
@@ -59,11 +75,15 @@ To make an ordered (or numbered) list, simply add numbers.
 
 Just make sure to add some text between lists you can get **issues** otherwise.
 
-eza
+Here's a divider for fun:
 
-Quotes and notes:
+----------
 
-> This is a simple quote or remark.
+**Don't use the on RW though!**
+
+## Quotes and notes
+
+> This is a simple quote or remark. It uses a > at the start of the line.
 
 Here's an example of a multi-line quote:
 
@@ -75,5 +95,64 @@ If you add **Note:** to a quote, it gets parsed as a note by the converter.
 
 > **Note:** This is a **special** note, it informs you of something important
 
+Spoilers are unique to RW and don't have an equivalent in markdown. Luckily, you can add these by using pure html (yes, markdown supports HTML as well!):
+
+[spoiler title="Solution"]
+Put your spoiler here!
+[/spoiler]
+
+The converter can also create spoiler if you create a special kind of note:
+
 You can also add images to quotes and notes:
 
+> Look at this image below:
+>
+> ![](Images/nigel.gif)
+>
+> Just make sure to add > to all required lines.
+
+## Code
+
+If you surround words with a grave accent (also called a back-tick, unicode 96) they become code. Calling the `OnDestroy()` method for example or adding a `isAwesome` variable. Note that this isn't the same as the ' character (apostrophe, unicode 39).
+
+You can add a block of code by adding three back-ticks, the language of the code and ending with three back-ticks again:
+
+```cs
+int i = 1;
+
+switch (i)
+{
+    case 1:
+        Console.WriteLine("One");
+        break;
+    case 2:
+        Console.WriteLine("Two");
+        Console.WriteLine("Two");
+        break;
+    default:
+        Console.WriteLine("Other");
+        break;
+}
+```
+
+These are the supported languages:
+
+- **Swift**: swift
+- **Objective-C**: objectivec
+- **C++**: cpp
+- **Bash**: bash
+- **JavaScript**: javascript
+- **JSON**: json
+- **C#**: cs
+- **Java**: java
+- **Kotlin**: kotlin
+- **Gradle**: gradle
+- **XML**: xml
+- **Shell**: shell
+- **Dart**: dart
+
+
+
+## Unity specific tests
+
+**(X:0, Y:0, Z:0)**
