@@ -21,6 +21,10 @@
     <ProjectReference Include="..\MarkdownConverter\DragonMarkdown.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Markdig">
+      <HintPath>..\MarkdownConverter\Libs\Markdig.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
     <Reference Include="Restsharp.Rpc">
       <HintPath>..\MarkdownToRWCore\Libs\Restsharp.Rpc.dll</HintPath>
       <Private>true</Private>

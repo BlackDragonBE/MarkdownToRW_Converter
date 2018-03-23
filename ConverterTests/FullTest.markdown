@@ -1,6 +1,6 @@
 This is a bunch of markdown to test if the converter correctly converts it to RW ready HTML. It can also be used as an example of how to use markdown.
 
-Headings:
+## Headings:
 
 # This is a h1 heading
 
@@ -96,11 +96,25 @@ If you add **Note:** to a quote, it gets parsed as a note by the converter.
 
 > **Note:** This is a **special** note, it informs you of something important
 
+Another way of adding notes:
+
+:::note
+This is also a way of adding notes.
+You're free to choose which to use.
+:::
+
 Spoilers are unique to RW and don't have an equivalent in markdown. Luckily, you can add these by using pure html (yes, markdown supports HTML as well!):
 
 [spoiler title="Solution inside!"]
 Put your spoiler here!
 [/spoiler]
+
+This is also a spoiler:
+
+:::spoiler lol
+This is also a way of adding notes.
+You're free to choose which to use.
+:::
 
 The converter can also create a spoiler if you create a special kind of quote:
 

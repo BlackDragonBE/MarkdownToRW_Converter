@@ -5,6 +5,9 @@ using System.Net;
 using CommonMark;
 using DragonMarkdown.Utility;
 using HtmlAgilityPack;
+using Markdig;
+using Markdig.Extensions.EmphasisExtras;
+using Markdig.Extensions.SmartyPants;
 
 namespace DragonMarkdown
 {
@@ -12,7 +15,13 @@ namespace DragonMarkdown
     {
         public static string ConvertMarkdownStringToHtml(string markdown)
         {
-            string output = CommonMarkConverter.Convert(markdown);
+            CommonMarkSettings commonMarkSettings = CommonMarkSettings.Default.Clone();
+            commonMarkSettings.AdditionalFeatures = CommonMarkAdditionalFeatures.All;
+
+            //string output = CommonMarkConverter.Convert(markdown, commonMarkSettings);
+            
+            MarkdownPipeline pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
+            string output = Markdown.ToHtml(markdown, pipeline);
             output = WebUtility.HtmlDecode(output);
 
             // HTML readability improvements & RW specific changes
@@ -29,9 +38,7 @@ namespace DragonMarkdown
 
             // Make new lines consistent across platforms
             output = output.Replace("\r\n", "|||");
-            output = output.Replace("\n", "|||");
             output = output.Replace("|||", "\n");
-
 
             // Text
             output = output.Replace("<p>", "\n");
@@ -44,9 +51,11 @@ namespace DragonMarkdown
             output = output.Replace("<strong>", "<em>");
             output = output.Replace("</strong>", "</em" +
                                                  ">");
+            output = output.Replace("<del>", "<strikethrough>");
+            output = output.Replace("</del>", "</strikethrough>");
             // List
-            output = output.Replace("<ul>", "\n<ul>");
-            output = output.Replace("<ol>", "\n<ol>");
+            //output = output.Replace("<ul>", "\n<ul>");
+            //output = output.Replace("<ol>", "\n<ol>");
 
             //// Note
             output = output.Replace("</blockquote>", "</div>");
@@ -55,8 +64,8 @@ namespace DragonMarkdown
             output = output.Replace("<blockquote>", "<div>");
 
             // Spoiler
-            output = output.Replace("<blockquote>\n<em>Spoiler", "<div class=\"spoiler\">\n<em>Spoiler");
-            output = output.Replace("<div class=\"spoiler\">", "[spoiler title=\"Solution\"]");
+            //output = output.Replace("<blockquote>\n<em>Spoiler", "<div class=\"spoiler\">\n<em>Spoiler");
+            //output = output.Replace("<div class=\"spoiler\">", "[spoiler title=\"Solution\"]");
             // TODO: replace first </div> found after "<div class=\"spoiler\">" with </spoiler> somehow for all spoilers
 
             // Final cleanup

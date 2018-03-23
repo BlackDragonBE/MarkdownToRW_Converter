@@ -15,6 +15,10 @@
     <Reference Include="EasyHttp">
       <HintPath>..\packages\EasyHttp.1.7.0\lib\net40\EasyHttp.dll</HintPath>
     </Reference>
+    <Reference Include="Markdig">
+      <HintPath>Libs\Markdig.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
     <Reference Include="Restsharp.Rpc">
       <HintPath>Restsharp\Restsharp.Rpc.dll</HintPath>
       <Private>true</Private>
