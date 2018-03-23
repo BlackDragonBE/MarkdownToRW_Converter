@@ -21,7 +21,9 @@ namespace MarkdownToRWGUI
 
             Settings set = SettingsManager.LoadSettings();
 
-            DataContext = new MainWindowViewModel { ThisWindow = this, Status = "Open a markdown file to start!", AllowInput = true, RememberCredentials = set.ShouldLoadCredentials, Username = set.Username, Password = set.Password};
+            TextBox txtPassword = this.FindControl<TextBox>("txtPassword");
+
+            DataContext = new MainWindowViewModel { ThisWindow = this, TxtPassword = txtPassword, Status = "Open a markdown file to start!", AllowInput = true, RememberCredentials = set.ShouldLoadCredentials, Username = set.Username, Password = set.Password};
         }
 
         private void InitializeComponent()

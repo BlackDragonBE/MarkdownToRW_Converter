@@ -111,8 +111,7 @@
       <TextBlock Margin="5 0 0 0" Grid.Column="1"  Text="Username" VerticalAlignment="Center" HorizontalAlignment="Right" ></TextBlock>
       <TextBox Watermark="Username" Text="{Binding Username}" Margin="5 6 5 6" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Stretch"></TextBox>
       <TextBlock Margin="10 0 0 0" Grid.Column="3"  Text="Password" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
-      <TextBox Watermark="Password" Foreground="#1E1E1E" Text="{Binding Password}" Margin="10 6 5 6" Grid.Column="4"  HorizontalAlignment="Stretch"></TextBox>
-      <TextBlock Grid.Column="4" Text="{Binding PasswordOverlay}" HorizontalAlignment="Left" VerticalAlignment="Stretch" TextAlignment="Left" Margin="15 10 15 6"></TextBlock>
+      <TextBox Name="txtPassword" Watermark="Password" Text="{Binding Password}" Margin="10 6 5 6" Grid.Column="4"  HorizontalAlignment="Stretch"></TextBox>
 
       <CheckBox IsChecked="{Binding RememberCredentials}" Margin="5 2 5 2" ToolTip.Tip="Saves your credentials" Content="Save credentials" Grid.Column="5" HorizontalAlignment="Left"></CheckBox>
       <CheckBox IsChecked="{Binding OnlyHtml}" Margin="5 2 10 2" ToolTip.Tip="Only replace links to images in the HTML above and the output file (if any).&#x0a;By default, the markdown file will also be updated with new URLs." Content="Only replace links in HTML" Grid.Column="6" HorizontalAlignment="Right"></CheckBox>

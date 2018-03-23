@@ -40,6 +40,7 @@ namespace MarkdownToRWGUI.Models
         private int _progressMax;
 
         public Window ThisWindow;
+        public TextBox TxtPassword;
 
         public bool AllowInput
         {
@@ -147,7 +148,10 @@ namespace MarkdownToRWGUI.Models
 
         public string Password
         {
-            get => _password;
+            get
+            {
+                return _password;
+            }
             set
             {
                 if (value != _password)
