@@ -21,7 +21,7 @@ namespace MarkdownToRWGUI
 
             Settings set = SettingsManager.LoadSettings();
 
-            DataContext = new MainWindowViewModel { ThisWindow = this, Status = "Ready to convert!", AllowInput = true, RememberCredentials = set.ShouldLoadCredentials, Username = set.Username, Password = set.Password};
+            DataContext = new MainWindowViewModel { ThisWindow = this, Status = "Open a markdown file to start!", AllowInput = true, RememberCredentials = set.ShouldLoadCredentials, Username = set.Username, Password = set.Password};
         }
 
         private void InitializeComponent()

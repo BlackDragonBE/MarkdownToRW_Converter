@@ -226,8 +226,6 @@ namespace MarkdownToRWGUI.Models
 
         public async void Convert()
         {
-            _markdownPath = null;
-            _htmlPath = null;
 
             string path = await ChooseFile();
 
@@ -236,6 +234,7 @@ namespace MarkdownToRWGUI.Models
                 if (File.Exists(path))
                 {
                     _markdownPath = path;
+                    _htmlPath = null;
 
                     using (StreamReader sr = new StreamReader(path))
                     {

@@ -87,13 +87,13 @@
       </Grid.ColumnDefinitions>
 
       <TextBlock Margin="5 0 0 0" Text="Copy HTML below and paste to RW Wordpress" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" TextWrapping="Wrap"></TextBlock>
-      <Button Content="Preview HTML (don't copy)" IsEnabled="{Binding MarkdownLoaded}" Grid.Column="1" ToolTip.Tip="Create a preview html file next to the markdown file named tmp.html,&#x0a;inject it with RSS to resemble the RW style and open it in the default HTML app.&#x0a;DO NOT COPY THIS OUTPUT TO WORDPRESS!"  Command="{Binding ShowPreview}" HorizontalAlignment="Stretch" Height="30" Margin="20 0 0 0" ></Button>
+      <Button IsVisible="{Binding MarkdownLoaded}" Content="Preview HTML (don't copy)" IsEnabled="{Binding MarkdownLoaded}" Grid.Column="1" ToolTip.Tip="Create a preview html file next to the markdown file named tmp.html,&#x0a;inject it with RSS to resemble the RW style and open it in the default HTML app.&#x0a;DO NOT COPY THIS OUTPUT TO WORDPRESS!"  Command="{Binding ShowPreview}" HorizontalAlignment="Stretch" Height="30" Margin="20 0 0 0" ></Button>
     </Grid>
 
     <TextBox IsReadOnly="True" Text="{Binding MarkdownText}" Margin="0 5 2 5" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
     <TextBox IsReadOnly="True" Text="{Binding HtmlText}" Margin="2 5 0 5" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
 
-    <Grid IsEnabled="{Binding MarkdownLoaded}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0 0 0 0" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Background="#1E1E1E">
+    <Grid IsVisible="{Binding MarkdownLoaded}" IsEnabled="{Binding MarkdownLoaded}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0 0 0 0" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Background="#1E1E1E">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="auto"/>
         <ColumnDefinition Width="auto"/>
