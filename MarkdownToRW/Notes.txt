@@ -1,0 +1,6 @@
+Markdown To RW
+----
+
+Todo:
+- Image upload fail rollback: check for internet connection, if no connection keep checking every x seconds and only then start actual rollback.
+- Create test markdown document that contains all tags etc. and RW specific tags to test out the converter better and can be used as guide for pople new to markdown.
