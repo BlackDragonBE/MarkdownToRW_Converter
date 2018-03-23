@@ -109,6 +109,7 @@
       <TextBox Watermark="Password" Foreground="#1E1E1E" Text="{Binding Password}" Margin="10 6 5 6" Grid.Column="4"  HorizontalAlignment="Stretch"></TextBox>
       <TextBlock Grid.Column="4" Text=""  HorizontalAlignment="Left" VerticalAlignment="Stretch" TextAlignment="Left" Margin="15 10 15 6"></TextBlock>
 
+      <CheckBox IsChecked="False" Margin="0 2 50 2" ToolTip.Tip="Saves your credentials" Content="Save creds" Grid.Column="4" Grid.ColumnSpan="2" HorizontalAlignment="Right"></CheckBox>
       <CheckBox IsChecked="{Binding OnlyHtml}" Margin="0 2 10 2" ToolTip.Tip="Only replace links to images in the HTML above and the output file (if any). By default, the markdown file will also be updated with new URLs." Content="Only replace links in HTML" Grid.Column="5" Grid.ColumnSpan="2" HorizontalAlignment="Right"></CheckBox>
       <Button Content="Upload images" Command="{Binding UploadImages}"  Margin="0 5 5 5" Grid.Column="8"></Button>
     </Grid>

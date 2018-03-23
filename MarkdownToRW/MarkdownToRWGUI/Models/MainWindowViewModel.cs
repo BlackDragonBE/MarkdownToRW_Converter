@@ -224,7 +224,7 @@ namespace MarkdownToRWGUI.Models
 
         public void ShowPreview()
         {
-            Status = "Generating preview and opening...";
+             Status = "Generating preview and opening...";
 
             string folderPath = Path.GetDirectoryName(_markdownPath);
             _htmlPreviewPath = folderPath + "/tmp.html";
@@ -252,17 +252,18 @@ namespace MarkdownToRWGUI.Models
 
         public async void UploadImages()
         {
+            Status = "Image uploading isn't implemented yet in this version. :(";
+            return;
+
             if (Username == "" || Password == "" || Username == null || Password == null)
             {
                 Status = "Credentials not filled in correctly!";
                 return;
             }
 
-            AllowInput = false;
+           // AllowInput = false;
             Status = "Testing connection...";
             await Task.Delay(25);
-
-            WordPressConnector.InitializeWordPress(Username, Password);
 
             if (WordPressConnector.CanConnectToRW())
             {
@@ -293,7 +294,7 @@ namespace MarkdownToRWGUI.Models
 
         private async void DoUpload()
         {
-            await Task.Delay(2000);
+            await Task.Delay(1500);
             Status = "Images loaded. Starting upload, please don't close this window while uploading.";
         }
 
