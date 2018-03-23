@@ -15,23 +15,26 @@ namespace MarkdownToRWGUI.Models
     public class MainWindowViewModel : INotifyPropertyChanged
     {
         private bool _allowInput = true;
+
         private string _htmlPath;
         private string _htmlPreviewPath;
         private string _htmlText;
+
         private bool _markdownLoaded;
-
-        // Logic
         private string _markdownPath;
-
         private string _markdownText;
 
-        // UI
         private bool _onlyHtml;
 
         private string _password;
         private bool _saveOutputToHtml;
         private string _status;
         private string _username;
+        private bool _rememberCredentials;
+
+        private int _progressValue;
+        private int _progressMin;
+        private int _progressMax;
 
         public Window ThisWindow;
 
@@ -152,6 +155,58 @@ namespace MarkdownToRWGUI.Models
             }
         }
 
+        public int ProgressValue
+        {
+            get => _progressValue;
+            set
+            {
+                if (value != _progressValue)
+                {
+                    _progressValue = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public int ProgressMin
+        {
+            get => _progressMin;
+            set
+            {
+                if (value != _progressMin)
+                {
+                    _progressMin = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public int ProgressMax
+        {
+            get => _progressMax;
+            set
+            {
+                if (value != _progressMax)
+                {
+                    _progressMax = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool RememberCredentials
+        {
+            get => _rememberCredentials;
+            set
+            {
+                if (value != _rememberCredentials)
+                {
+                    _rememberCredentials = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public async void Convert()
@@ -226,7 +281,7 @@ namespace MarkdownToRWGUI.Models
 
         public void ShowPreview()
         {
-             Status = "Generating preview and opening...";
+            Status = "Generating preview and opening...";
 
             string folderPath = Path.GetDirectoryName(_markdownPath);
             _htmlPreviewPath = folderPath + "/tmp.html";
@@ -263,13 +318,22 @@ namespace MarkdownToRWGUI.Models
                 return;
             }
 
-           // AllowInput = false;
+            if (RememberCredentials)
+            {
+                 SettingsManager.SaveSettings(new Settings(){Username = Username, Password = Password, ShouldLoadCredentials = true});
+            }
+
+            ProgressValue = 0;
+            ProgressMax = 3;
+
+            AllowInput = false;
             Status = "Testing connection...";
             await Task.Delay(25);
 
             if (WordPressConnector.CanConnectToRW())
             {
                 Status = "Initial connection to RW website OK. Connecting to WordPress...";
+                ProgressValue++;
                 await Task.Delay(25);
 
                 WordPressConnector.InitializeWordPress(Username, Password);
@@ -279,6 +343,7 @@ namespace MarkdownToRWGUI.Models
                 if (profile != null)
                 {
                     Status = "Thanks " + profile.FirstName + "! Gathering images...";
+                    ProgressValue++;
                     DoUpload();
                 }
                 else
@@ -306,11 +371,12 @@ namespace MarkdownToRWGUI.Models
             }
 
             Status = "Images loaded. Starting upload, please don't close this window while uploading.";
+            ProgressValue++;
             await Task.Delay(1000);
 
             List<string> fullImagePaths = new List<string>();
             List<string> localImagePaths = new List<string>();
-            
+
             foreach (ImageLinkData link in links)
             {
                 fullImagePaths.Add(link.FullImagePath);
@@ -327,13 +393,15 @@ namespace MarkdownToRWGUI.Models
 
             List<string> imageUrls = new List<string>();
             List<string> imageIDs = new List<string>();
+            ProgressValue = 0;
+            ProgressMax = fullImagePaths.Count;
 
             // Upload images
             for (var i = 0; i < fullImagePaths.Count; i++)
             {
                 string path = fullImagePaths[i];
 
-                Status = "Uploading: " + " (" + i + 1 + "/" + fullImagePaths.Count + ")" + path + "...";
+                Status = "Uploading: " + " (" + (i + 1) + "/" + fullImagePaths.Count + ") " + path + "...";
                 await Task.Delay(25);
 
                 var result = WordPressConnector.UploadFile(path);
@@ -342,6 +410,8 @@ namespace MarkdownToRWGUI.Models
                 {
                     imageUrls.Add(result.FileResponseStruct.Url);
                     imageIDs.Add(result.FileResponseStruct.Id.ToString());
+                    ProgressValue++;
+                    await Task.Delay(25);
                 }
                 else
                 {
@@ -351,20 +421,11 @@ namespace MarkdownToRWGUI.Models
 
             // Update markdown & html
             Console.WriteLine("Starting link replacer...");
-            DragonUtil.BatchReplaceText(MarkdownText, localImagePaths, imageUrls);
+            MarkdownText = Converter.ReplaceLocalImageLinksWithUrls(_markdownPath, _htmlPath, OnlyHtml, MarkdownText, localImagePaths, imageUrls);
             HtmlText = Converter.ConvertMarkdownStringToHtml(MarkdownText);
 
-            if (_htmlPath != null)
-            {
-                DragonUtil.QuickWriteFile(_htmlPath, HtmlText);
-            }
-            
-            if (!OnlyHtml)
-            {
-                DragonUtil.QuickWriteFile(_markdownPath, MarkdownText);
-            }
-
             Status = "Upload & replacement complete!";
+            AllowInput = true;
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

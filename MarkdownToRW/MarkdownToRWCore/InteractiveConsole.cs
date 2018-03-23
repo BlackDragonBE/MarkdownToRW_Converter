@@ -179,7 +179,7 @@ namespace MarkdownToRWCore
             {
                 string path = fullImagePaths[i];
 
-                Console.WriteLine("Uploading: " + " (" + i + 1 + "/" + fullImagePaths.Count + ")" + path + "...");
+                Console.WriteLine("Uploading: " + " (" + (i + 1) + "/" + fullImagePaths.Count + ")" + path + "...");
 
                 var result = WordPressConnector.UploadFile(path);
 

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.ComponentModel;
+using System.IO;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media.Imaging;
@@ -18,7 +19,9 @@ namespace MarkdownToRWGUI
                 Icon = new WindowIcon(b);
             }
 
-            DataContext = new MainWindowViewModel { ThisWindow = this, Status = "Ready to convert!", AllowInput = true};
+            Settings set = SettingsManager.LoadSettings();
+
+            DataContext = new MainWindowViewModel { ThisWindow = this, Status = "Ready to convert!", AllowInput = true, RememberCredentials = set.ShouldLoadCredentials, Username = set.Username, Password = set.Password};
         }
 
         private void InitializeComponent()

@@ -47,7 +47,7 @@ namespace DragonMarkdown
             // List
             output = output.Replace("<ul>", "\n<ul>");
             output = output.Replace("<ol>", "\n<ol>");
-            
+
             //// Note
             output = output.Replace("</blockquote>", "</div>");
             output = output.Replace("<blockquote>\n", "\n<blockquote>");
@@ -176,23 +176,28 @@ namespace DragonMarkdown
             return links;
         }
 
-        public static void ReplaceLocalImageLinksWithUrls(string markdownPath, string htmlPath, bool onlyUpdateHtml,
+        public static string ReplaceLocalImageLinksWithUrls(string markdownPath, string htmlPath, bool onlyUpdateHtml,
             string markdownText, List<string> localImagePaths, List<string> imageUrls)
         {
             markdownText = DragonUtil.BatchReplaceText(markdownText, localImagePaths, imageUrls);
             var htmlText = ConvertMarkdownStringToHtml(markdownText);
 
-            DragonUtil.QuickWriteFile(htmlPath, htmlText);
-            Console.WriteLine("Replaced HTML!");
+            if (htmlPath != null)
+            {
+                DragonUtil.QuickWriteFile(htmlPath, htmlText);
+                Console.WriteLine("Replaced HTML!");
+            }
 
             if (!onlyUpdateHtml)
             {
                 DragonUtil.QuickWriteFile(markdownPath, markdownText);
                 Console.WriteLine("Replaced Markdown!");
             }
+
+            return markdownText;
         }
     }
-    
+
 
 
     public struct ImageLinkData
