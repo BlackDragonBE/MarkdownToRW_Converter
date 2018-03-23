@@ -27,6 +27,7 @@ namespace MarkdownToRWGUI.Models
         private bool _onlyHtml;
 
         private string _password;
+        private string _passwordOverlay;
         private bool _saveOutputToHtml;
         private string _status;
         private string _username;
@@ -150,6 +151,7 @@ namespace MarkdownToRWGUI.Models
                 if (value != _password)
                 {
                     _password = value;
+                    PasswordOverlay = DragonUtil.GetPasswordChars(_password.Length, '●');
                     OnPropertyChanged();
                 }
             }
@@ -202,6 +204,19 @@ namespace MarkdownToRWGUI.Models
                 if (value != _rememberCredentials)
                 {
                     _rememberCredentials = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public string PasswordOverlay
+        {
+            get => _passwordOverlay;
+            set
+            {
+                if (value != _passwordOverlay)
+                {
+                    _passwordOverlay = value;
                     OnPropertyChanged();
                 }
             }
@@ -415,7 +430,22 @@ namespace MarkdownToRWGUI.Models
                 }
                 else
                 {
-                    Status = "Image upload failed! Rollback not implemented yet, manual cleanup on RW WordPress necessary, sorry. :(";
+                    Status = "Image upload failed! Starting rollback...";
+                    await Task.Delay(25);
+
+                    foreach (string iD in imageIDs)
+                    {
+                        var deleted = WordPressConnector.Delete(System.Convert.ToInt32(iD));
+                        if (deleted)
+                        {
+                            Status = "Deleted file with id " + iD;
+                        }
+                        else
+                        {
+                            Status = "Failed to delete file with id " + iD;
+                        }
+                        await Task.Delay(25);
+                    }
                 }
             }
 

@@ -117,5 +117,17 @@ namespace DragonMarkdown.Utility
                 return false;
             }
         }
+
+        public static string GetPasswordChars(int length, char character)
+        {
+            string chars = "";
+
+            for (int index = 0; index < length; index++)
+            {
+                chars += character;
+            }
+
+            return chars;
+        }
     }
 }
