@@ -28,6 +28,8 @@ namespace MarkdownToRWGUI.Models
 
         private string _password;
         private string _passwordOverlay;
+        private string _actualPassword;
+        
         private bool _saveOutputToHtml;
         private string _status;
         private string _username;
@@ -431,6 +433,15 @@ namespace MarkdownToRWGUI.Models
                 {
                     Status = "Image upload failed! Starting rollback...";
                     await Task.Delay(25);
+
+                    while (WordPressConnector.CanConnectToRW() == false)
+                    {
+                        for (int second = 20; second > 0; second--)
+                        {
+                            Status = "No internet connection detected. Trying again in " + (second+1) + "seconds. Don't close the window.";
+                            await Task.Delay(1000);
+                        }
+                    }
 
                     foreach (string iD in imageIDs)
                     {
