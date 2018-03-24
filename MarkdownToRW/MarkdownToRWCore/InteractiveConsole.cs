@@ -4,6 +4,7 @@ using System.IO;
 using DragonMarkdown;
 using DragonMarkdown.DragonWordPressXml.Responses;
 using DragonMarkdown.Utility;
+using MarkdownToRWCore.DragonConsole;
 
 namespace MarkdownToRWCore
 {
@@ -99,8 +100,6 @@ namespace MarkdownToRWCore
             }
         }
 
-
-
         private static void DoConversion(string markdownPath, string htmlPath, bool uploadImages, bool onlyUpdateHtml)
         {
             Console.WriteLine("------------");
@@ -191,7 +190,7 @@ namespace MarkdownToRWCore
                 else
                 {
                     Console.WriteLine("Image upload failed! Aborting upload and going into file cleanup mode...");
-                    StartFileDeletion(imageIDs);
+                    CoreConsoleShared.StartFileDeletion(imageIDs);
                     return false;
                 }
             }
@@ -216,45 +215,10 @@ namespace MarkdownToRWCore
 
             if (user == null)
             {
-                Console.WriteLine("Incorrect credentials / can't connect to RW WordPress.");
+                ColoredConsole.WriteLineWithColor("Incorrect credentials / can't connect to RW WordPress.", ConsoleColor.Red);
                 Console.WriteLine("Please try again.");
             }
             return user;
-        }
-
-
-
-        private static void StartFileDeletion(List<string> imageIDs)
-        {
-            Console.WriteLine("------------------------------------------------");
-
-            Console.WriteLine("               _                            __ ");
-            Console.WriteLine(" ____         | |_      _____         _    |  |");
-            Console.WriteLine("|    \\ ___ ___|_| |_   |  _  |___ ___|_|___|  |");
-            Console.WriteLine("|  |  | . |   | |  _|  |   __| .'|   | |  _|__|");
-            Console.WriteLine("|____/|___|_|_| |_|    |__|  |__,|_|_|_|___|__|");
-            Console.WriteLine("");
-            Console.WriteLine("------------------------------------------------");
-
-            Console.WriteLine("Open source Hacked Core Restorative Automatic Program (OH CRAP) v2");
-            Console.WriteLine("------------");
-            Console.WriteLine("Deleting uploaded images...");
-
-            foreach (string iD in imageIDs)
-            {
-                var result = WordPressConnector.Delete(Convert.ToInt32(iD));
-                if (result)
-                {
-                    Console.WriteLine("Deleted file with id " + iD);
-                }
-                else
-                {
-                    Console.WriteLine("Failed to delete file with id " + iD);
-                }
-            }
-
-            Console.WriteLine("Cleanup complete! Press any key to exit.");
-            Console.ReadKey();
         }
 
         private static void ConversionFinished(string generatedHtmlPath)
@@ -276,8 +240,7 @@ namespace MarkdownToRWCore
                 CoreConsoleShared.OpenHtmlResult(generatedHtmlPath);
             }
 
-            Console.WriteLine("Press any key to exit.");
-            Console.ReadKey();
+            CoreConsoleShared.PauseAndQuit();
         }
 
 

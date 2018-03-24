@@ -89,7 +89,7 @@ namespace DragonMarkdown
             doc.LoadHtml(html);
             HtmlNodeCollection imgNodes = doc.DocumentNode.SelectNodes("//img");
 
-            if (imgNodes == null)
+            if (imgNodes == null || imgNodes.Count == 0)
             {
                 return;
             }
@@ -119,7 +119,7 @@ namespace DragonMarkdown
             doc.LoadHtml(html);
             HtmlNodeCollection linkNodes = doc.DocumentNode.SelectNodes("//a");
 
-            if (linkNodes == null)
+            if (linkNodes == null || linkNodes.Count == 0)
             {
                 return;
             }
@@ -144,6 +144,11 @@ namespace DragonMarkdown
             doc.LoadHtml(html);
             HtmlNodeCollection divNodes = doc.DocumentNode.SelectNodes("//div");
 
+            if (divNodes == null || divNodes.Count == 0)
+            {
+                return;
+            }
+            
             foreach (HtmlNode divNode in divNodes)
             {
                 if (divNode.InnerHtml.StartsWith("\n<em>Spoiler:"))

@@ -51,13 +51,16 @@ namespace DragonMarkdown.Utility
             return newText;
         }
 
-        public static void QuickWriteFile(string path, string content)
+        public static bool QuickWriteFile(string path, string content)
         {
+            if (!CheckFolderWritePermission(Path.GetDirectoryName(path))) return false;
+            
             using (StreamWriter sw = new StreamWriter(path))
             {
                 sw.Write(content);
                 sw.Flush();
                 sw.Close();
+                return true;
             }
         }
 

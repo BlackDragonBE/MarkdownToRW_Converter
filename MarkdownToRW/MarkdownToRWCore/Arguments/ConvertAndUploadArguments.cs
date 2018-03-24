@@ -38,6 +38,5 @@ namespace MarkdownToRWCore
         [ArgRequired(PromptIfMissing = true)]
         [ArgPosition(4)]
         public string Password { get; set; }
-
     }
 }
