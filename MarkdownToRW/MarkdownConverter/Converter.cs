@@ -64,6 +64,7 @@ namespace DragonMarkdown
             output = output.Replace("<blockquote>", "<div>");
 
             // Spoiler
+            ConvertSpoilers(ref output);
             //output = output.Replace("<blockquote>\n<em>Spoiler", "<div class=\"spoiler\">\n<em>Spoiler");
             //output = output.Replace("<div class=\"spoiler\">", "[spoiler title=\"Solution\"]");
             // TODO: replace first </div> found after "<div class=\"spoiler\">" with </spoiler> somehow for all spoilers
@@ -139,6 +140,33 @@ namespace DragonMarkdown
 
                 HtmlAttribute targetAttribute = doc.CreateAttribute("target", "_blank");
                 node.Attributes.Add(targetAttribute);
+            }
+
+            html = doc.DocumentNode.OuterHtml;
+        }
+
+        private static void ConvertSpoilers(ref string html)
+        {
+            HtmlDocument doc = new HtmlDocument();
+            doc.LoadHtml(html);
+            HtmlNodeCollection divNodes = doc.DocumentNode.SelectNodes("//div");
+
+            foreach (HtmlNode divNode in divNodes)
+            {
+                if (divNode.InnerHtml.StartsWith("\n<em>Spoiler:"))
+                {
+                    string spoilerTitle = divNode.ChildNodes[1].InnerText.Split(':')[1].Trim();
+                    divNode.RemoveChild(divNode.ChildNodes[1]);
+                    divNode.Attributes.Add("title",spoilerTitle);
+                    divNode.Name = "spoiler";
+
+                    string newOuter = divNode.OuterHtml;
+                    newOuter = newOuter.Replace("<", "[");
+                    newOuter = newOuter.Replace(">", "]");
+
+                    var newNode = HtmlNode.CreateNode(newOuter);
+                    divNode.ParentNode.ReplaceChild(newNode, divNode);
+                }
             }
 
             html = doc.DocumentNode.OuterHtml;

@@ -109,16 +109,14 @@ Spoilers are unique to RW and don't have an equivalent in markdown. Luckily, you
 Put your spoiler here!
 [/spoiler]
 
-This is also a spoiler:
+The converter can make it easier to add spoilers with some custom logic:
 
-:::spoiler lol
-This is also a way of adding notes.
-You're free to choose which to use.
-:::
+> **Spoiler: Solution inside!** Put your spoiler here!  
+> Another spoiler line.
 
 The converter can also create a spoiler if you create a special kind of quote:
 
-> **Spoiler:Solution inside!**
+> **Spoiler: Solution inside!**
 > This will be converted to a spoiler.
 > 
 > You can add multiple lines as well.
