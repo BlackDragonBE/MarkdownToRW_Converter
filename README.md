@@ -3,15 +3,22 @@
 A handy tool to convert any markdown document to Ray Wenderlich WordPress ready HTML.
 It can also batch upload all locally sourced images and replace those sources with the image URLs.
 
-There are currently 2 supported versions of the app, each with 2 variations:
+# Markdown Formatting
+
+There is a [markdown test document](ConverterTests/FullTest.markdown) you can take a look at to find out what markdown tags and special formatting are available now. Be sure to take a look on how to easily add notes and solutions.
+This is also the document I use to test the parser.
+
+If you use a RW specific html tag that isn't converted from markdown, let me know!
 
 # Versions
 
-**GUI version:**
+There are currently 2 supported versions of the app, each with 2 variations:
+
+**GUI version (recommended):**
 
 ![](READMEImages/CoreGUI.png)
 
-This version has a graphical interface which makes it easy to verify if the HTML result is what you were expecting.
+This version has a graphical interface which makes it easy to verify if the HTML result is what you were expecting. It's also the easiest to use.
 
 **Console version:**
 
