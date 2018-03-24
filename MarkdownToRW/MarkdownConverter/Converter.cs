@@ -5,6 +5,7 @@ using System.Net;
 using DragonMarkdown.Utility;
 using HtmlAgilityPack;
 using Markdig;
+using Markdig.Helpers;
 
 namespace DragonMarkdown
 {
@@ -12,7 +13,10 @@ namespace DragonMarkdown
     {
         public static string ConvertMarkdownStringToHtml(string markdown)
         {           
-            MarkdownPipeline pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
+            //MarkdownPipeline pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
+            MarkdownPipeline pipeline = new MarkdownPipelineBuilder().UseEmphasisExtras().UseCustomContainers().Build();
+
+
             string output = Markdown.ToHtml(markdown, pipeline);
             output = WebUtility.HtmlDecode(output);
 
@@ -40,11 +44,11 @@ namespace DragonMarkdown
             output = output.Replace("<h2", "\n<h2");
             output = output.Replace("<h3", "\n<h3");
             output = output.Replace("<h4", "\n<h4");
+            output = output.Replace("<em>", "<i>");
+            output = output.Replace("</em>", "</i>");
             output = output.Replace("<strong>", "<em>");
-            output = output.Replace("</strong>", "</em" +
-                                                 ">");
-            output = output.Replace("<del>", "<strikethrough>");
-            output = output.Replace("</del>", "</strikethrough>");
+            output = output.Replace("</strong>", "</em>");
+
             // List
             //output = output.Replace("<ul>", "\n<ul>");
             //output = output.Replace("<ol>", "\n<ol>");
@@ -149,9 +153,16 @@ namespace DragonMarkdown
                     divNode.Attributes.Add("title",spoilerTitle);
                     divNode.Name = "spoiler";
 
+                    string inner = divNode.InnerHtml;
                     string newOuter = divNode.OuterHtml;
+
+                    Console.WriteLine("OUTER:" +newOuter);
+                    Console.WriteLine("INNER:" + divNode.InnerHtml);
+
+                    newOuter = newOuter.Replace(inner, "INNER");
                     newOuter = newOuter.Replace("<", "[");
                     newOuter = newOuter.Replace(">", "]");
+                    newOuter = newOuter.Replace("INNER", inner);
 
                     var newNode = HtmlNode.CreateNode(newOuter);
                     divNode.ParentNode.ReplaceChild(newNode, divNode);

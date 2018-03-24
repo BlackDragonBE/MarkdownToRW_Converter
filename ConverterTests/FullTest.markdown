@@ -80,7 +80,7 @@ Here's a divider for fun:
 
 ----------
 
-**Don't use the on RW though!**
+**Don't use these on RW though!**
 
 ## Quotes and notes
 
@@ -105,18 +105,18 @@ You're free to choose which to use.
 
 Spoilers are unique to RW and don't have an equivalent in markdown. Luckily, you can add these by using pure html (yes, markdown supports HTML as well!):
 
-[spoiler title="Solution inside!"]
+[spoiler title="Creating hot dogs"]
 Put your spoiler here!
 [/spoiler]
 
 The converter can make it easier to add spoilers with some custom logic:
 
-> **Spoiler: Solution inside!** Put your spoiler here!  
+> **Spoiler: Create your IDE!** Put your spoiler here!  
 > Another spoiler line.
 
 The converter can also create a spoiler if you create a special kind of quote:
 
-> **Spoiler: Solution inside!**
+> **Spoiler: Making awesome tutorials**
 > This will be converted to a spoiler.
 > 
 > You can add multiple lines as well.

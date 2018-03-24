@@ -38,8 +38,8 @@ namespace MarkdownToRWGUI
 
         private void TxtPasswordOnPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs avaloniaPropertyChangedEventArgs)
         {
-            Console.WriteLine(avaloniaPropertyChangedEventArgs.NewValue.ToString());
-            TxtPassword.Text = DragonUtil.GetPasswordChars(TxtPassword.Text.Length, 'x');
+            Console.WriteLine(avaloniaPropertyChangedEventArgs.Property + ":" + avaloniaPropertyChangedEventArgs.NewValue.ToString());
+            TxtPassword.Text = DragonUtil.GetPasswordChars(TxtPassword.Text.Length, '●');
         }
 
         private void OnClosing(object sender, CancelEventArgs cancelEventArgs)
