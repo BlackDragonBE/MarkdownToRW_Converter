@@ -29,9 +29,9 @@ cd ..
 
 "%~dp0/7z/7za.exe" a -tzip "%~dp0\Release\MarkdownToRW_Console_Windows_SelfContained_%version%.zip" "%~dp0\MarkdownToRWCore\bin\Release\netcoreapp2.0\win10-x64\publish\*"
 
-"%~dp0/7z/7za.exe" a -tzip "%~dp0\Release\MarkdownToRW_macOS_Console_SelfContained_%version%.zip" "%~dp0\MarkdownToRWCore\bin\Release\netcoreapp2.0\osx-x64\publish\*"
+"%~dp0/7z/7za.exe" a -tzip "%~dp0\Release\MarkdownToRW_Console_macOS_SelfContained_%version%.zip" "%~dp0\MarkdownToRWCore\bin\Release\netcoreapp2.0\osx-x64\publish\*"
 
-"%~dp0/7z/7za.exe" a -tzip "%~dp0\Release\MarkdownToRW_linux_Console_SelfContained_%version%.zip" "%~dp0\MarkdownToRWCore\bin\Release\netcoreapp2.0\linux-x64\publish\*"
+"%~dp0/7z/7za.exe" a -tzip "%~dp0\Release\MarkdownToRW_Console_linux_SelfContained_%version%.zip" "%~dp0\MarkdownToRWCore\bin\Release\netcoreapp2.0\linux-x64\publish\*"
 
 :: CORE Portable GUI
 cd MarkdownToRWGUI
