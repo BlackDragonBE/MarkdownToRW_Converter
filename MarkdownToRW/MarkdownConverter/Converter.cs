@@ -2,24 +2,16 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using CommonMark;
 using DragonMarkdown.Utility;
 using HtmlAgilityPack;
 using Markdig;
-using Markdig.Extensions.EmphasisExtras;
-using Markdig.Extensions.SmartyPants;
 
 namespace DragonMarkdown
 {
     public class Converter
     {
         public static string ConvertMarkdownStringToHtml(string markdown)
-        {
-            CommonMarkSettings commonMarkSettings = CommonMarkSettings.Default.Clone();
-            commonMarkSettings.AdditionalFeatures = CommonMarkAdditionalFeatures.All;
-
-            //string output = CommonMarkConverter.Convert(markdown, commonMarkSettings);
-            
+        {           
             MarkdownPipeline pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
             string output = Markdown.ToHtml(markdown, pipeline);
             output = WebUtility.HtmlDecode(output);
