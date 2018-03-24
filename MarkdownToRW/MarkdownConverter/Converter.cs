@@ -156,9 +156,6 @@ namespace DragonMarkdown
                     string inner = divNode.InnerHtml;
                     string newOuter = divNode.OuterHtml;
 
-                    Console.WriteLine("OUTER:" +newOuter);
-                    Console.WriteLine("INNER:" + divNode.InnerHtml);
-
                     newOuter = newOuter.Replace(inner, "");
                     newOuter = newOuter.Replace("<", "[");
                     newOuter = newOuter.Replace(">", "]");

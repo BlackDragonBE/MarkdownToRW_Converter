@@ -8,6 +8,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media.Imaging;
 using DragonMarkdown.Utility;
 using MarkdownToRWGUI.Models;
+using SkiaSharp;
 
 namespace MarkdownToRWGUI
 {
@@ -18,7 +19,7 @@ namespace MarkdownToRWGUI
         public MainWindow()
         {
             InitializeComponent();
-
+            
             if (File.Exists("rw-logo_250.ico"))
             {
                 Bitmap b = new Bitmap("rw-logo_250.ico");
@@ -30,16 +31,8 @@ namespace MarkdownToRWGUI
             Settings set = SettingsManager.LoadSettings();
 
             TxtPassword  = this.FindControl<TextBox>("txtPassword");
-            TxtPassword.PropertyChanged += TxtPasswordOnPropertyChanged;
-            
             
             DataContext = new MainWindowViewModel { ThisWindow = this, TxtPassword = TxtPassword, Status = "Open a markdown file to start!", AllowInput = true, RememberCredentials = set.ShouldLoadCredentials, Username = set.Username, Password = set.Password};
-        }
-
-        private void TxtPasswordOnPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs avaloniaPropertyChangedEventArgs)
-        {
-            Console.WriteLine(avaloniaPropertyChangedEventArgs.Property + ":" + avaloniaPropertyChangedEventArgs.NewValue.ToString());
-            TxtPassword.Text = DragonUtil.GetPasswordChars(TxtPassword.Text.Length, '●');
         }
 
         private void OnClosing(object sender, CancelEventArgs cancelEventArgs)

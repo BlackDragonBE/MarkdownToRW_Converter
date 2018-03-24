@@ -27,6 +27,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <None Update="pwd.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="rw-logo_250.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

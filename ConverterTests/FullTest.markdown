@@ -105,18 +105,18 @@ You van use both in your markdown without any drawbacks.
 
 Spoilers are unique to RW and don't have an equivalent in markdown. Luckily, you can add these by using pure html (yes, markdown supports HTML as well!):
 
-[spoiler title="Solution inside!"]
+[spoiler title="Look at the solution"]
 Put your spoiler here!
 [/spoiler]
 
 The converter can make it easier to add spoilers with some custom logic:
 
-> **Spoiler: Solution inside!** Put your spoiler here!  
+> **Spoiler: Making cake** Put your spoiler here!  
 > Another spoiler line.
 
 The converter can also create a spoiler if you create a special kind of quote:
 
-> **Spoiler: Solution inside!**
+> **Spoiler: This is a spoiler**
 > This will be converted to a spoiler.
 > 
 > You can add multiple lines as well.

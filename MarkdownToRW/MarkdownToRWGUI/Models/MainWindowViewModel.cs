@@ -28,7 +28,7 @@ namespace MarkdownToRWGUI.Models
 
         private string _password;
         private string _passwordOverlay;
-        private string _actualPassword;
+        public string ActualPassword;
         
         private bool _saveOutputToHtml;
         private string _status;
