@@ -65,9 +65,6 @@ namespace DragonMarkdown
 
             // Spoiler
             ConvertSpoilers(ref output);
-            //output = output.Replace("<blockquote>\n<em>Spoiler", "<div class=\"spoiler\">\n<em>Spoiler");
-            //output = output.Replace("<div class=\"spoiler\">", "[spoiler title=\"Solution\"]");
-            // TODO: replace first </div> found after "<div class=\"spoiler\">" with </spoiler> somehow for all spoilers
 
             // Final cleanup
             output = output.Replace("<div></div>", "");
