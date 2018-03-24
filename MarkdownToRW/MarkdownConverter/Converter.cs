@@ -159,13 +159,15 @@ namespace DragonMarkdown
                     Console.WriteLine("OUTER:" +newOuter);
                     Console.WriteLine("INNER:" + divNode.InnerHtml);
 
-                    newOuter = newOuter.Replace(inner, "INNER");
+                    newOuter = newOuter.Replace(inner, "");
                     newOuter = newOuter.Replace("<", "[");
                     newOuter = newOuter.Replace(">", "]");
-                    newOuter = newOuter.Replace("INNER", inner);
+                    //newOuter = newOuter.Replace("INNER", inner);
 
                     var newNode = HtmlNode.CreateNode(newOuter);
+                    newNode.InnerHtml = newNode.InnerHtml.Replace("][", "]" + inner.Trim() + "[");
                     divNode.ParentNode.ReplaceChild(newNode, divNode);
+                    
                 }
             }
 

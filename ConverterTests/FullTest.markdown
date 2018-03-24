@@ -80,7 +80,7 @@ Here's a divider for fun:
 
 ----------
 
-**Don't use these on RW though!**
+**Don't use the on RW though!**
 
 ## Quotes and notes
 
@@ -99,31 +99,31 @@ If you add **Note:** to a quote, it gets parsed as a note by the converter.
 Another way of adding notes:
 
 :::note
-This is also a way of adding notes.
-You're free to choose which to use.
+This is also a way of adding notes without having to use "**Note:**" at the start.
+You van use both in your markdown without any drawbacks.
 :::
 
 Spoilers are unique to RW and don't have an equivalent in markdown. Luckily, you can add these by using pure html (yes, markdown supports HTML as well!):
 
-[spoiler title="Creating hot dogs"]
+[spoiler title="Solution inside!"]
 Put your spoiler here!
 [/spoiler]
 
 The converter can make it easier to add spoilers with some custom logic:
 
-> **Spoiler: Create your IDE!** Put your spoiler here!  
+> **Spoiler: Solution inside!** Put your spoiler here!  
 > Another spoiler line.
 
 The converter can also create a spoiler if you create a special kind of quote:
 
-> **Spoiler: Making awesome tutorials**
+> **Spoiler: Solution inside!**
 > This will be converted to a spoiler.
 > 
 > You can add multiple lines as well.
 
 You can also add images to quotes and notes:
 
-> Look at this image below:
+> **Note:** Look at this image below:
 >
 > ![](Images/nigel.gif)
 >
