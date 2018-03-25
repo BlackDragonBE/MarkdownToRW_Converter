@@ -21,9 +21,6 @@
     <ProjectReference Include="..\MarkdownConverter\DragonMarkdown.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Didstopia.PDFSharp">
-      <HintPath>..\MarkdownConverter\Libs\Didstopia.PDFSharp.dll</HintPath>
-    </Reference>
     <Reference Include="Restsharp.Rpc">
       <HintPath>..\MarkdownToRWCore\Libs\Restsharp.Rpc.dll</HintPath>
       <Private>true</Private>
