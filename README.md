@@ -1,6 +1,6 @@
 # MarkdownToRW Converter
 
-A handy tool to convert any markdown document to Ray Wenderlich WordPress ready HTML.
+A handy cross platform tool to convert any markdown document to Ray Wenderlich WordPress ready HTML.
 It can also batch upload all locally sourced images and replace those sources with the image URLs.
 
 # Markdown Formatting
@@ -12,7 +12,8 @@ If you use a RW specific html tag that isn't converted from markdown, let me kno
 
 # Versions
 
-There are currently 2 supported versions of the app, each with 2 variations:
+There are currently 2 supported versions of the app, each with 2 variations.
+Both main versions can be used on all major platforms.
 
 **GUI version (recommended):**
 
