@@ -5,14 +5,18 @@ using System.Net;
 using DragonMarkdown.Utility;
 using HtmlAgilityPack;
 using Markdig;
-using Markdig.Helpers;
 
-namespace DragonMarkdown
+namespace DragonMarkdown.DragonConverter
 {
     public class Converter
     {
-        public static string ConvertMarkdownStringToHtml(string markdown)
-        {           
+        public static string ConvertMarkdownStringToHtml(string markdown, ConverterOptions options = null)
+        {
+            if (options == null)
+            {
+                options = new ConverterOptions();    
+            }
+            
             //MarkdownPipeline pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
             MarkdownPipeline pipeline = new MarkdownPipelineBuilder().UseEmphasisExtras().UseCustomContainers().Build();
 
@@ -29,7 +33,7 @@ namespace DragonMarkdown
             output = output.Replace("</code></pre>", "</pre>\r\n");
 
             // Add attributes
-            AddClassToImages(ref output);
+            AddClassToImages(ref output, options.FirstImageIsAlignedRight);
             AddExtraAttributesToLinks(ref output);
 
             // Make new lines consistent across platforms
@@ -83,7 +87,7 @@ namespace DragonMarkdown
             }
         }
 
-        public static void AddClassToImages(ref string html)
+        public static void AddClassToImages(ref string html, bool firstImageRightAligned)
         {
             HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml(html);
@@ -98,7 +102,7 @@ namespace DragonMarkdown
             {
                 HtmlNode node = imgNodes[i];
 
-                if (i == 0) // First image should be right aligned, it's the 250x250 image
+                if (i == 0 && firstImageRightAligned) // First image should be right aligned, it's the 250x250 image
                 {
                     HtmlAttribute classAttribute = doc.CreateAttribute("class", "alignright size-full");
                     node.Attributes.Add(classAttribute);

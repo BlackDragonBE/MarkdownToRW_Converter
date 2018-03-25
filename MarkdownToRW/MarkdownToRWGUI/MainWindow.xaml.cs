@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media.Imaging;
+using DragonMarkdown;
 using DragonMarkdown.Utility;
 using MarkdownToRWGUI.Models;
 using SkiaSharp;
@@ -19,6 +20,8 @@ namespace MarkdownToRWGUI
         public MainWindow()
         {
             InitializeComponent();
+
+            Title += " v" + DragonVersion.VERSION; 
             
             if (File.Exists("rw-logo_250.ico"))
             {

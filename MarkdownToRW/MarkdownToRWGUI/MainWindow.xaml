@@ -1,6 +1,6 @@
 ﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Markdown To Wordpress CORE GUI" Padding="3 3 3 3" Width="1000" Height="400" MinWidth="1000" MinHeight="200" Background="#2D2D30">
+        Title="Markdown To RW CORE GUI" Padding="3 3 3 3" Width="1000" Height="400" MinWidth="1000" MinHeight="200" Background="#2D2D30">
 
 
   <Grid IsEnabled="{Binding AllowInput}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5 5 5 5">
@@ -10,9 +10,9 @@
     </Grid.ColumnDefinitions>
 
     <Grid.RowDefinitions>
-      <RowDefinition Height="40" />
+      <RowDefinition Height="auto" />
       <RowDefinition Height="*" />
-      <RowDefinition Height="40" />
+      <RowDefinition Height="auto" />
       <RowDefinition Height="24" />
     </Grid.RowDefinitions>
 
@@ -20,6 +20,15 @@
       <Style Selector="ToolTip">
         <Setter Property="Background" Value="#1E1E1E"/>
         <Setter Property="Foreground" Value="#C8C8C8"/>
+      </Style>
+      <Style Selector="DropDown">
+        <Setter Property="Background" Value="#1E1E1E"/>
+      </Style>
+      <Style Selector="DropDownItem">
+        <Setter Property="Background" Value="#1E1E1E"/>
+      </Style>
+      <Style Selector="DropDownItem:pointerover">
+        <Setter Property="Background" Value="red"/>
       </Style>
       <Style Selector="TextBlock">
         <Setter Property="Foreground" Value="#C8C8C8"/>
@@ -74,10 +83,28 @@
         <ColumnDefinition Width="1*"/>
         <ColumnDefinition Width="1*"/>
       </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="1*"/>
+        <RowDefinition Height="1*"/>
+        <RowDefinition Height="auto"/>
 
-      <Button IsDefault="True" ToolTip.Tip="Open a markdown file and convert it to HTML. The output will show on the right,&#x0a;copy and paste it in the WordPress post." Content="Open and convert markdown..." Command="{Binding Convert}"  Margin="0 0 10 0" HorizontalAlignment="Stretch" Height="30"></Button>
-      <CheckBox  IsChecked="{Binding SaveOutputToHtml}" Margin="10 5 0 0" ToolTip.Tip="Save the converted HTML to a file in the same folder as the markdown file?" Content="Save output to HTML file" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center"></CheckBox>
+      </Grid.RowDefinitions>
 
+      <Button IsDefault="True" ToolTip.Tip="Open a markdown file and convert it to HTML. The output will show on the right,&#x0a;copy and paste it in the WordPress post." Content="Open and convert markdown..." Command="{Binding Convert}"  Margin="0 0 0 0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="30"></Button>
+      <CheckBox IsChecked="{Binding SaveOutputToHtml}" Margin="10 5 0 0" ToolTip.Tip="Save the converted HTML to a file in the same folder as the markdown file?" Content="Save output to HTML file" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top"></CheckBox>
+      <CheckBox Name="chkShowOptions" Content="Show more converter options" IsChecked="false" Margin="0 5 0 0" ToolTip.Tip="Show an extended list of options." Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top"></CheckBox>
+      <CheckBox Content="Remember converter options" IsChecked="false" Margin="10 5 0 0" ToolTip.Tip="Remember options for next application load." Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top"></CheckBox>
+
+      <Border IsHitTestVisible="False" IsVisible="{Binding #chkShowOptions.IsChecked}" ZIndex="10" Margin="0 10 0 0" BorderThickness="1" BorderBrush="#3F3F46" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.ColumnSpan="9" Grid.Row="3"></Border>
+
+      <StackPanel Background="#1E1E1E"  IsVisible="{Binding #chkShowOptions.IsChecked}" Orientation="Vertical" Gap="0" Grid.ColumnSpan="4" Grid.Row="2" Margin="0 10 0 0">
+        <TextBlock Text="Parser" Margin="5 5 5 5"></TextBlock>
+        <CheckBox Content="First image is right aligned" IsChecked="true" ToolTip.Tip="Is the first image in the markdown supposed to be right aligned?&#x0a;Useful for positioning the 250x250 image correctly." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5 5 5 5"></CheckBox>
+        <TextBlock Text="Output" Margin="5 5 5 5"></TextBlock>
+        <CheckBox Content="" IsChecked="false" ToolTip.Tip="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5 5 5 5"></CheckBox>
+        <CheckBox Content="" IsChecked="false" ToolTip.Tip="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5 5 5 5"></CheckBox>
+        <CheckBox Content="" IsChecked="false" ToolTip.Tip="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5 5 5 5"></CheckBox>
+      </StackPanel>
     </Grid>
 
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Grid.Row="0">
@@ -86,8 +113,8 @@
         <ColumnDefinition Width="1*"/>
       </Grid.ColumnDefinitions>
 
-      <TextBlock Margin="5 0 0 0" Text="Copy HTML below and paste to RW Wordpress" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" TextWrapping="Wrap"></TextBlock>
-      <Button IsVisible="{Binding MarkdownLoaded}" Content="Preview HTML (don't copy)" IsEnabled="{Binding MarkdownLoaded}" Grid.Column="1" ToolTip.Tip="Create a preview html file next to the markdown file named tmp.html,&#x0a;inject it with RSS to resemble the RW style and open it in the default HTML app.&#x0a;DO NOT COPY THIS OUTPUT TO WORDPRESS!"  Command="{Binding ShowPreview}" HorizontalAlignment="Stretch" Height="30" Margin="20 0 0 0" ></Button>
+      <TextBlock Margin="5 0 0 0" Text="Copy HTML below and paste to RW Wordpress" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" TextWrapping="Wrap"></TextBlock>
+      <Button IsVisible="{Binding MarkdownLoaded}" Content="Preview HTML (don't copy)" IsEnabled="{Binding MarkdownLoaded}" Grid.Column="1" Grid.Row="2" ToolTip.Tip="Create a preview html file next to the markdown file named tmp.html,&#x0a;inject it with RSS to resemble the RW style and open it in the default HTML app.&#x0a;DO NOT COPY THIS OUTPUT TO WORDPRESS!"  Command="{Binding ShowPreview}" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="30" Margin="20 0 0 0" ></Button>
     </Grid>
 
     <TextBox IsReadOnly="True" Text="{Binding MarkdownText}" Margin="0 5 2 5" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
@@ -105,19 +132,23 @@
         <ColumnDefinition Width="auto"/>
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="38"/>
+        <RowDefinition Height="38"/>
+      </Grid.RowDefinitions>
 
-      <Border BorderThickness="1" BorderBrush="#3F3F46" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.ColumnSpan="9"></Border>
+      <Border BorderThickness="1" BorderBrush="#3F3F46" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.ColumnSpan="9" Grid.RowSpan="2"></Border>
       <TextBlock Margin="5 0 10 0" Grid.Column="0" FontWeight="Bold" Text="Upload images to Wordpress" VerticalAlignment="Center"></TextBlock>
       <TextBlock Margin="5 0 0 0" Grid.Column="1"  Text="Username" VerticalAlignment="Center" HorizontalAlignment="Right" ></TextBlock>
-      <TextBox Text="{Binding Username}" Margin="5 6 5 6" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center"></TextBox>
+      <TextBox Text="{Binding Username}" Margin="5 6 5 6" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Center"></TextBox>
       <TextBlock Margin="10 0 0 0" Grid.Column="3"  Text="Password&#x0a;(not hidden!)" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
-      <TextBox Name="txtPassword" FontFamily="Wingdings" Text="{Binding Password}" Margin="10 0 0 0" Grid.Column="4"  HorizontalAlignment="Stretch" VerticalAlignment="Center"></TextBox>
-
-      <CheckBox IsChecked="{Binding RememberCredentials}" Margin="5 2 5 2" ToolTip.Tip="Saves your credentials" Content="Save credentials" Grid.Column="5" HorizontalAlignment="Left"></CheckBox>
-      <CheckBox IsChecked="{Binding OnlyHtml}" Margin="5 2 10 2" ToolTip.Tip="Only replace links to images in the HTML above and the output file (if any).&#x0a;By default, the markdown file will also be updated with new URLs." Content="Only replace links in HTML" Grid.Column="6" HorizontalAlignment="Right"></CheckBox>
-      <Button Content="Upload images" Command="{Binding UploadImages}"  Margin="0 5 5 5" Grid.Column="9"></Button>
+      <TextBox Name="txtPassword" FontFamily="Webdings" Text="{Binding Password}" Margin="10 0 0 0" Grid.Column="4"  HorizontalAlignment="Stretch" VerticalAlignment="Center"></TextBox>
+      <CheckBox IsChecked="{Binding RememberCredentials}" Margin="5 0 0 0" ToolTip.Tip="Saves your credentials" Content="Save credentials" Grid.Column="5" HorizontalAlignment="Left"></CheckBox>
+      
+      <CheckBox IsChecked="{Binding OnlyHtml}" Margin="5 2 10 2" Grid.Row="1" ToolTip.Tip="Only replace links to images in the HTML above and the output file (if any).&#x0a;By default, the markdown file will also be updated with new URLs." Content="Only replace links in HTML" Grid.Column="0" HorizontalAlignment="Right"></CheckBox>
+      <Button Content="Upload images" Command="{Binding UploadImages}"  Margin="10 5 5 5" Grid.Column="9"></Button>
     </Grid>
-    
+
     <ProgressBar Margin="0 5 0 0" Value="{Binding ProgressValue}"  Minimum="{Binding ProgressMin}" Maximum="{Binding ProgressMax}" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Stretch" Background="#565656" Foreground="#006837"></ProgressBar>
     <TextBlock Margin="5 5 0 0" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Text="{Binding Status}" HorizontalAlignment="Stretch" VerticalAlignment="Center"></TextBlock>
   </Grid>
