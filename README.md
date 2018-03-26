@@ -125,10 +125,9 @@ Follow the instructions in the console. It should be pretty straight forward, ty
 
 **GUI version**:
 
-- Password field doesn't display password characters, use discretion. This will be fixed once I find a workaround or when the UI library implements this functionality (it's on their to-do list).
+- Password field uses webdings, not real password dots. This will be fixed once I find a workaround or when the UI library implements password chars (it's on their to-do list).
 - Some report that the app freezes on macOS sometimes. Needs more testing.
 
 **All versions (shared library bugs)**:
 
-- The converter assumes the first image found is the 250x250 feature image shown at the top right of tutorials and articles. It has come to my attention that not all teams use this workflow, some add this image later. I'll make this optional in the next version. Remove the **alignright** class from the output for now and replace it with **aligncenter** if it was incorrectly parsed.
-- No updater yet, please download new releases manually. The next release will report if there's a new release available. The next step is a semi-auto updater.
+- No option for automatic caption creating from images yet.

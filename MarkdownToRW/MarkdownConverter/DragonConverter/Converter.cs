@@ -157,7 +157,7 @@ namespace DragonMarkdown.DragonConverter
 
             foreach (HtmlNode imgNode in imgNodes)
             {
-                if (imgNode.Attributes["alt"].Value != "")
+                if (imgNode.Attributes["alt"] != null && imgNode.Attributes["alt"].Value != "")
                 {
                     HtmlNode parent = imgNode.ParentNode;
 
@@ -170,7 +170,6 @@ namespace DragonMarkdown.DragonConverter
                     parent.ReplaceChild(newElement, imgNode);
 
                     ReplaceOuterHtmlWithSquareBrackets(newElement);
-
                 }
             }
 
