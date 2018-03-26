@@ -93,7 +93,7 @@ namespace DragonMarkdown.DragonConverter
         {
             HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml(html);
-            HtmlNodeCollection imgNodes = doc.DocumentNode.SelectNodes("//img");
+            HtmlNodeCollection imgNodes = doc.DocumentNode.SelectNodes("//img[@src]");
 
             if (imgNodes == null || imgNodes.Count == 0)
             {
@@ -148,7 +148,7 @@ namespace DragonMarkdown.DragonConverter
         {
             HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml(html);
-            HtmlNodeCollection imgNodes = doc.DocumentNode.SelectNodes("//img");
+            HtmlNodeCollection imgNodes = doc.DocumentNode.SelectNodes("//img[@src]");
 
             if (imgNodes == null || imgNodes.Count == 0)
             {
