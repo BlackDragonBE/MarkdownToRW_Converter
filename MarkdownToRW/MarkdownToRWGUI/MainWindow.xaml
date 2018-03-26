@@ -92,15 +92,15 @@
 
       <Button IsDefault="True" ToolTip.Tip="Open a markdown file and convert it to HTML. The output will show on the right,&#x0a;copy and paste it in the WordPress post." Content="Open and convert markdown..." Command="{Binding Convert}"  Margin="0 0 0 0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="30"></Button>
       <CheckBox IsChecked="{Binding SaveOutputToHtml}" Margin="10 5 0 0" ToolTip.Tip="Save the converted HTML to a file in the same folder as the markdown file?" Content="Save output to HTML file" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top"></CheckBox>
-      <CheckBox Name="chkShowOptions" Content="Show more converter options" IsChecked="false" Margin="0 5 0 0" ToolTip.Tip="Show an extended list of options." Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top"></CheckBox>
-      <CheckBox Content="Remember converter options" IsChecked="false" Margin="10 5 0 0" ToolTip.Tip="Remember options for next application load." Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top"></CheckBox>
+      <CheckBox Name="chkShowOptions" Content="Show more conversion options" IsChecked="false" Margin="0 5 0 0" ToolTip.Tip="Show an extended list of options." Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top"></CheckBox>
+      <CheckBox Content="Remember conversion options" IsChecked="{Binding SaveConverterSettings}" Margin="10 5 0 0" ToolTip.Tip="Remember options for next application load." Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top"></CheckBox>
 
       <Border IsHitTestVisible="False" IsVisible="{Binding #chkShowOptions.IsChecked}" ZIndex="10" Margin="0 10 0 0" BorderThickness="1" BorderBrush="#3F3F46" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.ColumnSpan="9" Grid.Row="3"></Border>
 
       <StackPanel Background="#1E1E1E"  IsVisible="{Binding #chkShowOptions.IsChecked}" Orientation="Vertical" Gap="0" Grid.ColumnSpan="4" Grid.Row="2" Margin="0 10 0 0">
-        <TextBlock Text="Parser" Margin="5 5 5 5"></TextBlock>
-        <CheckBox Content="First image is right aligned" IsChecked="true" ToolTip.Tip="Is the first image in the markdown supposed to be right aligned?&#x0a;Useful for positioning the 250x250 image correctly." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5 5 5 5"></CheckBox>
-        <TextBlock Text="Output" Margin="5 5 5 5"></TextBlock>
+        <TextBlock Text="HTML Parser" Margin="5 5 5 5"></TextBlock>
+        <CheckBox Content="First image is right aligned" IsChecked="{Binding FirstImageRight}" ToolTip.Tip="Is the first image in the markdown supposed to be right aligned?&#x0a;Useful for positioning the 250x250 image correctly." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5 5 5 5"></CheckBox>
+        <TextBlock Text="Experimental" Margin="5 5 5 5"></TextBlock>
         <CheckBox Content="" IsChecked="false" ToolTip.Tip="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5 5 5 5"></CheckBox>
         <CheckBox Content="" IsChecked="false" ToolTip.Tip="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5 5 5 5"></CheckBox>
         <CheckBox Content="" IsChecked="false" ToolTip.Tip="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5 5 5 5"></CheckBox>

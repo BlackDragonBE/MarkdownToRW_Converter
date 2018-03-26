@@ -25,7 +25,9 @@ namespace MarkdownToRWGUI.Models
         private string _markdownPath;
         private string _markdownText;
 
+        private bool _saveConverterSettings;
         private bool _onlyHtml;
+        private bool _firstImageRight;
 
         private string _password;
         private string _passwordOverlay;
@@ -224,6 +226,32 @@ namespace MarkdownToRWGUI.Models
                 if (value != _passwordOverlay)
                 {
                     _passwordOverlay = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool FirstImageRight
+        {
+            get => _firstImageRight;
+            set
+            {
+                if (value != _firstImageRight)
+                {
+                    _firstImageRight = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool SaveConverterSettings
+        {
+            get => _saveConverterSettings;
+            set
+            {
+                if (value != _saveConverterSettings)
+                {
+                    _saveConverterSettings = value;
                     OnPropertyChanged();
                 }
             }

@@ -35,7 +35,7 @@ namespace MarkdownToRWGUI
 
             TxtPassword  = this.FindControl<TextBox>("txtPassword");
             
-            DataContext = new MainWindowViewModel { ThisWindow = this, TxtPassword = TxtPassword, Status = "Open a markdown file to start!", AllowInput = true, RememberCredentials = set.ShouldLoadCredentials, Username = set.Username, Password = set.Password};
+            DataContext = new MainWindowViewModel { ThisWindow = this, TxtPassword = TxtPassword, Status = "Open a markdown file to start!", AllowInput = true, RememberCredentials = set.ShouldLoadCredentials, Username = set.Username, Password = set.Password, FirstImageRight = true};
         }
 
         private void OnClosing(object sender, CancelEventArgs cancelEventArgs)
