@@ -30,7 +30,7 @@ namespace MarkdownToRWCore
         [ArgDescription("Convert a markdown file to RW WordPress ready HTML.")]
         public void SimpleConvert(ConvertArguments args)
         {
-            ConvertToHtml(args.MarkdownPath, args.HtmlPath);
+            ConvertToHtml(args.MarkdownPath, args.HtmlPath, args.FirstImageRightAligned);
             CoreConsoleShared.PauseAndQuit();
         }
 
@@ -38,7 +38,7 @@ namespace MarkdownToRWCore
         [ArgDescription("Convert a markdown file to RW WordPress ready HTML, upload its images to WordPress and replace local image paths with the new URLs.")]
         public void ConvertAndUpload(ConvertAndUploadArguments args)
         {
-            string htmlPath = ConvertToHtml(args.MarkdownPath, args.HtmlPath);
+            string htmlPath = ConvertToHtml(args.MarkdownPath, args.HtmlPath, args.FirstImageRightAligned);
 
             Console.WriteLine("Starting image upload...");
 
@@ -63,7 +63,7 @@ namespace MarkdownToRWCore
             Environment.Exit(0);
         }
 
-        public string ConvertToHtml(string markdownPath, string htmlPath)
+        public string ConvertToHtml(string markdownPath, string htmlPath, bool firstImageRight)
         {
             Console.WriteLine("Converting " + markdownPath + " to RW WordPress ready HTML...");
 
@@ -74,7 +74,7 @@ namespace MarkdownToRWCore
 
             if (DragonUtil.CheckFolderWritePermission(Path.GetDirectoryName(htmlPath)))
             {
-                Converter.ConvertMarkdownFileToHtmlFile(markdownPath, htmlPath);
+                Converter.ConvertMarkdownFileToHtmlFile(markdownPath, htmlPath, new ConverterOptions(firstImageRight));
                 Console.WriteLine("Saved HTML to custom location: " + htmlPath);
             }
             else

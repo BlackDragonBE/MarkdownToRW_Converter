@@ -28,6 +28,15 @@ namespace MarkdownToRWCore
                 markdownPath = CoreConsoleShared.GetExistingFilePath();
             }
 
+            string firstImageRight = null;
+
+            while (firstImageRight != "y" && firstImageRight != "n")
+            {
+                Console.WriteLine(
+                    "Should the first image be right aligned? This is useful for the 250x250 image at the top of tutorials. (y/n)");
+                firstImageRight = Console.ReadLine();
+            }
+
             string sameFolder = null;
 
             while (sameFolder != "y" && sameFolder != "n")
@@ -90,22 +99,22 @@ namespace MarkdownToRWCore
             switch (uploadImages)
             {
                 case "y":
-                    DoConversion(markdownPath, htmlPath, true, false);
+                    DoConversion(markdownPath, htmlPath, true, false, CoreConsoleShared.YesNoToBool(firstImageRight));
                     break;
                 case "only html":
-                    DoConversion(markdownPath, htmlPath, true, true);
+                    DoConversion(markdownPath, htmlPath, true, true, CoreConsoleShared.YesNoToBool(firstImageRight));
                     break;
                 case "n":
-                    DoConversion(markdownPath, htmlPath, false, false);
+                    DoConversion(markdownPath, htmlPath, false, false, CoreConsoleShared.YesNoToBool(firstImageRight));
                     break;
             }
         }
 
-        private static void DoConversion(string markdownPath, string htmlPath, bool uploadImages, bool onlyUpdateHtml)
+        private static void DoConversion(string markdownPath, string htmlPath, bool uploadImages, bool onlyUpdateHtml, bool firstImageRight)
         {
             Console.WriteLine("------------");
             Console.WriteLine("Converting...");
-            Converter.ConvertMarkdownFileToHtmlFile(markdownPath, htmlPath);
+            Converter.ConvertMarkdownFileToHtmlFile(markdownPath, htmlPath, new ConverterOptions(firstImageRight));
             Console.WriteLine("Markdown converted!");
 
             if (uploadImages)

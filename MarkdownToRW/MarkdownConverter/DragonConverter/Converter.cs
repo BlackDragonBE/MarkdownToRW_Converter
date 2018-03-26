@@ -14,9 +14,9 @@ namespace DragonMarkdown.DragonConverter
         {
             if (options == null)
             {
-                options = new ConverterOptions();    
+                options = new ConverterOptions();
             }
-            
+
             //MarkdownPipeline pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
             MarkdownPipeline pipeline = new MarkdownPipelineBuilder().UseEmphasisExtras().UseCustomContainers().Build();
 
@@ -73,11 +73,11 @@ namespace DragonMarkdown.DragonConverter
             return output;
         }
 
-        public static void ConvertMarkdownFileToHtmlFile(string markdownFilePath, string htmlFilePath)
+        public static void ConvertMarkdownFileToHtmlFile(string markdownFilePath, string htmlFilePath, ConverterOptions options = null)
         {
             using (StreamReader sr = new StreamReader(markdownFilePath))
             {
-                string html = ConvertMarkdownStringToHtml(sr.ReadToEnd());
+                string html = ConvertMarkdownStringToHtml(sr.ReadToEnd(), options);
                 using (StreamWriter sw = new StreamWriter(htmlFilePath))
                 {
                     sw.Write(html);
@@ -152,14 +152,14 @@ namespace DragonMarkdown.DragonConverter
             {
                 return;
             }
-            
+
             foreach (HtmlNode divNode in divNodes)
             {
                 if (divNode.InnerHtml.StartsWith("\n<em>Spoiler:"))
                 {
                     string spoilerTitle = divNode.ChildNodes[1].InnerText.Split(':')[1].Trim();
                     divNode.RemoveChild(divNode.ChildNodes[1]);
-                    divNode.Attributes.Add("title",spoilerTitle);
+                    divNode.Attributes.Add("title", spoilerTitle);
                     divNode.Name = "spoiler";
 
                     string inner = divNode.InnerHtml;
@@ -173,7 +173,7 @@ namespace DragonMarkdown.DragonConverter
                     var newNode = HtmlNode.CreateNode(newOuter);
                     newNode.InnerHtml = newNode.InnerHtml.Replace("][", "]" + inner.Trim() + "[");
                     divNode.ParentNode.ReplaceChild(newNode, divNode);
-                    
+
                 }
             }
 

@@ -16,34 +16,31 @@ namespace MarkdownToRWGUI.Models
     public class MainWindowViewModel : INotifyPropertyChanged
     {
         private bool _allowInput = true;
-
+        private bool _firstImageRight;
         private string _htmlPath;
         private string _htmlPreviewPath;
         private string _htmlText;
-
         private bool _markdownLoaded;
         private string _markdownPath;
         private string _markdownText;
-
-        private bool _saveConverterSettings;
         private bool _onlyHtml;
-        private bool _firstImageRight;
-
         private string _password;
         private string _passwordOverlay;
-        public string ActualPassword;
-        
+        private int _progressMax;
+        private int _progressMin;
+        private int _progressValue;
+        private bool _rememberCredentials;
+        private bool _saveConverterSettings;
         private bool _saveOutputToHtml;
         private string _status;
         private string _username;
-        private bool _rememberCredentials;
+        private bool _newUpdate;
 
-        private int _progressValue;
-        private int _progressMin;
-        private int _progressMax;
-
+        public string ActualPassword;
+        public Settings Settings;
         public Window ThisWindow;
         public TextBox TxtPassword;
+        public string UpdateDownloadUrl;
 
         public bool AllowInput
         {
@@ -151,10 +148,7 @@ namespace MarkdownToRWGUI.Models
 
         public string Password
         {
-            get
-            {
-                return _password;
-            }
+            get => _password;
             set
             {
                 if (value != _password)
@@ -257,12 +251,32 @@ namespace MarkdownToRWGUI.Models
             }
         }
 
+        public bool NewUpdate
+        {
+            get => _newUpdate;
+            set
+            {
+                if (value != _newUpdate)
+                {
+                    _newUpdate = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private ConverterOptions GetConverterOptions()
+        {
+            return new ConverterOptions {FirstImageIsAlignedRight = FirstImageRight};
+        }
 
         public async void Convert()
         {
-
+            SaveSettings();
             string path = await ChooseFile();
+
+            ConverterOptions options = GetConverterOptions();
 
             if (path != null)
             {
@@ -274,12 +288,12 @@ namespace MarkdownToRWGUI.Models
                     using (StreamReader sr = new StreamReader(path))
                     {
                         MarkdownText = sr.ReadToEnd().Replace("\t", "  ");
-                        HtmlText = Converter.ConvertMarkdownStringToHtml(MarkdownText);
+                        HtmlText = Converter.ConvertMarkdownStringToHtml(MarkdownText, options);
 
                         if (SaveOutputToHtml)
                         {
                             _htmlPath = DragonUtil.GetFullPathWithoutExtension(path) + ".html";
-                            Converter.ConvertMarkdownFileToHtmlFile(path, _htmlPath);
+                            Converter.ConvertMarkdownFileToHtmlFile(path, _htmlPath, options);
                         }
 
                         Status = "Converted markdown to HTML!";
@@ -292,7 +306,6 @@ namespace MarkdownToRWGUI.Models
                 Status = "No valid markdown chosen!";
             }
         }
-
 
         private async Task<string> ChooseFile()
         {
@@ -329,6 +342,11 @@ namespace MarkdownToRWGUI.Models
             return null;
         }
 
+        public void DownloadUpdate()
+        {
+            DragonUtil.OpenFileInDefaultApplication(UpdateDownloadUrl);
+        }
+        
         public void ShowPreview()
         {
             Status = "Generating preview and opening...";
@@ -368,10 +386,8 @@ namespace MarkdownToRWGUI.Models
                 return;
             }
 
-            if (RememberCredentials)
-            {
-                 SettingsManager.SaveSettings(new Settings(){Username = Username, Password = Password, ShouldLoadCredentials = true});
-            }
+            SaveSettings();
+
 
             ProgressValue = 0;
             ProgressMax = 3;
@@ -407,6 +423,37 @@ namespace MarkdownToRWGUI.Models
                 Status = "Connection failed. Can't connect to RW.";
                 AllowInput = true;
             }
+        }
+
+        private void SaveSettings()
+        {
+            if (RememberCredentials)
+            {
+                Settings.Username = Username;
+                Settings.Password = Password;
+                Settings.ShouldLoadCredentials = true;
+            }
+            else
+            {
+                Settings.Username = "";
+                Settings.Password = "";
+                Settings.ShouldLoadCredentials = false;
+            }
+
+            Settings.RememberConverterSettings = SaveConverterSettings;
+
+            if (SaveConverterSettings)
+            {
+                Settings.FirstImageAlignedRight = FirstImageRight;
+                Settings.OutputToHtml = SaveOutputToHtml;
+            }
+            else
+            {
+                Settings.FirstImageAlignedRight = true;
+                Settings.OutputToHtml = false;
+            }
+
+            SettingsManager.SaveSettings(Settings);
         }
 
         private async void DoUpload()
@@ -472,7 +519,8 @@ namespace MarkdownToRWGUI.Models
                     {
                         for (int second = 20; second > 0; second--)
                         {
-                            Status = "No internet connection detected. Trying again in " + (second+1) + "seconds. Don't close the window.";
+                            Status = "No internet connection detected. Trying again in " + (second + 1) +
+                                     "seconds. Don't close the window.";
                             await Task.Delay(1000);
                         }
                     }
@@ -495,7 +543,8 @@ namespace MarkdownToRWGUI.Models
 
             // Update markdown & html
             Console.WriteLine("Starting link replacer...");
-            MarkdownText = Converter.ReplaceLocalImageLinksWithUrls(_markdownPath, _htmlPath, OnlyHtml, MarkdownText, localImagePaths, imageUrls);
+            MarkdownText = Converter.ReplaceLocalImageLinksWithUrls(_markdownPath, _htmlPath, OnlyHtml, MarkdownText,
+                localImagePaths, imageUrls);
             HtmlText = Converter.ConvertMarkdownStringToHtml(MarkdownText);
 
             Status = "Upload & replacement complete!";

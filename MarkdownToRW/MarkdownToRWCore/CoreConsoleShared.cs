@@ -111,5 +111,15 @@ namespace MarkdownToRWCore
             Console.ReadKey();
             QuitConsole();
         }
+
+        public static bool YesNoToBool(string yesNo)
+        {
+            if (yesNo.ToLower() == "y" || yesNo.ToLower() == "yes")
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

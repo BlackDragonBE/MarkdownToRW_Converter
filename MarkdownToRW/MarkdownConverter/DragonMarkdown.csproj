@@ -8,13 +8,11 @@
   <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.7.1" />
     <PackageReference Include="Markdig" Version="0.14.9" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="RestSharp" Version="106.2.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="EasyHttp">
-      <HintPath>..\packages\EasyHttp.1.7.0\lib\net40\EasyHttp.dll</HintPath>
-    </Reference>
     <Reference Include="Restsharp.Rpc">
       <HintPath>Restsharp\Restsharp.Rpc.dll</HintPath>
       <Private>true</Private>

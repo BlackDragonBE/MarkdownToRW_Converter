@@ -27,16 +27,22 @@ namespace MarkdownToRWCore
         [ArgPosition(2)]
         public bool OnlyUpdateHtmlFile { get; set; }
 
+        [ArgDescription("(optional) Should the first image be right aligned? This is useful for the 250x250 image at the top of tutorials.")]
+        [DefaultValue(true)]
+        [ArgPosition(3)]
+        public bool FirstImageRightAligned { get; set; }
+
         [ArgShortcut("user")]
         [ArgDescription("RW WordPress Username.")]
         [ArgRequired(PromptIfMissing = true)]
-        [ArgPosition(3)]
+        [ArgPosition(4)]
         public string Username { get; set; }
 
         [ArgShortcut("pw")]
         [ArgDescription("RW WordPress Password.")]
         [ArgRequired(PromptIfMissing = true)]
-        [ArgPosition(4)]
+        [ArgPosition(5)]
         public string Password { get; set; }
+        
     }
 }

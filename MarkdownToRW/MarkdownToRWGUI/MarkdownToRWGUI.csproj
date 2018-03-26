@@ -16,6 +16,7 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.6.2-build4732-beta" />
     <PackageReference Include="Avalonia.Desktop" Version="0.6.2-build4732-beta" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MarkdownConverter\DragonMarkdown.csproj" />
