@@ -2,6 +2,6 @@ namespace DragonMarkdown
 {
     public static class DragonVersion
     {
-        public static readonly decimal VERSION = 1.05m;
+        public static readonly decimal VERSION = 1.11m;
     }
 }
