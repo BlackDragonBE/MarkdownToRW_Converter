@@ -65,6 +65,7 @@ namespace DragonMarkdown.DragonConverter
 
             // Spoiler
             ConvertSpoilers(ref output);
+            ConvertImagesWithAltToCaptions(ref output);
 
             // Final cleanup
             output = output.Replace("<div></div>", "");
@@ -73,7 +74,8 @@ namespace DragonMarkdown.DragonConverter
             return output;
         }
 
-        public static void ConvertMarkdownFileToHtmlFile(string markdownFilePath, string htmlFilePath, ConverterOptions options = null)
+        public static void ConvertMarkdownFileToHtmlFile(string markdownFilePath, string htmlFilePath,
+            ConverterOptions options = null)
         {
             using (StreamReader sr = new StreamReader(markdownFilePath))
             {
@@ -142,6 +144,39 @@ namespace DragonMarkdown.DragonConverter
             html = doc.DocumentNode.OuterHtml;
         }
 
+        private static void ConvertImagesWithAltToCaptions(ref string html)
+        {
+            HtmlDocument doc = new HtmlDocument();
+            doc.LoadHtml(html);
+            HtmlNodeCollection imgNodes = doc.DocumentNode.SelectNodes("//img");
+
+            if (imgNodes == null || imgNodes.Count == 0)
+            {
+                return;
+            }
+
+            foreach (HtmlNode imgNode in imgNodes)
+            {
+                if (imgNode.Attributes["alt"].Value != "")
+                {
+                    HtmlNode parent = imgNode.ParentNode;
+
+                    HtmlDocument newDoc = new HtmlDocument();
+                    HtmlNode newElement = newDoc.CreateElement("caption");
+                    newElement.SetAttributeValue("align", imgNode.Attributes["class"].Value);
+                    newElement.AppendChild(imgNode);
+                    newElement.InnerHtml += imgNode.Attributes["alt"].Value;
+
+                    parent.ReplaceChild(newElement, imgNode);
+
+                    ReplaceOuterHtmlWithSquareBrackets(newElement);
+
+                }
+            }
+
+            html = doc.DocumentNode.OuterHtml;
+        }
+
         private static void ConvertSpoilers(ref string html)
         {
             HtmlDocument doc = new HtmlDocument();
@@ -162,18 +197,7 @@ namespace DragonMarkdown.DragonConverter
                     divNode.Attributes.Add("title", spoilerTitle);
                     divNode.Name = "spoiler";
 
-                    string inner = divNode.InnerHtml;
-                    string newOuter = divNode.OuterHtml;
-
-                    newOuter = newOuter.Replace(inner, "");
-                    newOuter = newOuter.Replace("<", "[");
-                    newOuter = newOuter.Replace(">", "]");
-                    //newOuter = newOuter.Replace("INNER", inner);
-
-                    var newNode = HtmlNode.CreateNode(newOuter);
-                    newNode.InnerHtml = newNode.InnerHtml.Replace("][", "]" + inner.Trim() + "[");
-                    divNode.ParentNode.ReplaceChild(newNode, divNode);
-
+                    ReplaceOuterHtmlWithSquareBrackets(divNode);
                 }
             }
 
@@ -241,8 +265,22 @@ namespace DragonMarkdown.DragonConverter
 
             return markdownText;
         }
-    }
 
+        private static void ReplaceOuterHtmlWithSquareBrackets(HtmlNode node)
+        {
+            string inner = node.InnerHtml;
+            string newOuter = node.OuterHtml;
+
+            newOuter = newOuter.Replace(inner, "");
+            newOuter = newOuter.Replace("<", "[");
+            newOuter = newOuter.Replace(">", "]");
+            //newOuter = newOuter.Replace("INNER", inner);
+
+            var newNode = HtmlNode.CreateNode(newOuter);
+            newNode.InnerHtml = newNode.InnerHtml.Replace("][", "]" + inner.Trim() + "[");
+            node.ParentNode.ReplaceChild(newNode, node);
+        }
+    }
 
 
     public struct ImageLinkData
@@ -250,6 +288,4 @@ namespace DragonMarkdown.DragonConverter
         public string FullImagePath;
         public string LocalImagePath;
     }
-
-
 }

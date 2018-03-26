@@ -40,6 +40,10 @@ Lots of formats are supported, including GIFs of course:
 
 ![](Images/nigel.gif)
 
+You can add an alt text by writing it between the square brackets. MarkdownToRW will convert these into captions (and the alt is preserved as well):
+
+![The stare of Doge penetrates your soul. Why aren't you doing your work?](Images/doge.jpg)
+
 Make sure to add a separate child folder of the folder your markdown is in, you can easily use subfolders in links and images.
 The converter can find all locally sourced images, upload them to WordPress and replace the local paths with the image URLs.
 
