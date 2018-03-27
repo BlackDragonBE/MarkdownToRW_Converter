@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -71,6 +72,16 @@ namespace DragonMarkdown.Updater
             }
 
             return release;
+        }
+
+        public static void ExtractZipToFolder(string zipPath, string extractFolderPath)
+        {
+            if (!Directory.Exists(extractFolderPath))
+            {
+                Directory.CreateDirectory(extractFolderPath);
+            }
+
+            ZipFile.ExtractToDirectory(zipPath, extractFolderPath);
         }
     }
 }
