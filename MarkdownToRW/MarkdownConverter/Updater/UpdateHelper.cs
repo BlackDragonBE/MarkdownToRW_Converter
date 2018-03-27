@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using DragonMarkdown;
-using DragonMarkdown.Utility;
 using Newtonsoft.Json;
 
 namespace DragonMarkdown.Updater
@@ -25,7 +22,7 @@ namespace DragonMarkdown.Updater
 
             GithubRelease newestRelease = null;
 
-            newestRelease = GetNewestRelease();
+            newestRelease = GetNewestReleaseInfo();
 
             if (newestRelease != null)
             {
@@ -50,7 +47,7 @@ namespace DragonMarkdown.Updater
             return null;
         }
 
-        private static GithubRelease GetNewestRelease()
+        private static GithubRelease GetNewestReleaseInfo()
         {
             GithubRelease release = null;
 
