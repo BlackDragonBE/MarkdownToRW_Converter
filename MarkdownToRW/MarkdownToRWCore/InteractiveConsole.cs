@@ -37,6 +37,15 @@ namespace MarkdownToRWCore
                 firstImageRight = Console.ReadLine();
             }
 
+            string convertImagesWithAlt = null;
+
+            while (convertImagesWithAlt != "y" && convertImagesWithAlt != "n")
+            {
+                Console.WriteLine(
+                    "Should all images with an alt text be converted to captions? (y/n)");
+                convertImagesWithAlt = Console.ReadLine();
+            }
+
             string sameFolder = null;
 
             while (sameFolder != "y" && sameFolder != "n")
@@ -96,25 +105,28 @@ namespace MarkdownToRWCore
                 return;
             }
 
+            ConverterOptions options = new ConverterOptions();
+            options.FirstImageIsAlignedRight = CoreConsoleShared.YesNoToBool(firstImageRight);
+
             switch (uploadImages)
             {
                 case "y":
-                    DoConversion(markdownPath, htmlPath, true, false, CoreConsoleShared.YesNoToBool(firstImageRight));
+                    DoConversion(markdownPath, htmlPath, true, false, options);
                     break;
                 case "only html":
-                    DoConversion(markdownPath, htmlPath, true, true, CoreConsoleShared.YesNoToBool(firstImageRight));
+                    DoConversion(markdownPath, htmlPath, true, true, options);
                     break;
                 case "n":
-                    DoConversion(markdownPath, htmlPath, false, false, CoreConsoleShared.YesNoToBool(firstImageRight));
+                    DoConversion(markdownPath, htmlPath, false, false, options);
                     break;
             }
         }
 
-        private static void DoConversion(string markdownPath, string htmlPath, bool uploadImages, bool onlyUpdateHtml, bool firstImageRight)
+        private static void DoConversion(string markdownPath, string htmlPath, bool uploadImages, bool onlyUpdateHtml, ConverterOptions options)
         {
             Console.WriteLine("------------");
             Console.WriteLine("Converting...");
-            Converter.ConvertMarkdownFileToHtmlFile(markdownPath, htmlPath, new ConverterOptions(firstImageRight));
+            Converter.ConvertMarkdownFileToHtmlFile(markdownPath, htmlPath, options);
             Console.WriteLine("Markdown converted!");
 
             if (uploadImages)

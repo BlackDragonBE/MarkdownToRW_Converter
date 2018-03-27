@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
+using DragonMarkdown;
 
 namespace MarkdownToRWGUI
 {
@@ -17,12 +18,20 @@ namespace MarkdownToRWGUI
 
             if (File.Exists(_fileName))
             {
-                var serializer = new XmlSerializer(typeof(Settings));
-
-                using (var reader = XmlReader.Create(_fileName))
+                try
                 {
-                    var settings = (Settings) serializer.Deserialize(reader);
-                    return settings;
+                    var serializer = new XmlSerializer(typeof(Settings));
+
+                    using (var reader = XmlReader.Create(_fileName))
+                    {
+                        var settings = (Settings)serializer.Deserialize(reader);
+                        return settings;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Can't load settings: " + e);
+                    SaveSettings(new Settings());
                 }
             }
             else
@@ -36,6 +45,7 @@ namespace MarkdownToRWGUI
 
         public static void SaveSettings(Settings settings)
         {
+            settings.SettingsVersion = DragonVersion.VERSION.ToString();
             var serializer = new XmlSerializer(typeof(Settings));
 
             using (var writer = XmlWriter.Create(_fileName))

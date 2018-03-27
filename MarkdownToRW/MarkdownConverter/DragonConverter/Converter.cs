@@ -65,7 +65,12 @@ namespace DragonMarkdown.DragonConverter
 
             // Spoiler
             ConvertSpoilers(ref output);
-            ConvertImagesWithAltToCaptions(ref output);
+
+
+            if (options.ReplaceImageWithAltWithCaption)
+            {
+                ConvertImagesWithAltToCaptions(ref output);
+            }
 
             // Final cleanup
             output = output.Replace("<div></div>", "");

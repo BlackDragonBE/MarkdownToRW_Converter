@@ -52,7 +52,8 @@ namespace MarkdownToRWGUI
             if (set.RememberConverterSettings)
             {
                 ((MainWindowViewModel) DataContext).SaveOutputToHtml = set.OutputToHtml;
-                ((MainWindowViewModel) DataContext).FirstImageRight = set.FirstImageAlignedRight;
+                ((MainWindowViewModel) DataContext).FirstImageRight = set.ConverterOptions.FirstImageIsAlignedRight;
+                ((MainWindowViewModel) DataContext).ReplaceImageAlts = set.ConverterOptions.ReplaceImageWithAltWithCaption;
             }
 
             CheckForUpdate();

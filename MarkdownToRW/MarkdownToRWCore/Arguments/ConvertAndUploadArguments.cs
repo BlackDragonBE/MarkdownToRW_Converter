@@ -17,7 +17,8 @@ namespace MarkdownToRWCore
 
         [ArgShortcut("htmlFolder")]
         [ArgShortcut("o")]
-        [ArgDescription("(optional) HTML output path. Include .html in the path like so: PATH-TO-HTML-FOLDER/FILE.html. If this argument is omitted, the html file is saved next to the markdown file.")]
+        [ArgDescription(
+            "(optional) HTML output path. Include .html in the path like so: PATH-TO-HTML-FOLDER/FILE.html. If this argument is omitted, the html file is saved next to the markdown file.")]
         public string HtmlPath { get; set; }
 
         [ArgDefaultValue(true)]
@@ -27,22 +28,27 @@ namespace MarkdownToRWCore
         [ArgPosition(2)]
         public bool OnlyUpdateHtmlFile { get; set; }
 
-        [ArgDescription("(optional) Should the first image be right aligned? This is useful for the 250x250 image at the top of tutorials.")]
+        [ArgDescription(
+            "(optional) Should the first image be right aligned? This is useful for the 250x250 image at the top of tutorials.")]
         [DefaultValue(true)]
-        [ArgPosition(3)]
+        [ArgShortcut("rt")]
         public bool FirstImageRightAligned { get; set; }
+
+        [ArgDescription("(optional) Should all images with an alt text be converted to captions?")]
+        [DefaultValue(true)]
+        [ArgShortcut("alt")]
+        public bool ConvertImageWithAltToCaption { get; set; }
 
         [ArgShortcut("user")]
         [ArgDescription("RW WordPress Username.")]
         [ArgRequired(PromptIfMissing = true)]
-        [ArgPosition(4)]
+        [ArgPosition(3)]
         public string Username { get; set; }
 
         [ArgShortcut("pw")]
         [ArgDescription("RW WordPress Password.")]
         [ArgRequired(PromptIfMissing = true)]
-        [ArgPosition(5)]
+        [ArgPosition(4)]
         public string Password { get; set; }
-        
     }
 }

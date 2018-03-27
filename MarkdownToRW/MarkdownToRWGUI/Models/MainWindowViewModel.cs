@@ -23,6 +23,7 @@ namespace MarkdownToRWGUI.Models
         private bool _markdownLoaded;
         private string _markdownPath;
         private string _markdownText;
+        private bool _newUpdate;
         private bool _onlyHtml;
         private string _password;
         private string _passwordOverlay;
@@ -30,11 +31,11 @@ namespace MarkdownToRWGUI.Models
         private int _progressMin;
         private int _progressValue;
         private bool _rememberCredentials;
+        private bool _replaceImageAlts;
         private bool _saveConverterSettings;
         private bool _saveOutputToHtml;
         private string _status;
         private string _username;
-        private bool _newUpdate;
 
         public string ActualPassword;
         public Settings Settings;
@@ -264,11 +265,28 @@ namespace MarkdownToRWGUI.Models
             }
         }
 
+        public bool ReplaceImageAlts
+        {
+            get => _replaceImageAlts;
+            set
+            {
+                if (value != _replaceImageAlts)
+                {
+                    _replaceImageAlts = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private ConverterOptions GetConverterOptions()
         {
-            return new ConverterOptions {FirstImageIsAlignedRight = FirstImageRight};
+            return new ConverterOptions
+            {
+                FirstImageIsAlignedRight = FirstImageRight,
+                ReplaceImageWithAltWithCaption = ReplaceImageAlts
+            };
         }
 
         public async void Convert()
@@ -346,7 +364,7 @@ namespace MarkdownToRWGUI.Models
         {
             DragonUtil.OpenFileInDefaultApplication(UpdateDownloadUrl);
         }
-        
+
         public void ShowPreview()
         {
             Status = "Generating preview and opening...";
@@ -387,7 +405,6 @@ namespace MarkdownToRWGUI.Models
             }
 
             SaveSettings();
-
 
             ProgressValue = 0;
             ProgressMax = 3;
@@ -444,12 +461,14 @@ namespace MarkdownToRWGUI.Models
 
             if (SaveConverterSettings)
             {
-                Settings.FirstImageAlignedRight = FirstImageRight;
+                Settings.ConverterOptions.FirstImageIsAlignedRight = FirstImageRight;
+                Settings.ConverterOptions.ReplaceImageWithAltWithCaption = ReplaceImageAlts;
                 Settings.OutputToHtml = SaveOutputToHtml;
             }
             else
             {
-                Settings.FirstImageAlignedRight = true;
+                Settings.ConverterOptions.FirstImageIsAlignedRight = true;
+                Settings.ConverterOptions.ReplaceImageWithAltWithCaption = true;
                 Settings.OutputToHtml = false;
             }
 

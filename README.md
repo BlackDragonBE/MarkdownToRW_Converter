@@ -130,4 +130,4 @@ Follow the instructions in the console. It should be pretty straight forward, ty
 
 **All versions (shared library bugs)**:
 
-- No option for automatic caption creating from images yet.
+- You tell me.

@@ -7,7 +7,7 @@ namespace MarkdownToRWCore
         [ArgRequired(PromptIfMissing = true)]
         [ArgDescription("Markdown file path.")]
         [ArgPosition(1)]
-        public string MarkdownPath { get; set;}
+        public string MarkdownPath { get; set; }
 
         [ArgDescription("(optional) HTML output path. Include .html in the path like so: PATH-TO-HTML-FOLDER/FILE.html. If this argument is omitted, the html file is saved next to the markdown file.")]
         [ArgPosition(2)]
@@ -15,7 +15,12 @@ namespace MarkdownToRWCore
 
         [ArgDescription("(optional) Should the first image be right aligned? This is useful for the 250x250 image at the top of tutorials.")]
         [DefaultValue(true)]
-        [ArgPosition(3)]
+        [ArgShortcut("rt")]
         public bool FirstImageRightAligned { get; set; }
+
+        [ArgDescription("(optional) Should all images with an alt text be converted to captions?")]
+        [DefaultValue(true)]
+        [ArgShortcut("alt")]
+        public bool ConvertImageWithAltToCaption { get; set; }
     }
 }
