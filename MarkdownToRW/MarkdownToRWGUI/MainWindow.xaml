@@ -103,8 +103,8 @@
         <TextBlock Text="HTML Parser" Margin="5 5 5 5"></TextBlock>
         <CheckBox Content="First image is right aligned" IsChecked="{Binding FirstImageRight}" ToolTip.Tip="Is the first image in the markdown supposed to be right aligned?&#x0a;Useful for positioning the 250x250 image correctly." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5 5 5 5"></CheckBox>
         <CheckBox Content="Convert images with alt text to captions" IsChecked="{Binding ReplaceImageAlts}" ToolTip.Tip="All images with text in their square brackets will be converted to RW captions. " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5 5 5 5"></CheckBox>
-        <TextBlock IsVisible="False" Text="Not Implemented" Margin="5 5 5 5"></TextBlock>
-        <CheckBox IsVisible="False" Content="" IsChecked="false" ToolTip.Tip="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5 5 5 5"></CheckBox>
+        <TextBlock Text="Experimental" Margin="5 5 5 5"></TextBlock>
+        <CheckBox Content="Check tutorial markdown for problems" IsChecked="false" ToolTip.Tip="When opening a markdown file, check the content for common problems.&#x0a;A report will be generated and printed to the console. This will increase the time it takes to load a file." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5 5 5 5"></CheckBox>
       </StackPanel>
     </Grid>
 

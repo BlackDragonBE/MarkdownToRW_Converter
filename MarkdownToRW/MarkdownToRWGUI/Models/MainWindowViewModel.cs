@@ -308,7 +308,7 @@ namespace MarkdownToRWGUI.Models
                     {
                         MarkdownText = sr.ReadToEnd().Replace("\t", "  ");
 
-                        Console.Write(ContentScanner.ParseScanrResults(ContentScanner.ScanMarkdown(MarkdownText)));
+                        Console.Write(ContentScanner.ParseScanrResults(ContentScanner.ScanMarkdown(MarkdownText, _markdownPath)));
 
 
                         HtmlText = Converter.ConvertMarkdownStringToHtml(MarkdownText, options);
