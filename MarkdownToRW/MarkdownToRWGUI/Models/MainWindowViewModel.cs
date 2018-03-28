@@ -306,6 +306,7 @@ namespace MarkdownToRWGUI.Models
                     using (StreamReader sr = new StreamReader(path))
                     {
                         MarkdownText = sr.ReadToEnd().Replace("\t", "  ");
+
                         HtmlText = Converter.ConvertMarkdownStringToHtml(MarkdownText, options);
 
                         if (SaveOutputToHtml)
@@ -365,7 +366,7 @@ namespace MarkdownToRWGUI.Models
             DragonUtil.OpenFileInDefaultApplication(UpdateDownloadUrl);
         }
 
-        public void ShowPreview()
+        public async void ShowPreview()
         {
             Status = "Generating preview and opening...";
 
@@ -378,7 +379,7 @@ namespace MarkdownToRWGUI.Models
 
             Status = "Created preview.";
 
-            WaitAndDeletePreviewAsync();
+            await WaitAndDeletePreviewAsync();
         }
 
         private async Task WaitAndDeletePreviewAsync()
@@ -391,6 +392,11 @@ namespace MarkdownToRWGUI.Models
                 Status = "Deleted preview: " + _htmlPreviewPath;
                 _htmlPreviewPath = null;
             }
+        }
+
+        public void OpenHemingway()
+        {
+            DragonUtil.OpenFileInDefaultApplication("http://www.hemingwayapp.com/");
         }
 
         public async void UploadImages()
@@ -432,13 +438,13 @@ namespace MarkdownToRWGUI.Models
                 else
                 {
                     Status = "Couldn't log in. Please check your credentials.";
-                    AllowInput = true;
+                    OnActionFinished();
                 }
             }
             else
             {
                 Status = "Connection failed. Can't connect to RW.";
-                AllowInput = true;
+                OnActionFinished();
             }
         }
 
@@ -483,6 +489,7 @@ namespace MarkdownToRWGUI.Models
             if (links.Count == 0)
             {
                 Status = "No images found to upload.";
+                OnActionFinished();
                 return;
             }
 
@@ -557,6 +564,9 @@ namespace MarkdownToRWGUI.Models
                         }
                         await Task.Delay(25);
                     }
+                    
+                    OnActionFinished();
+
                 }
             }
 
@@ -567,7 +577,13 @@ namespace MarkdownToRWGUI.Models
             HtmlText = Converter.ConvertMarkdownStringToHtml(MarkdownText);
 
             Status = "Upload & replacement complete!";
+            OnActionFinished();
+        }
+
+        private void OnActionFinished()
+        {
             AllowInput = true;
+            ProgressValue = ProgressMax;
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

@@ -91,13 +91,15 @@
       </Grid.RowDefinitions>
 
       <Button IsDefault="True" ToolTip.Tip="Open a markdown file and convert it to HTML. The output will show on the right,&#x0a;copy and paste it in the WordPress post." Content="Open and convert markdown..." Command="{Binding Convert}"  Margin="0 0 0 0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="30"></Button>
-      <CheckBox IsChecked="{Binding SaveOutputToHtml}" Margin="10 5 0 0" ToolTip.Tip="Save the converted HTML to a file in the same folder as the markdown file?" Content="Save output to HTML file" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top"></CheckBox>
-      <CheckBox Name="chkShowOptions" Content="Show more conversion options" IsChecked="false" Margin="0 5 0 0" ToolTip.Tip="Show an extended list of options." Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top"></CheckBox>
+      <Button IsVisible="{Binding MarkdownLoaded}" ToolTip.Tip="Open the Hemingway Editor app in your browser. Copy and paste your markdown into it to check your writing." Content="Open Hemingway App" Grid.Column="1" Command="{Binding OpenHemingway}"  Margin="20 0 5 0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="30"></Button>
+      <CheckBox Name="chkShowOptions" Content="Show conversion options" IsChecked="false" Margin="0 5 0 0" ToolTip.Tip="Show an extended list of options." Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top"></CheckBox>
       <CheckBox Content="Remember conversion options" IsChecked="{Binding SaveConverterSettings}" Margin="10 5 0 0" ToolTip.Tip="Remember options for next application load." Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top"></CheckBox>
 
       <Border IsHitTestVisible="False" IsVisible="{Binding #chkShowOptions.IsChecked}" ZIndex="10" Margin="0 10 0 0" BorderThickness="1" BorderBrush="#3F3F46" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.ColumnSpan="9" Grid.Row="3"></Border>
 
       <StackPanel Background="#252526"  IsVisible="{Binding #chkShowOptions.IsChecked}" Orientation="Vertical" Gap="0" Grid.ColumnSpan="4" Grid.Row="2" Margin="0 10 0 0">
+        <TextBlock Text="Output" Margin="5 5 5 5"></TextBlock>
+        <CheckBox IsChecked="{Binding SaveOutputToHtml}" Margin="5 5 5 5" ToolTip.Tip="Save the converted HTML to a file in the same folder as the markdown file?" Content="Save output to HTML file" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top"></CheckBox>
         <TextBlock Text="HTML Parser" Margin="5 5 5 5"></TextBlock>
         <CheckBox Content="First image is right aligned" IsChecked="{Binding FirstImageRight}" ToolTip.Tip="Is the first image in the markdown supposed to be right aligned?&#x0a;Useful for positioning the 250x250 image correctly." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5 5 5 5"></CheckBox>
         <CheckBox Content="Convert images with alt text to captions" IsChecked="{Binding ReplaceImageAlts}" ToolTip.Tip="All images with text in their square brackets will be converted to RW captions. " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5 5 5 5"></CheckBox>
@@ -113,7 +115,7 @@
       </Grid.ColumnDefinitions>
 
       <TextBlock Margin="5 0 0 0" Text="Copy HTML below and paste to RW Wordpress" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" TextWrapping="Wrap"></TextBlock>
-      <Button Name="btnDownloadUpdate" IsVisible="{Binding NewUpdate}" Content="Download update" Grid.Column="0" Grid.Row="2" Command="{Binding DownloadUpdate}" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="30" Margin="0 0 0 0" ></Button>
+      <Button Name="btnDownloadUpdate" IsVisible="{Binding NewUpdate}" Content="Download update" Grid.Column="0" Grid.Row="2" Command="{Binding DownloadUpdate}" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="30" Margin="5 0 0 0" ></Button>
       <Button IsVisible="{Binding MarkdownLoaded}" Content="Preview HTML (don't copy)" IsEnabled="{Binding MarkdownLoaded}" Grid.Column="1" Grid.Row="2" ToolTip.Tip="Create a preview html file next to the markdown file named tmp.html,&#x0a;inject it with RSS to resemble the RW style and open it in the default HTML app.&#x0a;DO NOT COPY THIS OUTPUT TO WORDPRESS!"  Command="{Binding ShowPreview}" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="30" Margin="20 0 0 0" ></Button>
     </Grid>
 
