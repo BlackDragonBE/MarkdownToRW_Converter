@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using DragonMarkdown;
+using DragonMarkdown.ContentScan;
 using DragonMarkdown.DragonConverter;
 using DragonMarkdown.DragonWordPressXml.Responses;
 using DragonMarkdown.Utility;
@@ -306,6 +307,9 @@ namespace MarkdownToRWGUI.Models
                     using (StreamReader sr = new StreamReader(path))
                     {
                         MarkdownText = sr.ReadToEnd().Replace("\t", "  ");
+
+                        Console.Write(ContentScanner.ParseScanrResults(ContentScanner.ScanMarkdown(MarkdownText)));
+
 
                         HtmlText = Converter.ConvertMarkdownStringToHtml(MarkdownText, options);
 
