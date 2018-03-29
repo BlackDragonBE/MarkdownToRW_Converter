@@ -184,6 +184,11 @@ Lorem **ipsum** *dolor* sit amet, ~~consectetur~~ adipiscing elit. Integer velit
 > **Spoiler:Solution inside!**
 > Lorem **ipsum** *dolor* sit amet, ~~consectetur~~ adipiscing elit. Integer velit nisi, hendrerit ut lorem *quis*, **condimentum** volutpat ligula. 
 
+## Spelling and british words test
+
+Some people think teh colourful, ageing armour looks like an irresistable defence.
+However, has it ever occured ot you that any common battleaxe can brutalise you easily as it can cleave right trough?
+
 ## Unity specific tests
 
 **(X:0, Y:0, Z:0)**

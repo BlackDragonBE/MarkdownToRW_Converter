@@ -4,6 +4,7 @@
     {
         public bool FirstImageIsAlignedRight = true;
         public bool ReplaceImageWithAltWithCaption = true;
+        
 
         public ConverterOptions()
         {

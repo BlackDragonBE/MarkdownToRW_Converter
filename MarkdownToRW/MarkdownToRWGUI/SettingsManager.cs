@@ -25,6 +25,7 @@ namespace MarkdownToRWGUI
                     using (var reader = XmlReader.Create(_fileName))
                     {
                         var settings = (Settings)serializer.Deserialize(reader);
+                        Console.WriteLine("Loaded settings from " + _fileName);
                         return settings;
                     }
                 }

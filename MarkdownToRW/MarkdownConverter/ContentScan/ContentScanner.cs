@@ -131,7 +131,7 @@ namespace DragonMarkdown.ContentScan
 
                 if (size.Width > 700)
                 {
-                    results.ProblemsFound.Add(link.FullImagePath + ": image width larger than 700, it's " + size.Width + "x" + size.Height + ". You'll need to manually edit the size class to 'large' in the HTML. (a future update to this app will do this for you)");
+                    results.ProblemsFound.Add(link.FullImagePath + ": image width larger than 700, it's " + size.Width + "x" + size.Height + ". You'll need to manually edit the size class to 'large' in the HTML after uploading. (a future update to this app will do this for you)");
                 }
             }
         }
@@ -141,7 +141,8 @@ namespace DragonMarkdown.ContentScan
             char[] delimiters = GetDelimiters();
             string[] words = markdownText.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
 
-            Dictionary<string, string> britshAmericanWordsDict = CreateWordDict();
+            Dictionary<string, string> britshAmericanWordsDict = CreateBritishWordDict();
+            Dictionary<string, string> commonMisspelledWordsDict = CreateCommonMisspelledWordDict();
 
             foreach (string word in words)
             {
@@ -149,6 +150,12 @@ namespace DragonMarkdown.ContentScan
                 {
                     string american = britshAmericanWordsDict[word];
                     results.ProblemsFound.Add("British word found: '" + word + "'. Please replace this with '" + american + "'.");
+                }
+
+                if (commonMisspelledWordsDict.ContainsKey(word.ToLower()))
+                {
+                    string correctSpelling = commonMisspelledWordsDict[word];
+                    results.ProblemsFound.Add("Incorrectly spelled word found: '" + word + "'. Please replace this with '" + correctSpelling + "'.");
                 }
             }
         }
@@ -158,7 +165,136 @@ namespace DragonMarkdown.ContentScan
             return new[] { ' ', '\r', '\n', '*', '_', '[', ']', '(', ')', '<', '>', '.', ',', ';', '—', '#', '!', '/', '\\' ,'&','-',':','\''};
         }
 
-        private static Dictionary<string, string> CreateWordDict()
+        private static Dictionary<string, string> CreateCommonMisspelledWordDict()
+        {
+            Dictionary<string, string> wordDict = new Dictionary<string, string>();
+
+            wordDict.Add("accomodate", "accommodate");
+            wordDict.Add("accomodation", "accommodation");
+            wordDict.Add("acheive", "achieve");
+            wordDict.Add("accross", "across");
+            wordDict.Add("agressive", "aggressive");
+            wordDict.Add("agression", "aggression");
+            wordDict.Add("apparantly", "apparently");
+            wordDict.Add("appearence", "appearance");
+            wordDict.Add("arguement", "argument");
+            wordDict.Add("assasination", "assassination");
+            wordDict.Add("basicly", "basically");
+            wordDict.Add("begining", "beginning");
+            wordDict.Add("beleive", "believe");
+            wordDict.Add("belive", "believe");
+            wordDict.Add("bizzare", "bizarre");
+            wordDict.Add("buisness", "business");
+            wordDict.Add("calender", "calendar");
+            wordDict.Add("Carribean", "Caribbean");
+            wordDict.Add("cemetary", "cemetery");
+            wordDict.Add("chauffer", "chauffeur");
+            wordDict.Add("collegue", "colleague");
+            wordDict.Add("comming", "coming");
+            wordDict.Add("commitee", "committee");
+            wordDict.Add("completly", "completely");
+            wordDict.Add("concious", "conscious");
+            wordDict.Add("curiousity", "curiosity");
+            wordDict.Add("definately", "definitely");
+            wordDict.Add("dilemna", "dilemma");
+            wordDict.Add("dissapear", "disappear");
+            wordDict.Add("dissapoint", "disappoint");
+            wordDict.Add("ecstacy", "ecstasy");
+            wordDict.Add("embarass", "embarrass");
+            wordDict.Add("enviroment", "environment");
+            wordDict.Add("existance", "existence");
+            wordDict.Add("Farenheit", "Fahrenheit");
+            wordDict.Add("familar", "familiar");
+            wordDict.Add("finaly", "finally");
+            wordDict.Add("florescent", "fluorescent");
+            wordDict.Add("foriegn", "foreign");
+            wordDict.Add("forseeable", "foreseeable");
+            wordDict.Add("fourty", "forty");
+            wordDict.Add("foward", "forward");
+            wordDict.Add("freind", "friend");
+            wordDict.Add("futher", "further");
+            wordDict.Add("jist", "gist");
+            wordDict.Add("glamourous", "glamorous");
+            wordDict.Add("goverment", "government");
+            wordDict.Add("gaurd", "guard");
+            wordDict.Add("happend", "happened");
+            wordDict.Add("harrass", "harass");
+            wordDict.Add("harrassment", "harassment");
+            wordDict.Add("honourary", "honorary");
+            wordDict.Add("humourous", "humorous");
+            wordDict.Add("idiosyncracy", "idiosyncrasy");
+            wordDict.Add("immediatly", "immediately");
+            wordDict.Add("incidently", "incidentally");
+            wordDict.Add("independant", "independent");
+            wordDict.Add("interupt", "interrupt");
+            wordDict.Add("irresistable", "irresistible");
+            wordDict.Add("knowlege", "knowledge");
+            wordDict.Add("liase", "liaise");
+            wordDict.Add("liason", "liaison");
+            wordDict.Add("lollypop", "lollipop");
+            wordDict.Add("millenium", "millennium");
+            wordDict.Add("millenia", "millennia");
+            wordDict.Add("Neandertal", "Neanderthal");
+            wordDict.Add("neccessary", "necessary");
+            wordDict.Add("noticable", "noticeable");
+            wordDict.Add("ocassion", "occasion");
+            wordDict.Add("occassion", "occasion");
+            wordDict.Add("occured", "occurred");
+            wordDict.Add("occuring", "occurring");
+            wordDict.Add("occurance", "occurrence");
+            wordDict.Add("occurence", "occurrence");
+            wordDict.Add("pavillion", "pavilion");
+            wordDict.Add("persistant", "persistent");
+            wordDict.Add("pharoah", "pharaoh");
+            wordDict.Add("peice", "piece");
+            wordDict.Add("politican", "politician");
+            wordDict.Add("Portugese", "Portuguese");
+            wordDict.Add("posession", "possession");
+            wordDict.Add("prefered", "preferred");
+            wordDict.Add("prefering", "preferring");
+            wordDict.Add("propoganda", "propaganda");
+            wordDict.Add("publically", "publicly");
+            wordDict.Add("realy", "really");
+            wordDict.Add("recieve", "receive");
+            wordDict.Add("refered", "referred");
+            wordDict.Add("refering", "referring");
+            wordDict.Add("religous", "religious");
+            wordDict.Add("rember", "remember");
+            wordDict.Add("remeber", "remember");
+            wordDict.Add("resistence", "resistance");
+            wordDict.Add("sence", "sense");
+            wordDict.Add("seperate", "separate");
+            wordDict.Add("seige", "siege");
+            wordDict.Add("succesful", "successful");
+            wordDict.Add("supercede", "supersede");
+            wordDict.Add("suprise", "surprise");
+            wordDict.Add("tatoo", "tattoo");
+            wordDict.Add("tendancy", "tendency");
+            wordDict.Add("therefor", "therefore");
+            wordDict.Add("threshhold", "threshold");
+            wordDict.Add("tommorow", "tomorrow");
+            wordDict.Add("tommorrow", "tomorrow");
+            wordDict.Add("tounge", "tongue");
+            wordDict.Add("truely", "truly");
+            wordDict.Add("unforseen", "unforeseen");
+            wordDict.Add("unfortunatly", "unfortunately");
+            wordDict.Add("untill", "until");
+            wordDict.Add("wierd", "weird");
+            wordDict.Add("whereever", "wherever");
+            wordDict.Add("wich", "which");
+            wordDict.Add("hte", "the");
+            wordDict.Add("ot", "to");
+            wordDict.Add("adn", "and");
+            wordDict.Add("nad", "and");
+            wordDict.Add("alot", "a lot");
+            wordDict.Add("allmost", "almost");
+            wordDict.Add("teh", "the");
+            wordDict.Add("liek", "like");
+            wordDict.Add("trough", "through");
+            return wordDict;
+        }
+
+        private static Dictionary<string, string> CreateBritishWordDict()
         {
             Dictionary<string,string> wordDict = new Dictionary<string, string>();
 

@@ -35,6 +35,7 @@ namespace MarkdownToRWGUI.Models
         private bool _replaceImageAlts;
         private bool _saveConverterSettings;
         private bool _saveOutputToHtml;
+        private bool _useContentScanner;
         private string _status;
         private string _username;
 
@@ -279,6 +280,19 @@ namespace MarkdownToRWGUI.Models
             }
         }
 
+        public bool UseContentScanner
+        {
+            get => _useContentScanner;
+            set
+            {
+                if (value != _useContentScanner)
+                {
+                    _useContentScanner = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private ConverterOptions GetConverterOptions()
@@ -292,7 +306,7 @@ namespace MarkdownToRWGUI.Models
 
         public async void Convert()
         {
-            SaveSettings();
+            CreateAndSaveSettings();
             string path = await ChooseFile();
 
             ConverterOptions options = GetConverterOptions();
@@ -308,7 +322,11 @@ namespace MarkdownToRWGUI.Models
                     {
                         MarkdownText = sr.ReadToEnd().Replace("\t", "  ");
 
-                        Console.Write(ContentScanner.ParseScanrResults(ContentScanner.ScanMarkdown(MarkdownText, _markdownPath)));
+                        if (UseContentScanner)
+                        {
+                            Console.WriteLine("");
+                            Console.Write(ContentScanner.ParseScanrResults(ContentScanner.ScanMarkdown(MarkdownText, _markdownPath)));
+                        }
 
 
                         HtmlText = Converter.ConvertMarkdownStringToHtml(MarkdownText, options);
@@ -414,7 +432,7 @@ namespace MarkdownToRWGUI.Models
                 return;
             }
 
-            SaveSettings();
+            CreateAndSaveSettings();
 
             ProgressValue = 0;
             ProgressMax = 3;
@@ -452,7 +470,7 @@ namespace MarkdownToRWGUI.Models
             }
         }
 
-        private void SaveSettings()
+        private void CreateAndSaveSettings()
         {
             if (RememberCredentials)
             {
@@ -474,12 +492,14 @@ namespace MarkdownToRWGUI.Models
                 Settings.ConverterOptions.FirstImageIsAlignedRight = FirstImageRight;
                 Settings.ConverterOptions.ReplaceImageWithAltWithCaption = ReplaceImageAlts;
                 Settings.OutputToHtml = SaveOutputToHtml;
+                Settings.UseContentScanner = UseContentScanner;
             }
             else
             {
                 Settings.ConverterOptions.FirstImageIsAlignedRight = true;
                 Settings.ConverterOptions.ReplaceImageWithAltWithCaption = true;
                 Settings.OutputToHtml = false;
+                Settings.UseContentScanner = false;
             }
 
             SettingsManager.SaveSettings(Settings);
