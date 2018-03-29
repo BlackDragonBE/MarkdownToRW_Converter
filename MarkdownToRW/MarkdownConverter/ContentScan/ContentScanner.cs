@@ -63,7 +63,7 @@ namespace DragonMarkdown.ContentScan
         {
             List<string> neededSections = new List<string>();
             neededSections.Add("Getting Started");
-            neededSections.Add("Where To Go From Here");
+            neededSections.Add("Where to Go From Here");
 
             foreach (string neededSection in neededSections)
             {
