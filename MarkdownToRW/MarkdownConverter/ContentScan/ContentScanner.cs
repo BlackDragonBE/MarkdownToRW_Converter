@@ -26,7 +26,7 @@ namespace DragonMarkdown.ContentScan
             CountWords(ref results, markdownText);
             ScanSectionTitles(ref results, markdownText);
             ScanSmileys(ref results, markdownText);
-            ScanImages(ref results, markdownText, markdownPath);
+            //ScanImages(ref results, markdownText, markdownPath);
             ScanWords(ref results, markdownText);
             
             return results;
@@ -69,7 +69,7 @@ namespace DragonMarkdown.ContentScan
             {
                 if (!markdown.Contains(neededSection))
                 {
-                    results.ProblemsFound.Add("Section not found: " + neededSection);
+                    results.ProblemsFound.Add("Section not found or spelled/capitalized incorrectly: " + neededSection);
                 }
             }
         }
@@ -98,6 +98,7 @@ namespace DragonMarkdown.ContentScan
             }
         }
 
+        // Not needed anymore
         private static void ScanImages(ref ScanResults results, string markdownText, string markdownPath)
         {
             string html = Converter.ConvertMarkdownStringToHtml(markdownText);

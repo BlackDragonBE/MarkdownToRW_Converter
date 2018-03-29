@@ -329,7 +329,7 @@ namespace MarkdownToRWGUI.Models
                         }
 
 
-                        HtmlText = Converter.ConvertMarkdownStringToHtml(MarkdownText, options);
+                        HtmlText = Converter.ConvertMarkdownStringToHtml(MarkdownText, options, Path.GetDirectoryName(_markdownPath));
 
                         if (SaveOutputToHtml)
                         {
@@ -596,9 +596,11 @@ namespace MarkdownToRWGUI.Models
 
             // Update markdown & html
             Console.WriteLine("Starting link replacer...");
-            MarkdownText = Converter.ReplaceLocalImageLinksWithUrls(_markdownPath, _htmlPath, OnlyHtml, MarkdownText,
-                localImagePaths, imageUrls);
-            HtmlText = Converter.ConvertMarkdownStringToHtml(MarkdownText);
+            MarkdownAndHtml markdownAndHtml=  Converter.ReplaceLocalImageLinksWithUrls(_markdownPath, _htmlPath, OnlyHtml, MarkdownText,
+                localImagePaths, imageUrls, _htmlText);
+
+            MarkdownText = markdownAndHtml.Markdown;
+            HtmlText = markdownAndHtml.Html;
 
             Status = "Upload & replacement complete!";
             OnActionFinished();

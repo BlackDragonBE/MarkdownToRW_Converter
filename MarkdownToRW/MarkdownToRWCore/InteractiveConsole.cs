@@ -220,7 +220,7 @@ namespace MarkdownToRWCore
             // Update markdown & html
             Console.WriteLine("Starting link replacer...");
             Converter.ReplaceLocalImageLinksWithUrls(markdownPath, htmlPath, onlyUpdateHtml, markdownText, localImagePaths,
-                imageUrls);
+                imageUrls, htmlText);
             return true;
         }
 

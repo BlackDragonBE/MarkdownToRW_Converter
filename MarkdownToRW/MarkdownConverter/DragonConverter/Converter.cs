@@ -10,7 +10,7 @@ namespace DragonMarkdown.DragonConverter
 {
     public class Converter
     {
-        public static string ConvertMarkdownStringToHtml(string markdown, ConverterOptions options = null)
+        public static string ConvertMarkdownStringToHtml(string markdown, ConverterOptions options = null, string rootPath = null)
         {
             if (options == null)
             {
@@ -33,7 +33,7 @@ namespace DragonMarkdown.DragonConverter
             output = output.Replace("</code></pre>", "</pre>\r\n");
 
             // Add attributes
-            AddClassToImages(ref output, options.FirstImageIsAlignedRight);
+            AddClassToImages(ref output, options.FirstImageIsAlignedRight, rootPath);
             AddExtraAttributesToLinks(ref output);
 
             // Make new lines consistent across platforms
@@ -84,7 +84,7 @@ namespace DragonMarkdown.DragonConverter
         {
             using (StreamReader sr = new StreamReader(markdownFilePath))
             {
-                string html = ConvertMarkdownStringToHtml(sr.ReadToEnd(), options);
+                string html = ConvertMarkdownStringToHtml(sr.ReadToEnd(), options, Path.GetDirectoryName(markdownFilePath));
                 using (StreamWriter sw = new StreamWriter(htmlFilePath))
                 {
                     sw.Write(html);
@@ -94,11 +94,12 @@ namespace DragonMarkdown.DragonConverter
             }
         }
 
-        public static void AddClassToImages(ref string html, bool firstImageRightAligned)
+        private static void AddClassToImages(ref string html, bool firstImageRightAligned, string rootPath = null)
         {
             HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml(html);
             HtmlNodeCollection imgNodes = doc.DocumentNode.SelectNodes("//img[@src]");
+            string size = "full";
 
             if (imgNodes == null || imgNodes.Count == 0)
             {
@@ -109,14 +110,29 @@ namespace DragonMarkdown.DragonConverter
             {
                 HtmlNode node = imgNodes[i];
 
+                // If root path is known, check if images are too big for full size class
+                if (rootPath != null)
+                {
+                    var imageSize = ImageHelper.GetDimensions(GetFullFilePath(node.Attributes["src"].Value, rootPath));
+
+                    if (imageSize.Width > 700)
+                    {
+                        size = "large";
+                    }
+                    else
+                    {
+                        size = "full";
+                    }
+                }
+
                 if (i == 0 && firstImageRightAligned) // First image should be right aligned, it's the 250x250 image
                 {
-                    HtmlAttribute classAttribute = doc.CreateAttribute("class", "alignright size-full");
+                    HtmlAttribute classAttribute = doc.CreateAttribute("class", "alignright size-" + size);
                     node.Attributes.Add(classAttribute);
                 }
                 else
                 {
-                    HtmlAttribute classAttribute = doc.CreateAttribute("class", "aligncenter size-full");
+                    HtmlAttribute classAttribute = doc.CreateAttribute("class", "aligncenter size-" + size);
                     node.Attributes.Add(classAttribute);
                 }
             }
@@ -249,11 +265,12 @@ namespace DragonMarkdown.DragonConverter
             return links;
         }
 
-        public static string ReplaceLocalImageLinksWithUrls(string markdownPath, string htmlPath, bool onlyUpdateHtml,
-            string markdownText, List<string> localImagePaths, List<string> imageUrls)
+        public static MarkdownAndHtml ReplaceLocalImageLinksWithUrls(string markdownPath, string htmlPath, bool onlyUpdateHtml,
+            string markdownText, List<string> localImagePaths, List<string> imageUrls, string htmlText)
         {
             markdownText = DragonUtil.BatchReplaceText(markdownText, localImagePaths, imageUrls);
-            var htmlText = ConvertMarkdownStringToHtml(markdownText);
+            htmlText = DragonUtil.BatchReplaceText(htmlText, localImagePaths, imageUrls);
+            //var htmlText = ConvertMarkdownStringToHtml(markdownText,);
 
             if (htmlPath != null)
             {
@@ -267,7 +284,7 @@ namespace DragonMarkdown.DragonConverter
                 Console.WriteLine("Replaced Markdown!");
             }
 
-            return markdownText;
+            return new MarkdownAndHtml {Markdown = markdownText, Html = htmlText};
         }
 
         private static void ReplaceOuterHtmlWithSquareBrackets(HtmlNode node)
@@ -283,6 +300,11 @@ namespace DragonMarkdown.DragonConverter
             var newNode = HtmlNode.CreateNode(newOuter);
             newNode.InnerHtml = newNode.InnerHtml.Replace("][", "]" + inner.Trim() + "[");
             node.ParentNode.ReplaceChild(newNode, node);
+        }
+
+        public static string GetFullFilePath(string localFilePath, string rootPath)
+        {
+            return rootPath + "/" + localFilePath;
         }
     }
 
