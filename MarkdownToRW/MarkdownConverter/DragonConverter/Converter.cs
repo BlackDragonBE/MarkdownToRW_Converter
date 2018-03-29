@@ -265,8 +265,7 @@ namespace DragonMarkdown.DragonConverter
             return links;
         }
 
-        public static MarkdownAndHtml ReplaceLocalImageLinksWithUrls(string markdownPath, string htmlPath, bool onlyUpdateHtml,
-            string markdownText, List<string> localImagePaths, List<string> imageUrls, string htmlText)
+        public static MarkdownAndHtml ReplaceLocalImageLinksWithUrls(string markdownPath, string markdownText, string htmlPath, string htmlText, bool onlyUpdateHtml, List<string> localImagePaths, List<string> imageUrls)
         {
             markdownText = DragonUtil.BatchReplaceText(markdownText, localImagePaths, imageUrls);
             htmlText = DragonUtil.BatchReplaceText(htmlText, localImagePaths, imageUrls);

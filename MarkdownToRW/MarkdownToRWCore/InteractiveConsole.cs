@@ -105,8 +105,10 @@ namespace MarkdownToRWCore
                 return;
             }
 
-            ConverterOptions options = new ConverterOptions();
-            options.FirstImageIsAlignedRight = CoreConsoleShared.YesNoToBool(firstImageRight);
+            ConverterOptions options = new ConverterOptions
+            {
+                FirstImageIsAlignedRight = CoreConsoleShared.YesNoToBool(firstImageRight)
+            };
 
             switch (uploadImages)
             {
@@ -219,8 +221,7 @@ namespace MarkdownToRWCore
 
             // Update markdown & html
             Console.WriteLine("Starting link replacer...");
-            Converter.ReplaceLocalImageLinksWithUrls(markdownPath, htmlPath, onlyUpdateHtml, markdownText, localImagePaths,
-                imageUrls, htmlText);
+            Converter.ReplaceLocalImageLinksWithUrls(markdownPath, markdownText, htmlPath, htmlText, onlyUpdateHtml, localImagePaths, imageUrls);
             return true;
         }
 

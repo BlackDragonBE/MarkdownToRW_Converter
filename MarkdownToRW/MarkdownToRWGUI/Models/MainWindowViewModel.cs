@@ -350,8 +350,7 @@ namespace MarkdownToRWGUI.Models
 
         private async Task<string> ChooseFile()
         {
-            OpenFileDialog openDialog = new OpenFileDialog();
-            openDialog.AllowMultiple = false;
+            OpenFileDialog openDialog = new OpenFileDialog {AllowMultiple = false};
 
             FileDialogFilter markdownFilter = new FileDialogFilter();
             markdownFilter.Extensions.Add("md");
@@ -596,8 +595,8 @@ namespace MarkdownToRWGUI.Models
 
             // Update markdown & html
             Console.WriteLine("Starting link replacer...");
-            MarkdownAndHtml markdownAndHtml=  Converter.ReplaceLocalImageLinksWithUrls(_markdownPath, _htmlPath, OnlyHtml, MarkdownText,
-                localImagePaths, imageUrls, _htmlText);
+            MarkdownAndHtml markdownAndHtml=  Converter.ReplaceLocalImageLinksWithUrls(_markdownPath, MarkdownText,
+                _htmlPath, _htmlText, OnlyHtml, localImagePaths, imageUrls);
 
             MarkdownText = markdownAndHtml.Markdown;
             HtmlText = markdownAndHtml.Html;
