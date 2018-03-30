@@ -422,9 +422,6 @@ namespace MarkdownToRWGUI.Models
 
         public async void UploadImages()
         {
-            //Status = "Image uploading isn't implemented yet :(";
-            //return;
-
             if (Username == "" || Password == "" || Username == null || Password == null)
             {
                 Status = "Credentials not filled in correctly!";

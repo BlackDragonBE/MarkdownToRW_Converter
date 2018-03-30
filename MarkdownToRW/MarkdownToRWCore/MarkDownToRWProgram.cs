@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using DragonMarkdown;
+using DragonMarkdown.ContentScan;
 using DragonMarkdown.DragonConverter;
 using DragonMarkdown.DragonWordPressXml.Responses;
 using DragonMarkdown.Utility;
+using MarkdownToRWCore.Arguments;
 using MarkdownToRWCore.DragonConsole;
 using PowerArgs;
 
@@ -53,6 +55,15 @@ namespace MarkdownToRWCore
 
             CoreConsoleShared.PauseAndQuit();
         }
+
+        [ArgActionMethod]
+        [ArgDescription("Scan the content of a markdown document for common mistakes and output a report to the same directory.")]
+        public void CreateContentReport(ContentReportArguments args)
+        {
+            CreateReport(args.MarkdownPath);
+        }
+
+
 
         [ArgActionMethod]
         [ArgShortcut("q")]
@@ -166,9 +177,22 @@ namespace MarkdownToRWCore
 
             // Update markdown & html
             Console.WriteLine("Starting link replacer...");
-            Converter.ReplaceLocalImageLinksWithUrls(markdownPath, htmlPath, onlyUpdateHtml, markdownText, localImagePaths,
-                imageUrls);
+            Converter.ReplaceLocalImageLinksWithUrls(markdownPath, markdownText, htmlPath, htmlText, onlyUpdateHtml, localImagePaths, imageUrls);
             return true;
+        }
+
+        private void CreateReport(string markdownPath)
+        {
+            Console.WriteLine("Creating report...");
+            string text = DragonUtil.QuickReadFile(markdownPath);
+
+            string report = ContentScanner.ParseScanrResults(ContentScanner.ScanMarkdown(text, markdownPath));
+            string savePath = Path.GetDirectoryName(markdownPath) + Path.GetFileNameWithoutExtension(markdownPath) +
+                              "_REPORT.txt";
+
+            DragonUtil.QuickWriteFile(savePath, report);
+            Console.WriteLine("Saved report to " + savePath);
+
         }
 
     }

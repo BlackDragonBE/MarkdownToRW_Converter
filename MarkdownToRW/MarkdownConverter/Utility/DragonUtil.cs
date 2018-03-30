@@ -64,6 +64,21 @@ namespace DragonMarkdown.Utility
             }
         }
 
+        public static string QuickReadFile(string path)
+        {
+            string output = null;
+            
+            if (File.Exists(path))
+            {
+                using (StreamReader sr = new StreamReader(path))
+                {
+                    output = sr.ReadToEnd();
+                }
+            }
+
+            return output;
+        }
+
         public static string GetFullPathWithoutExtension(string path)
         {
             return Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path));
