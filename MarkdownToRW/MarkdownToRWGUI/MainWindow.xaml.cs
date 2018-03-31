@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Controls;
@@ -6,6 +7,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media.Imaging;
 using DragonMarkdown;
 using DragonMarkdown.Updater;
+using DragonMarkdown.Utility;
 using MarkdownToRWGUI.Models;
 
 namespace MarkdownToRWGUI
@@ -18,7 +20,7 @@ namespace MarkdownToRWGUI
         public MainWindow()
         {
             InitializeComponent();
-
+                       
             Title += " v" + DragonVersion.VERSION;
 
             if (File.Exists("rw-logo_250.ico"))
@@ -78,6 +80,8 @@ namespace MarkdownToRWGUI
                 ((MainWindowViewModel) DataContext).NewUpdate = true;
                 ((MainWindowViewModel) DataContext).UpdateDownloadUrl = newRealease.html_url;
                 BtnDownloadUpdate.Content = "Download update: " + newRealease.name;
+                ((MainWindowViewModel)DataContext).NewRelease = newRealease;
+
             }
         }
 

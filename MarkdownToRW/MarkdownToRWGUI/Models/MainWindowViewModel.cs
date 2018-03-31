@@ -10,6 +10,7 @@ using DragonMarkdown;
 using DragonMarkdown.ContentScan;
 using DragonMarkdown.DragonConverter;
 using DragonMarkdown.DragonWordPressXml.Responses;
+using DragonMarkdown.Updater;
 using DragonMarkdown.Utility;
 
 namespace MarkdownToRWGUI.Models
@@ -44,7 +45,8 @@ namespace MarkdownToRWGUI.Models
         public Window ThisWindow;
         public TextBox TxtPassword;
         public string UpdateDownloadUrl;
-
+        public GithubRelease NewRelease;
+        
         public bool AllowInput
         {
             get => _allowInput;
@@ -384,7 +386,8 @@ namespace MarkdownToRWGUI.Models
 
         public void DownloadUpdate()
         {
-            DragonUtil.OpenFileInDefaultApplication(UpdateDownloadUrl);
+            //DragonUtil.OpenFileInDefaultApplication(UpdateDownloadUrl);
+            UpdateHelper.UpdateApp(NewRelease);
         }
 
         public async void ShowPreview()

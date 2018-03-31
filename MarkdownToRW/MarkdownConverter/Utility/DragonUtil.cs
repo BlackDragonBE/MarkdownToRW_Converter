@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 namespace DragonMarkdown.Utility
@@ -20,7 +21,12 @@ namespace DragonMarkdown.Utility
                 RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
         }
 
+        public static string CurrentDirectory => Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
+        public static bool IsRunningPortable()
+        {
+            return Assembly.GetEntryAssembly().Location.EndsWith(".dll") && !File.Exists(DragonUtil.CurrentDirectory + "/System.Private.CoreLib.dll");
+        }
 
         public static string RemoveAllQuotes(string path)
         {

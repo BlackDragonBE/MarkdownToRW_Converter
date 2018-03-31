@@ -6,4 +6,12 @@
     <ApplicationIcon>rw-logo_250.ico</ApplicationIcon>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>bin\Debug\netcoreapp2.0\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>bin\Release\netcoreapp2.0\</OutputPath>
+  </PropertyGroup>
+
 </Project>

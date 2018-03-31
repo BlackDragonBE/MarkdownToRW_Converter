@@ -9,25 +9,46 @@ namespace CoreUpdater
     {
         static void Main(string[] args)
         {
-            string folderPath = args[0];
-            string zipPath = args[1];
-            string thisFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            try
+            {
+                string folderPath = args[0];
+                string zipPath = args[1];
 
-            Console.WriteLine("Starting update...");
-            Console.WriteLine("Removing previous version...");
+                Console.WriteLine("Starting update...");
+                Console.WriteLine("Removing previous version...");
 
-            DeleteAllFilesInDirectory(folderPath);
 
-            string previousPath = folderPath;
-            folderPath = Directory.GetParent(previousPath) + Path.GetFileNameWithoutExtension(zipPath);
-            Directory.Move(previousPath, folderPath);
+                
+                string previousPath = folderPath;
+                folderPath = Directory.GetParent(previousPath) + "/" + Path.GetFileNameWithoutExtension(zipPath);
 
-            Console.WriteLine("Unzipping update: " + zipPath);
-            
-            ZipFile.ExtractToDirectory(zipPath, folderPath);
+                try
+                {
+                    Directory.Delete(previousPath, true);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Previous installation couldn't be removed, please remove this folder manually: " + previousPath);
+                }
+                
+                Directory.CreateDirectory(folderPath);
+                    
+                //Console.WriteLine("Moving " + previousPath + " to " + folderPath);
+                //Directory.Move(previousPath, folderPath);
 
-            Console.WriteLine("Cleaning up...");
-            File.Delete(zipPath);
+                Console.WriteLine("Unzipping update: " + zipPath);
+
+                ZipFile.ExtractToDirectory(zipPath, folderPath);
+
+                Console.WriteLine("Cleaning up...");
+                File.Delete(zipPath);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                Console.ReadKey();
+                throw;
+            }
 
             Console.WriteLine("Update succesful! Press any key to quit...");
             Console.ReadKey();
@@ -36,16 +57,24 @@ namespace CoreUpdater
 
         private static void DeleteAllFilesInDirectory(string folderPath)
         {
-            DirectoryInfo di = new DirectoryInfo(folderPath);
-
-            foreach (FileInfo file in di.GetFiles())
+            try
             {
-                file.Delete();
+                DirectoryInfo di = new DirectoryInfo(folderPath);
+
+                foreach (FileInfo file in di.GetFiles())
+                {
+                    file.Delete();
+                }
+
+                foreach (DirectoryInfo dir in di.GetDirectories())
+                {
+                    dir.Delete(true);
+                }
             }
-
-            foreach (DirectoryInfo dir in di.GetDirectories())
+            catch (Exception e)
             {
-                dir.Delete(true);
+                Console.WriteLine(e);
+                throw;
             }
         }
     }

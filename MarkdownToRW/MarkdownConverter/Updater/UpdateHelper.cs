@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using DragonMarkdown.Utility;
 using Newtonsoft.Json;
 
 namespace DragonMarkdown.Updater
@@ -31,13 +35,11 @@ namespace DragonMarkdown.Updater
                 if (githubNewestVersion > _thisVersion)
                 {
                     Console.WriteLine("New version available!\n" + newestRelease.name + " (Current: v" + _thisVersion +
-                        ")\n\nRelease notes:\n" + newestRelease.body + "\n\nDownload: " + newestRelease.html_url);
+                                      ")\n\nRelease notes:\n" + newestRelease.body + "\n\nDownload: " +
+                                      newestRelease.html_url);
                     return newestRelease;
                 }
-                else
-                {
-                    Console.WriteLine("Application is up to date!");
-                }
+                Console.WriteLine("Application is up to date!");
             }
             else
             {
@@ -59,9 +61,9 @@ namespace DragonMarkdown.Updater
                     .Accept
                     .Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 Task<HttpResponseMessage> response = client.GetAsync(RELEASE_URL);
-                
-                release = JsonConvert.DeserializeObject<GithubRelease>(response.Result.Content.ReadAsStringAsync().Result);
 
+                release = JsonConvert.DeserializeObject<GithubRelease>(response.Result.Content.ReadAsStringAsync()
+                    .Result);
             }
             catch (Exception e)
             {
@@ -73,12 +75,140 @@ namespace DragonMarkdown.Updater
 
         public static void ExtractZipToFolder(string zipPath, string extractFolderPath)
         {
-            if (!Directory.Exists(extractFolderPath))
+            if (Directory.Exists(extractFolderPath))
             {
-                Directory.CreateDirectory(extractFolderPath);
+                Directory.Delete(extractFolderPath, true);
             }
 
+            Directory.CreateDirectory(extractFolderPath);
+
+
             ZipFile.ExtractToDirectory(zipPath, extractFolderPath);
+        }
+
+        public static void UpdateApp(GithubRelease release)
+        {
+            Console.WriteLine("Starting update...");
+            List<GithubRelease.Asset> assets = release.assets.Where(asset => asset.name.Contains("GUI")).ToList();
+
+            GithubRelease.Asset downloadAsset = GetAssetMatchingRunningVersion(assets);
+
+            string downloadUrl = downloadAsset.browser_download_url;
+            string zipPath = Directory.GetParent(DragonUtil.CurrentDirectory).FullName + "/" + downloadAsset.name;
+            string updaterFolder = Directory.GetParent(DragonUtil.CurrentDirectory).FullName + "/CoreUpdater";
+
+            if (downloadUrl == null)
+            {
+                return;
+            }
+
+            // download zip to parent folder
+            if (!File.Exists(zipPath))
+            {
+                Console.WriteLine("Downloading " + downloadUrl + "...");
+                Task<byte[]> zipBytes = DownloadFile(downloadUrl, "MarkdownToRW_Converter");
+
+                zipBytes.Wait();
+                File.WriteAllBytes(zipPath, zipBytes.Result);
+            }
+
+            // extract updater zip to parent folder
+            ExtractZipToFolder(DragonUtil.CurrentDirectory + "/CoreUpdater.zip", updaterFolder);
+
+            // run updater, point to this folder & downloaded zip
+            RunCoreUpdater(updaterFolder, zipPath);
+
+            // close app
+            Environment.Exit(0);
+        }
+
+        private static void RunCoreUpdater(string updaterFolder, string zipPath)
+        {
+            ProcessStartInfo processInfo = new ProcessStartInfo()
+            {
+                UseShellExecute = true,
+                ErrorDialog = true,
+            };
+
+            if (DragonUtil.IsRunningPortable())
+            {
+                processInfo.FileName = "dotnet";
+                //processInfo.Arguments = "dotnet'";
+                processInfo.Arguments += DragonUtil.SurroundWithQuotes(updaterFolder + "/CoreUpdater.dll");
+            }
+            else
+            {
+                if (DragonUtil.CurrentOperatingSystem.IsWindows())
+                {
+                    processInfo.FileName = updaterFolder + "/CoreUpdater.exe";
+                }
+                else if (DragonUtil.CurrentOperatingSystem.IsMacOS())
+                {
+                    processInfo.FileName = updaterFolder + "/CoreUpdater";
+                }
+                else if (DragonUtil.CurrentOperatingSystem.IsLinux())
+                {
+                    processInfo.FileName = updaterFolder + "/CoreUpdater";
+                }
+            }
+
+            processInfo.Arguments += " " + DragonUtil.SurroundWithSingleQuotes(DragonUtil.CurrentDirectory) + " " +
+                                    DragonUtil.SurroundWithSingleQuotes(zipPath);
+
+            Process process = new Process { StartInfo = processInfo };
+            process.Start();
+        }
+
+        private static GithubRelease.Asset GetAssetMatchingRunningVersion(List<GithubRelease.Asset> assets)
+        {
+            GithubRelease.Asset releaseAsset = null;
+            if (DragonUtil.IsRunningPortable())
+            {
+                Console.WriteLine("Portable version");
+                releaseAsset = assets.Find(asset => asset.name.Contains("Portable"));
+            }
+            else
+            {
+                if (DragonUtil.CurrentOperatingSystem.IsWindows())
+                {
+                    releaseAsset = assets.Find(asset => asset.name.Contains("Windows"));
+                }
+                else if (DragonUtil.CurrentOperatingSystem.IsMacOS())
+                {
+                    releaseAsset = assets.Find(asset => asset.name.Contains("macOS"));
+                }
+                else if (DragonUtil.CurrentOperatingSystem.IsLinux())
+                {
+                    releaseAsset = assets.Find(asset => asset.name.Contains("linux"));
+                }
+            }
+            return releaseAsset;
+        }
+
+        public static async Task<byte[]> DownloadFile(string url, string userAgent = null)
+        {
+            using (var client = new HttpClient())
+            {
+                if (userAgent != null)
+                {
+                    client.DefaultRequestHeaders.Add("User-Agent", userAgent);
+                }
+
+                Console.WriteLine("Starting async download");
+
+                using (var result = client.GetAsync(url))
+                {
+                    Console.WriteLine(result.Result.Content);
+
+                    if (result.Result.IsSuccessStatusCode)
+                    {
+                        Console.WriteLine("Connection OK...");
+                        return await result.Result.Content.ReadAsByteArrayAsync();
+                    }
+
+                }
+            }
+            return null;
         }
     }
 }
