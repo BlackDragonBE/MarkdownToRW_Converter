@@ -16,20 +16,10 @@ namespace CoreUpdater
 
                 Console.WriteLine("Starting update...");
                 Console.WriteLine("Removing previous version...");
-
-
                 
                 string previousPath = folderPath;
                 folderPath = Directory.GetParent(previousPath) + "/" + Path.GetFileNameWithoutExtension(zipPath);
 
-                try
-                {
-                    Directory.Delete(previousPath, true);
-                }
-                catch (Exception)
-                {
-                    Console.WriteLine("Previous installation couldn't be removed, please remove this folder manually: " + previousPath);
-                }
                 
                 Directory.CreateDirectory(folderPath);
                     
@@ -42,6 +32,16 @@ namespace CoreUpdater
 
                 Console.WriteLine("Cleaning up...");
                 File.Delete(zipPath);
+
+                try
+                {
+                    Directory.Delete(previousPath, true);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Previous installation couldn't be fully removed, please remove this folder manually: " + previousPath);
+                }
+
             }
             catch (Exception e)
             {

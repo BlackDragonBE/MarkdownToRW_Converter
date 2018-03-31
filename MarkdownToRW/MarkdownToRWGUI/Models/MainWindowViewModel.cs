@@ -17,6 +17,7 @@ namespace MarkdownToRWGUI.Models
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
+      
         private bool _allowInput = true;
         private bool _firstImageRight;
         private string _htmlPath;
@@ -46,7 +47,7 @@ namespace MarkdownToRWGUI.Models
         public TextBox TxtPassword;
         public string UpdateDownloadUrl;
         public GithubRelease NewRelease;
-        
+
         public bool AllowInput
         {
             get => _allowInput;
@@ -352,7 +353,7 @@ namespace MarkdownToRWGUI.Models
 
         private async Task<string> ChooseFile()
         {
-            OpenFileDialog openDialog = new OpenFileDialog {AllowMultiple = false};
+            OpenFileDialog openDialog = new OpenFileDialog { AllowMultiple = false };
 
             FileDialogFilter markdownFilter = new FileDialogFilter();
             markdownFilter.Extensions.Add("md");
@@ -384,10 +385,30 @@ namespace MarkdownToRWGUI.Models
             return null;
         }
 
-        public void DownloadUpdate()
+        public async void DownloadUpdate()
         {
-            //DragonUtil.OpenFileInDefaultApplication(UpdateDownloadUrl);
-            UpdateHelper.UpdateApp(NewRelease);
+            if (File.Exists(DragonUtil.CurrentDirectory + "/CoreUpdater.zip"))
+            {
+                AllowInput = false;
+                Status = "Preparing to update, don't close this window...";
+                var progress = new Progress<SimpleTaskProgress>();
+                progress.ProgressChanged += OnDownloadProgressChanged;
+
+                await UpdateHelper.UpdateApp(NewRelease, progress);
+            }
+            else
+            {
+                Status = "CoreUpdater.zip couldn't be found. Opening download page in browser...";
+                DragonUtil.OpenFileInDefaultApplication(UpdateDownloadUrl);
+            }
+
+        }
+
+        private void OnDownloadProgressChanged(object sender, SimpleTaskProgress simpleTaskProgress)
+        {
+            Status = "Downloading update: " + simpleTaskProgress.CurrentProgress + " / " + simpleTaskProgress.TotalProgress + " kB";
+            ProgressMax = simpleTaskProgress.TotalProgress;
+            ProgressValue = simpleTaskProgress.CurrentProgress;
         }
 
         public async void ShowPreview()
@@ -587,7 +608,7 @@ namespace MarkdownToRWGUI.Models
                         }
                         await Task.Delay(25);
                     }
-                    
+
                     OnActionFinished();
 
                 }
@@ -595,7 +616,7 @@ namespace MarkdownToRWGUI.Models
 
             // Update markdown & html
             Console.WriteLine("Starting link replacer...");
-            MarkdownAndHtml markdownAndHtml=  Converter.ReplaceLocalImageLinksWithUrls(_markdownPath, MarkdownText,
+            MarkdownAndHtml markdownAndHtml = Converter.ReplaceLocalImageLinksWithUrls(_markdownPath, MarkdownText,
                 _htmlPath, _htmlText, OnlyHtml, localImagePaths, imageUrls);
 
             MarkdownText = markdownAndHtml.Markdown;

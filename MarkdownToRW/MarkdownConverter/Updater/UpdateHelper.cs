@@ -86,7 +86,7 @@ namespace DragonMarkdown.Updater
             ZipFile.ExtractToDirectory(zipPath, extractFolderPath);
         }
 
-        public static void UpdateApp(GithubRelease release)
+        public static async Task UpdateApp(GithubRelease release, IProgress<SimpleTaskProgress> taskProgress)
         {
             Console.WriteLine("Starting update...");
             List<GithubRelease.Asset> assets = release.assets.Where(asset => asset.name.Contains("GUI")).ToList();
@@ -102,16 +102,16 @@ namespace DragonMarkdown.Updater
                 return;
             }
 
-            // download zip to parent folder
-            if (!File.Exists(zipPath))
+            if (File.Exists(zipPath))
             {
-                Console.WriteLine("Downloading " + downloadUrl + "...");
-                Task<byte[]> zipBytes = DownloadFile(downloadUrl, "MarkdownToRW_Converter");
-
-                zipBytes.Wait();
-                File.WriteAllBytes(zipPath, zipBytes.Result);
+                File.Delete(zipPath);
             }
-
+            
+            Console.WriteLine("Downloading " + downloadUrl + "...");
+            var progress = new Progress<SimpleTaskProgress>();
+            progress.ProgressChanged += (sender, simpleTaskProgress) => taskProgress.Report(simpleTaskProgress);
+            await DragonUtil.DownloadFile(downloadUrl, zipPath, "MarkdownToRW_Converter", downloadAsset.size / 1024, progress);
+            
             // extract updater zip to parent folder
             ExtractZipToFolder(DragonUtil.CurrentDirectory + "/CoreUpdater.zip", updaterFolder);
 
@@ -185,30 +185,6 @@ namespace DragonMarkdown.Updater
             return releaseAsset;
         }
 
-        public static async Task<byte[]> DownloadFile(string url, string userAgent = null)
-        {
-            using (var client = new HttpClient())
-            {
-                if (userAgent != null)
-                {
-                    client.DefaultRequestHeaders.Add("User-Agent", userAgent);
-                }
 
-                Console.WriteLine("Starting async download");
-
-                using (var result = client.GetAsync(url))
-                {
-                    Console.WriteLine(result.Result.Content);
-
-                    if (result.Result.IsSuccessStatusCode)
-                    {
-                        Console.WriteLine("Connection OK...");
-                        return await result.Result.Content.ReadAsByteArrayAsync();
-                    }
-
-                }
-            }
-            return null;
-        }
     }
 }
