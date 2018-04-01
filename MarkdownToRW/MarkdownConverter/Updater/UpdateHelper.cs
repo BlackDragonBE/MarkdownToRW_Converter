@@ -116,11 +116,17 @@ namespace DragonMarkdown.Updater
             ExtractZipToFolder(DragonUtil.CurrentDirectory + "/CoreUpdater.zip", updaterFolder);
 
             // run updater, point to this folder & downloaded zip
+            if (DragonUtil.CurrentOperatingSystem.IsMacOS() || DragonUtil.CurrentOperatingSystem.IsLinux())
+            {
+                DragonUtil.TryToMakeExecutable(updaterFolder + "CoreUpdater");
+            }
+
             RunCoreUpdater(updaterFolder, zipPath);
 
             // close app
             Environment.Exit(0);
         }
+
 
         private static void RunCoreUpdater(string updaterFolder, string zipPath)
         {
@@ -184,7 +190,5 @@ namespace DragonMarkdown.Updater
             }
             return releaseAsset;
         }
-
-
     }
 }

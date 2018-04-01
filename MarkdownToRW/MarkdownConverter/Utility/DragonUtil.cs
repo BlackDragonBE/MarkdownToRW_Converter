@@ -199,12 +199,12 @@ namespace DragonMarkdown.Utility
                                 {
                                     long progress = totalRead / fileSizeInKilobytes*100;
 
-                                    Console.WriteLine(string.Format("Download progress: {2:n0} %  {0:n0}/{1:n0}", totalRead/1024,
+                                    Console.WriteLine(String.Format("Download progress: {2:n0} %  {0:n0}/{1:n0}", totalRead/1024,
                                         fileSizeInKilobytes, progress));
                                 }
                                 else
                                 {
-                                    Console.WriteLine(string.Format("Total kiloBytes downloaded so far: {0:n0}", totalRead / 1024));
+                                    Console.WriteLine(String.Format("Total kiloBytes downloaded so far: {0:n0}", totalRead / 1024));
                                 }
                             }
                         }
@@ -212,6 +212,27 @@ namespace DragonMarkdown.Utility
                     }
                 }
 
+            }
+        }
+
+        public static void TryToMakeExecutable(string filePath)
+        {
+            try
+            {
+                ProcessStartInfo info = new ProcessStartInfo
+                {
+                    UseShellExecute = false,
+                    FileName = "/bin/bash",
+                    Arguments = "chmod +x " + SurroundWithSingleQuotes(filePath)
+                };
+
+                Process p = new Process {StartInfo = info};
+                p.Start();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Couldn't make executable: " + filePath);
+                Console.WriteLine(e);
             }
         }
     }
