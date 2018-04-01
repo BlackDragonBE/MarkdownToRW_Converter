@@ -45,36 +45,15 @@ namespace CoreUpdater
             }
             catch (Exception e)
             {
+                Console.WriteLine("Update failed:");
                 Console.WriteLine(e);
-                throw;
+                Console.ReadLine();
+                Environment.Exit(0);
             }
 
             Console.WriteLine("Update succesful! Press ENTER to exit.");
             Console.ReadLine();
             Environment.Exit(0);
-        }
-
-        private static void DeleteAllFilesInDirectory(string folderPath)
-        {
-            try
-            {
-                DirectoryInfo di = new DirectoryInfo(folderPath);
-
-                foreach (FileInfo file in di.GetFiles())
-                {
-                    file.Delete();
-                }
-
-                foreach (DirectoryInfo dir in di.GetDirectories())
-                {
-                    dir.Delete(true);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
         }
     }
 }
