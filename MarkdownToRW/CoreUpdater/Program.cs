@@ -46,12 +46,11 @@ namespace CoreUpdater
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                Console.ReadKey();
                 throw;
             }
 
-            Console.WriteLine("Update succesful! Press any key to quit...");
-            Console.ReadKey();
+            Console.WriteLine("Update succesful! Press ENTER to exit.");
+            Console.ReadLine();
             Environment.Exit(0);
         }
 
