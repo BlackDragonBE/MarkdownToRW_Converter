@@ -51,9 +51,7 @@ namespace CoreUpdater
                 Environment.Exit(0);
             }
 
-            Console.WriteLine("Update succesful! Press ENTER to exit.");
-            Console.ReadLine();
-            Environment.Exit(0);
+            Console.WriteLine("Update succesful!");
         }
     }
 }

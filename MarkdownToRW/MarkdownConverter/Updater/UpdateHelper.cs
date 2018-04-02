@@ -130,10 +130,12 @@ namespace DragonMarkdown.Updater
 
         private static void RunCoreUpdater(string updaterFolder, string zipPath)
         {
+            Console.WriteLine("Starting updater process...");
+
             ProcessStartInfo processInfo = new ProcessStartInfo()
             {
-                UseShellExecute = true,
                 ErrorDialog = true,
+                UseShellExecute = true
             };
 
             if (DragonUtil.IsRunningPortable())
@@ -146,20 +148,22 @@ namespace DragonMarkdown.Updater
             {
                 if (DragonUtil.CurrentOperatingSystem.IsWindows())
                 {
-                    processInfo.FileName = updaterFolder + "/CoreUpdater.exe";
+                    processInfo.FileName = DragonUtil.SurroundWithQuotes(updaterFolder + "/CoreUpdater.exe");
                 }
                 else if (DragonUtil.CurrentOperatingSystem.IsMacOS())
                 {
-                    processInfo.FileName = updaterFolder + "/CoreUpdater";
+                    processInfo.FileName = DragonUtil.SurroundWithSingleQuotes(updaterFolder + "/CoreUpdater");
                 }
                 else if (DragonUtil.CurrentOperatingSystem.IsLinux())
                 {
-                    processInfo.FileName = updaterFolder + "/CoreUpdater";
+                    processInfo.FileName = DragonUtil.SurroundWithSingleQuotes(updaterFolder + "/CoreUpdater");
                 }
             }
 
             processInfo.Arguments += " " + DragonUtil.SurroundWithSingleQuotes(DragonUtil.CurrentDirectory) + " " +
                                     DragonUtil.SurroundWithSingleQuotes(zipPath);
+
+            Console.WriteLine(processInfo.FileName + processInfo.Arguments);
 
             Process process = new Process { StartInfo = processInfo };
             process.Start();

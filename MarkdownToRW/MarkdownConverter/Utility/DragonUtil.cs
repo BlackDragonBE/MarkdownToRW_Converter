@@ -43,7 +43,7 @@ namespace DragonMarkdown.Utility
 
         public static string SurroundWithSingleQuotes(string str)
         {
-            return '"' + str + '"';
+            return "'" + str + "'";
         }
 
         public static string BatchReplaceText(string text, List<string> originals, List<string> replacements)
@@ -222,9 +222,20 @@ namespace DragonMarkdown.Utility
                 ProcessStartInfo info = new ProcessStartInfo
                 {
                     UseShellExecute = false,
-                    FileName = "sudo",
-                    Arguments = "chmod +x " + SurroundWithSingleQuotes(filePath)
                 };
+
+                if (CurrentOperatingSystem.IsLinux())
+                {
+                    info.FileName = "gksudo";
+                    info.Arguments = "chmod +x " + SurroundWithQuotes(filePath);
+                }
+                else
+                {
+                    info.FileName = "osascript";
+                    info.Arguments = "-e 'do shell script " + SurroundWithQuotes("chmod +x " + SurroundWithSingleQuotes(filePath)) + "' with administrator privileges";
+                }
+
+                Console.WriteLine(info.FileName + " " + info.Arguments);
 
                 Process p = new Process {StartInfo = info};
                 p.Start();
