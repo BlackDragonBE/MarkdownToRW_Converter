@@ -228,6 +228,7 @@ namespace DragonMarkdown.Utility
 
                 Process p = new Process {StartInfo = info};
                 p.Start();
+                p.WaitForExit();
             }
             catch (Exception e)
             {
