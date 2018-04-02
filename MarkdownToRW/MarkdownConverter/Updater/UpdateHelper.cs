@@ -118,7 +118,7 @@ namespace DragonMarkdown.Updater
             // run updater, point to this folder & downloaded zip
             if (DragonUtil.CurrentOperatingSystem.IsMacOS() || DragonUtil.CurrentOperatingSystem.IsLinux())
             {
-                DragonUtil.TryToMakeExecutable(updaterFolder + "CoreUpdater");
+                DragonUtil.TryToMakeExecutable(updaterFolder + "/CoreUpdater");
             }
 
             RunCoreUpdater(updaterFolder, zipPath);
