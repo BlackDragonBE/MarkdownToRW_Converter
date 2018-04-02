@@ -232,7 +232,7 @@ namespace DragonMarkdown.Utility
                 else
                 {
                     info.FileName = "osascript";
-                    info.Arguments = "-e 'do shell script " + SurroundWithQuotes("chmod +x " + SurroundWithSingleQuotes(filePath)) + "' with administrator privileges";
+                    info.Arguments = "-e 'do shell script " + SurroundWithQuotes("chmod +x " + SurroundWithSingleQuotes(filePath)) + " with administrator privileges'";
                 }
 
                 Console.WriteLine(info.FileName + " " + info.Arguments);
