@@ -17,7 +17,7 @@ namespace MarkdownToRWGUI.Models
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
-      
+
         private bool _allowInput = true;
         private bool _firstImageRight;
         private string _htmlPath;
@@ -387,10 +387,11 @@ namespace MarkdownToRWGUI.Models
 
         public async void DownloadUpdate()
         {
-            if (File.Exists(DragonUtil.CurrentDirectory + "/CoreUpdater.zip"))
+            if (File.Exists(DragonUtil.CurrentDirectory + "/CoreUpdater.zip") && DragonUtil.CheckFolderWritePermission(Directory.GetParent(DragonUtil.CurrentDirectory).FullName))
             {
                 AllowInput = false;
                 Status = "Preparing to update, don't close this window...";
+                await Task.Delay(25);
                 var progress = new Progress<SimpleTaskProgress>();
                 progress.ProgressChanged += OnDownloadProgressChanged;
 
@@ -398,7 +399,7 @@ namespace MarkdownToRWGUI.Models
             }
             else
             {
-                Status = "CoreUpdater.zip couldn't be found. Opening download page in browser...";
+                Status = "Can't do automatic update. Opening download page in browser...";
                 DragonUtil.OpenFileInDefaultApplication(UpdateDownloadUrl);
             }
 

@@ -222,7 +222,7 @@ namespace DragonMarkdown.Utility
                 ProcessStartInfo info = new ProcessStartInfo
                 {
                     UseShellExecute = false,
-                    FileName = "/bin/bash",
+                    FileName = "sudo",
                     Arguments = "chmod +x " + SurroundWithSingleQuotes(filePath)
                 };
 
