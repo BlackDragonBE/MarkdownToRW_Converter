@@ -228,18 +228,24 @@ namespace DragonMarkdown.Utility
                 {
                     info.FileName = "gksudo";
                     info.Arguments = "chmod +x " + SurroundWithQuotes(filePath);
+
+                    Process p = new Process { StartInfo = info };
+                    p.Start();
+                    p.WaitForExit();
+
                 }
                 else
                 {
-                    info.FileName = "osascript";
-                    info.Arguments = "-e 'do shell script " + SurroundWithQuotes("chmod +x " + SurroundWithSingleQuotes(filePath)) + " with administrator privileges'";
+                    //string scriptPath = Directory.GetParent(filePath).FullName;
+                    //info.FileName = "osascript";
+                    //info.Arguments = "-e 'do shell script " + SurroundWithQuotes("chmod +x " + SurroundWithSingleQuotes(filePath)) + " with administrator privileges'";
+                    //info.Arguments = SurroundWithSingleQuotes(scriptPath + "/AddWritePermissions.scpt");
+
+                    info.FileName = "sudo";
+                    info.Arguments = "chmod +x" + SurroundWithSingleQuotes(filePath);
                 }
 
                 Console.WriteLine(info.FileName + " " + info.Arguments);
-
-                Process p = new Process {StartInfo = info};
-                p.Start();
-                p.WaitForExit();
             }
             catch (Exception e)
             {
