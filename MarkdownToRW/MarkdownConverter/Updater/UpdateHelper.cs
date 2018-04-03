@@ -118,7 +118,7 @@ namespace DragonMarkdown.Updater
             // run updater, point to this folder & downloaded zip
             if (DragonUtil.CurrentOperatingSystem.IsMacOS() || DragonUtil.CurrentOperatingSystem.IsLinux())
             {
-                DragonUtil.TryToMakeExecutable(updaterFolder + "/CoreUpdater");
+                await DragonUtil.TryToMakeExecutable(updaterFolder + "/CoreUpdater");
             }
 
             RunCoreUpdater(updaterFolder, zipPath);
@@ -152,16 +152,16 @@ namespace DragonMarkdown.Updater
                 }
                 else if (DragonUtil.CurrentOperatingSystem.IsMacOS())
                 {
-                    processInfo.FileName = DragonUtil.SurroundWithSingleQuotes(updaterFolder + "/CoreUpdater");
+                    processInfo.FileName = DragonUtil.SurroundWithQuotes(updaterFolder + "/CoreUpdater");
                 }
                 else if (DragonUtil.CurrentOperatingSystem.IsLinux())
                 {
-                    processInfo.FileName = DragonUtil.SurroundWithSingleQuotes(updaterFolder + "/CoreUpdater");
+                    processInfo.FileName = DragonUtil.SurroundWithQuotes(updaterFolder + "/CoreUpdater");
                 }
             }
 
-            processInfo.Arguments += " " + DragonUtil.SurroundWithSingleQuotes(DragonUtil.CurrentDirectory) + " " +
-                                    DragonUtil.SurroundWithSingleQuotes(zipPath);
+            processInfo.Arguments += " " + DragonUtil.SurroundWithQuotes(DragonUtil.CurrentDirectory) + " " +
+                                    DragonUtil.SurroundWithQuotes(zipPath);
 
             Console.WriteLine(processInfo.FileName + processInfo.Arguments);
 

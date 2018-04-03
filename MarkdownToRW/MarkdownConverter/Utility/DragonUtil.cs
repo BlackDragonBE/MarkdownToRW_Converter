@@ -197,9 +197,9 @@ namespace DragonMarkdown.Utility
 
                                 if (fileSizeInKilobytes > 0)
                                 {
-                                    long progress = totalRead / fileSizeInKilobytes*100;
+                                    long progress = totalRead / fileSizeInKilobytes * 100;
 
-                                    Console.WriteLine(String.Format("Download progress: {2:n0} %  {0:n0}/{1:n0}", totalRead/1024,
+                                    Console.WriteLine(String.Format("Download progress: {2:n0} %  {0:n0}/{1:n0}", totalRead / 1024,
                                         fileSizeInKilobytes, progress));
                                 }
                                 else
@@ -209,13 +209,15 @@ namespace DragonMarkdown.Utility
                             }
                         }
                         while (isMoreToRead);
+
+                        taskProgress?.Report(new SimpleTaskProgress { CurrentProgress = (int)(totalRead / 1024), TotalProgress = fileSizeInKilobytes });
                     }
                 }
 
             }
         }
 
-        public static void TryToMakeExecutable(string filePath)
+        public static async Task TryToMakeExecutable(string filePath)
         {
             try
             {
@@ -229,23 +231,25 @@ namespace DragonMarkdown.Utility
                     info.FileName = "gksudo";
                     info.Arguments = "chmod +x " + SurroundWithQuotes(filePath);
 
-                    Process p = new Process { StartInfo = info };
-                    p.Start();
-                    p.WaitForExit();
-
                 }
                 else
                 {
-                    //string scriptPath = Directory.GetParent(filePath).FullName;
-                    //info.FileName = "osascript";
-                    //info.Arguments = "-e 'do shell script " + SurroundWithQuotes("chmod +x " + SurroundWithSingleQuotes(filePath)) + " with administrator privileges'";
-                    //info.Arguments = SurroundWithSingleQuotes(scriptPath + "/AddWritePermissions.scpt");
+                    string scriptPath = Directory.GetParent(filePath).FullName;
+                    info.FileName = "osascript";
+                    info.Arguments = SurroundWithQuotes(scriptPath + "/AddWritePermissions.scpt");
 
-                    info.FileName = "sudo";
-                    info.Arguments = "chmod +x" + SurroundWithSingleQuotes(filePath);
+                    //info.FileName = "sudo";
+                    //info.Arguments = "chmod +x " + SurroundWithQuotes(filePath);
                 }
 
                 Console.WriteLine(info.FileName + " " + info.Arguments);
+                Process p = new Process { StartInfo = info };
+                p.Start();
+                p.WaitForExit();
+
+                await Task.Delay(25);
+
+                Console.WriteLine("OK!");
             }
             catch (Exception e)
             {

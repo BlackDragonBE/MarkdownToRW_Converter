@@ -37,7 +37,7 @@ cd ..
 
 :: CORE Self Contained Console
 
-"%~dp0/7z/7za.exe" a -tzip "%~dp0\Release\MarkdownToRW_Console_Windows_SelfContained_%version%.zip" "%~dp0\MarkdownToRWCore\bin\Release\netcoreapp2.0\win10-x64\publish\*"
+"%~dp0/7z/7za.exe" a -tzip "%~dp0\Release\MarkdownToRW_Console_Windows_SelfContained_%version%.zip" "%~dp0\MarkdownToRWCore\bin\Release\netcoreapp2.0\win-x64\publish\*"
 
 "%~dp0/7z/7za.exe" a -tzip "%~dp0\Release\MarkdownToRW_Console_macOS_SelfContained_%version%.zip" "%~dp0\MarkdownToRWCore\bin\Release\netcoreapp2.0\osx-x64\publish\*"
 
@@ -54,8 +54,8 @@ cd ..
 "%~dp0/7z/7za.exe" a -tzip "%~dp0\Release\MarkdownToRW_GUI_Portable_%version%.zip" "%~dp0\MarkdownToRWGUI\bin\Debug\netcoreapp2.0\publish\*"
 
 :: CORE Self Contained GUI
-"%~dp0/7z/7za.exe" a -tzip "%~dp0\MarkdownToRWGUI\bin\Release\netcoreapp2.0\win10-x64\publish\CoreUpdater.zip" "%~dp0\CoreUpdater\bin\Release\netcoreapp2.0\netcoreapp2.0\win10-x64\publish\*"
-"%~dp0/7z/7za.exe" a -tzip "%~dp0\Release\MarkdownToRW_GUI_Windows_SelfContained_%version%.zip" "%~dp0\MarkdownToRWGUI\bin\Release\netcoreapp2.0\win10-x64\publish\*"
+"%~dp0/7z/7za.exe" a -tzip "%~dp0\MarkdownToRWGUI\bin\Release\netcoreapp2.0\win-x64\publish\CoreUpdater.zip" "%~dp0\CoreUpdater\bin\Release\netcoreapp2.0\netcoreapp2.0\win-x64\publish\*"
+"%~dp0/7z/7za.exe" a -tzip "%~dp0\Release\MarkdownToRW_GUI_Windows_SelfContained_%version%.zip" "%~dp0\MarkdownToRWGUI\bin\Release\netcoreapp2.0\win-x64\publish\*"
 
 "%~dp0/7z/7za.exe" a -tzip "%~dp0\MarkdownToRWGUI\bin\Release\netcoreapp2.0\osx-x64\publish\CoreUpdater.zip" "%~dp0\CoreUpdater\bin\Release\netcoreapp2.0\netcoreapp2.0\osx-x64\publish\*"
 "%~dp0/7z/7za.exe" a -tzip "%~dp0\Release\MarkdownToRW_GUI_macOS_SelfContained_%version%.zip" "%~dp0\MarkdownToRWGUI\bin\Release\netcoreapp2.0\osx-x64\publish\*"
