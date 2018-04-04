@@ -155,6 +155,11 @@ switch (i)
         Console.WriteLine("Other");
         break;
 }
+
+rb = GetComponent<Rigidbody>();
+tr = GetComponent<Transform>();
+
+Console.WriteLine("OK");
 ```
 
 These are the supported languages:

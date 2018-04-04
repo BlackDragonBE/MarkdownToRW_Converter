@@ -333,6 +333,7 @@ namespace MarkdownToRWGUI.Models
 
 
                         HtmlText = Converter.ConvertMarkdownStringToHtml(MarkdownText, options, Path.GetDirectoryName(_markdownPath));
+                        PdfConverter.ConvertToPdf(PreviewCreator.CreateHtmlPreviewFromMarkdown(MarkdownText), _markdownPath.Replace("md","pdf"));
 
                         if (SaveOutputToHtml)
                         {

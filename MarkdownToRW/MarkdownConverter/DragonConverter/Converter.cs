@@ -10,7 +10,7 @@ namespace DragonMarkdown.DragonConverter
 {
     public class Converter
     {
-        public static string ConvertMarkdownStringToHtml(string markdown, ConverterOptions options = null, string rootPath = null)
+        public static string ConvertMarkdownStringToHtml(string markdown, ConverterOptions options = null, string rootPath = null, bool prepareForPreview = false)
         {
             if (options == null)
             {
@@ -22,8 +22,10 @@ namespace DragonMarkdown.DragonConverter
 
 
             string output = Markdown.ToHtml(markdown, pipeline);
-            output = WebUtility.HtmlDecode(output);
+            //Console.WriteLine(output);
 
+
+            
             // HTML readability improvements & RW specific changes
 
             // Code
@@ -74,6 +76,11 @@ namespace DragonMarkdown.DragonConverter
 
             // Final cleanup
             output = output.Replace("<div></div>", "");
+            if (!prepareForPreview)
+            {
+                output = WebUtility.HtmlDecode(output);
+            }
+
 
             output = output.Trim();
             return output;
