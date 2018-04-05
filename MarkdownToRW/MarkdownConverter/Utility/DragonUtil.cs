@@ -257,5 +257,10 @@ namespace DragonMarkdown.Utility
                 Console.WriteLine(e);
             }
         }
+
+        public static string GetFullFilePath(string localFilePath, string rootPath)
+        {
+            return rootPath + "/" + localFilePath;
+        }
     }
 }

@@ -323,6 +323,7 @@ namespace MarkdownToRWGUI.Models
 
         public async void Convert()
         {
+            AllowInput = false;
             CreateAndSaveSettings();
             string path = await ChooseFile();
 
@@ -354,20 +355,28 @@ namespace MarkdownToRWGUI.Models
                         if (SaveOutputToPdf)
                         {
                             HtmlText = Converter.ConvertMarkdownStringToHtml(MarkdownText, options, Path.GetDirectoryName(_markdownPath));
+                            PdfConverter.OnProgressChangedEvent += OnPdfConvertProgressChanged;
                             PdfConverter.ConvertToPdf(
                                 PreviewCreator.CreateHtmlPreviewFromMarkdown(MarkdownText,
                                     Path.GetDirectoryName(_markdownPath)), Path.GetDirectoryName(_markdownPath) + "/" + Path.GetFileNameWithoutExtension(_markdownPath) + ".pdf");
                         }
 
-                        Status = "Converted markdown to HTML!";
+                        Status = "Done!";
                         MarkdownLoaded = true;
+                        OnActionFinished();
                     }
                 }
             }
             else
             {
                 Status = "No valid markdown chosen!";
+                OnActionFinished();
             }
+        }
+
+        private void OnPdfConvertProgressChanged(string s)
+        {
+            Status = "PDF conversion status: " + s;
         }
 
         private async Task<string> ChooseFile()

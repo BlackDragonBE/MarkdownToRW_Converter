@@ -24,7 +24,7 @@ call QuickPublish.cmd
 call CreateReleases.cmd
 cd ..
 
-"%~dp0/7z/7za.exe" a -tzip "%~dp0\MarkdownToRWGUI\bin\Debug\netcoreapp2.0\publish\CoreUpdater.zip" "%~dp0\CoreUpdater\bin\Debug\netcoreapp2.0\netcoreapp2.0\publish\*"
+"%~dp0/7z/7za.exe" a -tzip "%~dp0\MarkdownToRWGUI\bin\Debug\netcoreapp2.0\publish\CoreUpdater.zip" "%~dp0\CoreUpdater\portable_published\*"
 
 :: CORE Portable Console
 
@@ -33,7 +33,7 @@ call QuickPublish.cmd
 call CreateReleases.cmd
 cd ..
 
-"%~dp0/7z/7za.exe" a -tzip "%~dp0\Release\MarkdownToRW_Console_Portable_%version%.zip" "%~dp0\MarkdownToRWCore\bin\Debug\netcoreapp2.0\publish\*"
+"%~dp0/7z/7za.exe" a -tzip "%~dp0\Release\MarkdownToRW_Console_Portable_%version%.zip" "%~dp0\MarkdownToRWCore\portable_published\*"
 
 :: CORE Self Contained Console
 
@@ -51,7 +51,7 @@ call QuickPublish.cmd
 call CreateReleases.cmd
 cd ..
 
-"%~dp0/7z/7za.exe" a -tzip "%~dp0\Release\MarkdownToRW_GUI_Portable_%version%.zip" "%~dp0\MarkdownToRWGUI\bin\Debug\netcoreapp2.0\publish\*"
+"%~dp0/7z/7za.exe" a -tzip "%~dp0\Release\MarkdownToRW_GUI_Portable_%version%.zip" "%~dp0\MarkdownToRWGUI\portable_published\*"
 
 :: CORE Self Contained GUI
 "%~dp0/7z/7za.exe" a -tzip "%~dp0\MarkdownToRWGUI\bin\Release\netcoreapp2.0\win-x64\publish\CoreUpdater.zip" "%~dp0\CoreUpdater\bin\Release\netcoreapp2.0\netcoreapp2.0\win-x64\publish\*"

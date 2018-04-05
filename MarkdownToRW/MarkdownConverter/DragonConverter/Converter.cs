@@ -69,7 +69,7 @@ namespace DragonMarkdown.DragonConverter
             // Spoiler
             ConvertSpoilers(ref output);
 
-            if (options.ReplaceImageWithAltWithCaption)
+            if (options.ReplaceImageWithAltWithCaption && !prepareForPreview)
             {
                 ConvertImagesWithAltToCaptions(ref output);
             }
@@ -120,7 +120,7 @@ namespace DragonMarkdown.DragonConverter
                 // If root path is known, check if images are too big for full size class
                 if (rootPath != null)
                 {
-                    var imageSize = ImageHelper.GetDimensions(GetFullFilePath(node.Attributes["src"].Value, rootPath));
+                    var imageSize = ImageHelper.GetDimensions(DragonUtil.GetFullFilePath(node.Attributes["src"].Value, rootPath));
 
                     if (imageSize.Width > 700)
                     {
@@ -306,11 +306,6 @@ namespace DragonMarkdown.DragonConverter
             var newNode = HtmlNode.CreateNode(newOuter);
             newNode.InnerHtml = newNode.InnerHtml.Replace("][", "]" + inner.Trim() + "[");
             node.ParentNode.ReplaceChild(newNode, node);
-        }
-
-        public static string GetFullFilePath(string localFilePath, string rootPath)
-        {
-            return rootPath + "/" + localFilePath;
         }
     }
 

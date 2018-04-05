@@ -17,33 +17,35 @@ namespace DragonMarkdown.DragonConverter
             var converter = new BasicConverter(new PdfTools());
 
             converter.ProgressChanged += ConverterOnProgressChanged;
-
             var doc = new HtmlToPdfDocument()
             {
                 GlobalSettings = {
                     ColorMode = ColorMode.Color,
                     Orientation = Orientation.Portrait,
-                    PaperSize = PaperKind.A4Plus,
+                    PaperSize = PaperKind.A4,
+                    Margins = new MarginSettings(15,15,15,15),
                 },
                 Objects = {
                     new ObjectSettings() {
                         PagesCount = true,
                         HtmlContent = html,
-                        WebSettings = { DefaultEncoding = "utf-8" },
-                        HeaderSettings = { FontSize = 9, Left = "My Amazing Title", Right = "Page [page] of [toPage]", Line = true, Spacing = 2.812 },
-                        FooterSettings = { FontSize = 9, Left = "My Amazing Title", Right = "Page [page] of [toPage]", Line = true, Spacing = 2.812 },
+                        LoadSettings = new LoadSettings(){JSDelay = 1000, StopSlowScript = false},
+                        WebSettings = { DefaultEncoding = "utf-8" ,EnableIntelligentShrinking = true, PrintMediaType = true},
+                        HeaderSettings = { FontSize = 9, Left = "Title", Right = "[section]", Line = false, Spacing = 5},
+                        FooterSettings = { FontSize = 9, Left = "raywenderlich.com", Right = "[page]", Line = false, Spacing = 5 },
                     }
                 }
             };
 
             Console.WriteLine("Saving PDF to " + ouputPath);
-
             byte[] pdf = converter.Convert(doc);
             
             using (FileStream stream = new FileStream(ouputPath, FileMode.Create))
             {
                 stream.Write(pdf, 0, pdf.Length);
             }
+
+            OnProgressChangedEvent = null;
         }
 
         private static void ConverterOnProgressChanged(object sender, ProgressChangedArgs progressChangedArgs)

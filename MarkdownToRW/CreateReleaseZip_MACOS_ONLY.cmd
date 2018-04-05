@@ -24,7 +24,7 @@ call QuickPublish.cmd
 call CreateMacStandalone.cmd
 cd ..
 
-"%~dp0/7z/7za.exe" a -tzip "%~dp0\MarkdownToRWGUI\bin\Debug\netcoreapp2.0\publish\CoreUpdater.zip" "%~dp0\CoreUpdater\bin\Debug\netcoreapp2.0\netcoreapp2.0\publish\*"
+"%~dp0/7z/7za.exe" a -tzip "%~dp0\MarkdownToRWGUI\bin\Debug\netcoreapp2.0\publish\CoreUpdater.zip" "%~dp0\CoreUpdater\portable_published\*"
 
 :: CORE Portable GUI
 

@@ -29,7 +29,7 @@
                                    "    display: block;" +
                                    "    margin-left: auto;" +
                                    "    margin-right: auto;" +
-                                   "    max-width:700px;" +
+                                   "    max-width:860px;" +
                                    "}" +
                                    "em, strong{font-weight:700;color:#006837;font-style: normal;}" +
                                    "pre{white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space:-o-pre-wrap;font-family:'Droid Sans Mono',sans-serif!important;width:auto;overflow:visible;font-size:12px;line-height:1.333;text-align:left;border:1px solid #aaa;margin-bottom:1em;padding:0.5em}" +
