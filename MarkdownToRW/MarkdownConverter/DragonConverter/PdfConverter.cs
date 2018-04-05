@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using DinkToPdf;
 using DinkToPdf.EventDefinitions;
+using DragonMarkdown.Utility;
 
 namespace DragonMarkdown.DragonConverter
 {
@@ -22,7 +24,6 @@ namespace DragonMarkdown.DragonConverter
                     ColorMode = ColorMode.Color,
                     Orientation = Orientation.Portrait,
                     PaperSize = PaperKind.A4Plus,
-                    Out = ouputPath,
                 },
                 Objects = {
                     new ObjectSettings() {
@@ -30,11 +31,19 @@ namespace DragonMarkdown.DragonConverter
                         HtmlContent = html,
                         WebSettings = { DefaultEncoding = "utf-8" },
                         HeaderSettings = { FontSize = 9, Left = "My Amazing Title", Right = "Page [page] of [toPage]", Line = true, Spacing = 2.812 },
+                        FooterSettings = { FontSize = 9, Left = "My Amazing Title", Right = "Page [page] of [toPage]", Line = true, Spacing = 2.812 },
                     }
                 }
             };
 
-            converter.Convert(doc);
+            Console.WriteLine("Saving PDF to " + ouputPath);
+
+            byte[] pdf = converter.Convert(doc);
+            
+            using (FileStream stream = new FileStream(ouputPath, FileMode.Create))
+            {
+                stream.Write(pdf, 0, pdf.Length);
+            }
         }
 
         private static void ConverterOnProgressChanged(object sender, ProgressChangedArgs progressChangedArgs)

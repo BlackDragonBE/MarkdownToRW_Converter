@@ -5,11 +5,25 @@
         public static string css = "<!DOCTYPE html>" +
                                    "<html>" +
                                    "<head>" +
+                                   "<link rel=\"stylesheet\" href=\"!!!DEFAULT_CSS_PATH!!!\">" +
+                                   "<script src=\"!!!PACK_JS_PATH!!!\"></script>" +
+                                   "<script>hljs.configure(); hljs.initHighlightingOnLoad();</script>" +
                                    "<style>" +
                                    "* {" +
                                    " font-size: 100%;" +
                                    " font-family: Bitter,Georgia,serif" +
                                    "}" +
+                                   "/* Page Breaks */" +
+                                   "/***Always insert a page break before the element***/" +
+                                   ".pb_before {page-break-before: always !important;}" +
+                                   "/***Always insert a page break after the element***/" +
+                                   ".pb_after {page-break-after: always !important;}" +
+                                   "/***Avoid page break before the element (if possible)***/" +
+                                   ".pb_before_avoid {page-break-before: avoid !important;}" +
+                                   "/***Avoid page break after the element (if possible)***/" +
+                                   ".pb_after_avoid {page-break-after: avoid !important;}" +
+                                   "/* Avoid page break inside the element (if possible) */" +
+                                   ".pbi_avoid {page-break-inside: avoid !important;}" +
                                    "div.content { width: 860px }" +
                                    "img {" +
                                    "    display: block;" +
@@ -58,4 +72,5 @@
                                    "<body>" +
                                    "<div class=\"content\">";
     }
+
 }

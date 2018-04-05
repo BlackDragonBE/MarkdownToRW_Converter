@@ -24,15 +24,16 @@ namespace DragonMarkdown.DragonConverter
             string output = Markdown.ToHtml(markdown, pipeline);
             //Console.WriteLine(output);
 
-
-            
             // HTML readability improvements & RW specific changes
 
             // Code
-            output = output.Replace("<pre><code class=", "\r\n<pre lang=");
-            output = output.Replace("lang-", "");
-            output = output.Replace("language-", "");
-            output = output.Replace("</code></pre>", "</pre>\r\n");
+            if (!prepareForPreview)
+            {
+                output = output.Replace("<pre><code class=", "\r\n<pre lang=");
+                output = output.Replace("lang-", "");
+                output = output.Replace("language-", "");
+                output = output.Replace("</code></pre>", "</pre>\r\n");
+            }
 
             // Add attributes
             AddClassToImages(ref output, options.FirstImageIsAlignedRight, rootPath);
@@ -67,7 +68,6 @@ namespace DragonMarkdown.DragonConverter
 
             // Spoiler
             ConvertSpoilers(ref output);
-
 
             if (options.ReplaceImageWithAltWithCaption)
             {

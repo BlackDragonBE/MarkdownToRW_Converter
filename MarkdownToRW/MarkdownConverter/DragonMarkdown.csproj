@@ -39,6 +39,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="js_highlight\highlight.pack.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="js_highlight\styles\atom-one-light.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="js_highlight\styles\default.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="libwkhtmltox.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

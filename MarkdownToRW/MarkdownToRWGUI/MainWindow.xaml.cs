@@ -54,6 +54,7 @@ namespace MarkdownToRWGUI
             if (set.RememberConverterSettings)
             {
                 ((MainWindowViewModel) DataContext).SaveOutputToHtml = set.OutputToHtml;
+                ((MainWindowViewModel) DataContext).SaveOutputToPdf = set.OutputToPdf;
                 ((MainWindowViewModel) DataContext).FirstImageRight = set.ConverterOptions.FirstImageIsAlignedRight;
                 ((MainWindowViewModel) DataContext).ReplaceImageAlts = set.ConverterOptions.ReplaceImageWithAltWithCaption;
                 ((MainWindowViewModel) DataContext).UseContentScanner = set.UseContentScanner;

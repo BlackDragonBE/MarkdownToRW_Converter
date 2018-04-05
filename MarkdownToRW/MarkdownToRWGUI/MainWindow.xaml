@@ -99,7 +99,8 @@
 
       <StackPanel Background="#252526"  IsVisible="{Binding #chkShowOptions.IsChecked}" Orientation="Vertical" Gap="0" Grid.ColumnSpan="4" Grid.Row="2" Margin="0 10 0 0">
         <TextBlock Text="Output" Margin="5 5 5 5"></TextBlock>
-        <CheckBox IsChecked="{Binding SaveOutputToHtml}" Margin="5 5 5 5" ToolTip.Tip="Save the converted HTML to a file in the same folder as the markdown file?" Content="Save output to HTML file" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top"></CheckBox>
+        <CheckBox IsChecked="{Binding SaveOutputToHtml}" Margin="5 5 5 5" ToolTip.Tip="Save the converted HTML to a file in the same folder as the markdown file." Content="Save output to HTML file" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top"></CheckBox>
+        <CheckBox IsChecked="{Binding SaveOutputToPdf}" Margin="5 5 5 5" ToolTip.Tip="Convert the markdown to PDF and save it to a file in the same folder as the markdown file." Content="Save output to PDF file" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top"></CheckBox>
         <TextBlock Text="HTML Parser" Margin="5 5 5 5"></TextBlock>
         <CheckBox Content="First image is right aligned" IsChecked="{Binding FirstImageRight}" ToolTip.Tip="Is the first image in the markdown supposed to be right aligned?&#x0a;Useful for positioning the 250x250 image correctly." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5 5 5 5"></CheckBox>
         <CheckBox Content="Convert images with alt text to captions" IsChecked="{Binding ReplaceImageAlts}" ToolTip.Tip="All images with text in their square brackets will be converted to RW captions. " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5 5 5 5"></CheckBox>

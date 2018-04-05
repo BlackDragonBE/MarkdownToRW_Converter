@@ -15,6 +15,7 @@ namespace MarkdownToRWGUI
 
         public bool RememberConverterSettings = false;
         public bool OutputToHtml = false;
+        public bool OutputToPdf = false;
         public bool UseContentScanner = false;
 
         public ConverterOptions ConverterOptions = new ConverterOptions();

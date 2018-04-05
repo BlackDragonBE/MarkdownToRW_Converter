@@ -37,6 +37,7 @@ namespace MarkdownToRWGUI.Models
         private bool _replaceImageAlts;
         private bool _saveConverterSettings;
         private bool _saveOutputToHtml;
+        private bool _saveOutputToPdf;
         private bool _useContentScanner;
         private string _status;
         private string _username;
@@ -296,6 +297,19 @@ namespace MarkdownToRWGUI.Models
             }
         }
 
+        public bool SaveOutputToPdf
+        {
+            get => _saveOutputToPdf;
+            set
+            {
+                if (value != _saveOutputToPdf)
+                {
+                    _saveOutputToPdf = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private ConverterOptions GetConverterOptions()
@@ -331,14 +345,18 @@ namespace MarkdownToRWGUI.Models
                             Console.Write(ContentScanner.ParseScanrResults(ContentScanner.ScanMarkdown(MarkdownText, _markdownPath)));
                         }
 
-
-                        HtmlText = Converter.ConvertMarkdownStringToHtml(MarkdownText, options, Path.GetDirectoryName(_markdownPath));
-                        PdfConverter.ConvertToPdf(PreviewCreator.CreateHtmlPreviewFromMarkdown(MarkdownText), _markdownPath.Replace("md","pdf"));
-
                         if (SaveOutputToHtml)
                         {
                             _htmlPath = DragonUtil.GetFullPathWithoutExtension(path) + ".html";
                             Converter.ConvertMarkdownFileToHtmlFile(path, _htmlPath, options);
+                        }
+
+                        if (SaveOutputToPdf)
+                        {
+                            HtmlText = Converter.ConvertMarkdownStringToHtml(MarkdownText, options, Path.GetDirectoryName(_markdownPath));
+                            PdfConverter.ConvertToPdf(
+                                PreviewCreator.CreateHtmlPreviewFromMarkdown(MarkdownText,
+                                    Path.GetDirectoryName(_markdownPath)), Path.GetDirectoryName(_markdownPath) + "/" + Path.GetFileNameWithoutExtension(_markdownPath) + ".pdf");
                         }
 
                         Status = "Converted markdown to HTML!";
@@ -514,6 +532,7 @@ namespace MarkdownToRWGUI.Models
                 Settings.ConverterOptions.FirstImageIsAlignedRight = FirstImageRight;
                 Settings.ConverterOptions.ReplaceImageWithAltWithCaption = ReplaceImageAlts;
                 Settings.OutputToHtml = SaveOutputToHtml;
+                Settings.OutputToPdf = SaveOutputToPdf;
                 Settings.UseContentScanner = UseContentScanner;
             }
             else
@@ -521,6 +540,7 @@ namespace MarkdownToRWGUI.Models
                 Settings.ConverterOptions.FirstImageIsAlignedRight = true;
                 Settings.ConverterOptions.ReplaceImageWithAltWithCaption = true;
                 Settings.OutputToHtml = false;
+                Settings.OutputToPdf = false;
                 Settings.UseContentScanner = false;
             }
 
