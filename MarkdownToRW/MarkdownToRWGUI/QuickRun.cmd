@@ -1,1 +1,1 @@
-dotnet ".\bin\Debug\netcoreapp2.0\publish\MarkdownToRWGUI.dll"
+dotnet ".\bin\portable_published\MarkdownToRWGUI.dll"

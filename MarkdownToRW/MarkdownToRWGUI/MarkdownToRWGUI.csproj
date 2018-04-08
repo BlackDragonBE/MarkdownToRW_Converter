@@ -29,9 +29,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Update="C:\Users\Eric\.nuget\packages\symspell\6.0.0\contentFiles\any\netstandard1.3\frequency_dictionary_en_82_765.txt">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
     <None Update="pwd.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
