@@ -339,6 +339,7 @@ namespace MarkdownToRWGUI.Models
                     using (StreamReader sr = new StreamReader(path))
                     {
                         MarkdownText = sr.ReadToEnd().Replace("\t", "  ");
+                        HtmlText = Converter.ConvertMarkdownStringToHtml(MarkdownText, options);
 
                         if (UseContentScanner)
                         {
