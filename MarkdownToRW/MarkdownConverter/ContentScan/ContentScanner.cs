@@ -299,7 +299,10 @@ namespace DragonMarkdown.ContentScan
                 {"allmost", "almost"},
                 {"teh", "the"},
                 {"liek", "like"},
-                {"trough", "through"}
+                {"trough", "through"},
+                {"we", "you"},
+                {"we'll", "you'll"},
+                {"let's", "time to / something else"},
             };
 
             return wordDict;
@@ -411,7 +414,6 @@ namespace DragonMarkdown.ContentScan
                 {"authorised", "authorized"},
                 {"authorises", "authorizes"},
                 {"authorising", "authorizing"},
-                {"axe", "ax"},
                 {"backpedalled", "backpedaled"},
                 {"backpedalling", "backpedaling"},
                 {"bannister", "banister"},
