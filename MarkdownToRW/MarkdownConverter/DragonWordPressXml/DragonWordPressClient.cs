@@ -119,6 +119,9 @@ namespace DragonMarkdown.DragonWordPressXml
                 // Get response
                 var rpcResponse = rpcClient.Execute<RpcResponseValue<string>>(rpcRequest);
 
+                Console.WriteLine("RESPONSE:");
+                Console.WriteLine(rpcResponse.Content);
+
                 // Find and fill members in
                 XmlMemberSearcher searcher = new XmlMemberSearcher(rpcResponse.Content);
                 response.Bio = searcher.GetValueOfMember("bio");

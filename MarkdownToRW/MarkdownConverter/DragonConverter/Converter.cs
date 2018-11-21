@@ -20,7 +20,6 @@ namespace DragonMarkdown.DragonConverter
             //MarkdownPipeline pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
             MarkdownPipeline pipeline = new MarkdownPipelineBuilder().UseEmphasisExtras().UseCustomContainers().Build();
 
-
             string output = Markdown.ToHtml(markdown, pipeline);
             //Console.WriteLine(output);
 
@@ -37,6 +36,7 @@ namespace DragonMarkdown.DragonConverter
 
             // Add attributes
             AddClassToImages(ref output, options.FirstImageIsAlignedRight, rootPath);
+
             AddExtraAttributesToLinks(ref output);
 
             // Make new lines consistent across platforms
@@ -81,7 +81,6 @@ namespace DragonMarkdown.DragonConverter
                 output = WebUtility.HtmlDecode(output);
             }
 
-
             output = output.Trim();
             return output;
         }
@@ -118,7 +117,7 @@ namespace DragonMarkdown.DragonConverter
                 HtmlNode node = imgNodes[i];
 
                 // If root path is known, check if images are too big for full size class
-                if (rootPath != null)
+                if (rootPath != null && File.Exists(DragonUtil.GetFullFilePath(node.Attributes["src"].Value, rootPath)))
                 {
                     var imageSize = ImageHelper.GetDimensions(DragonUtil.GetFullFilePath(node.Attributes["src"].Value, rootPath));
 

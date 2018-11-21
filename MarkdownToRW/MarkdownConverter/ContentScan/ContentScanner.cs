@@ -151,14 +151,14 @@ namespace DragonMarkdown.ContentScan
             {
                 if (britshAmericanWordsDict.ContainsKey(word.ToLower()))
                 {
-                    string american = britshAmericanWordsDict[word];
+                    string american = britshAmericanWordsDict[word.ToLower()];
                     results.ProblemsFound.Add("British word found: '" + word + "'. Please replace this with '" +
                                               american + "'.");
                 }
 
                 if (commonMisspelledWordsDict.ContainsKey(word.ToLower()))
                 {
-                    string correctSpelling = commonMisspelledWordsDict[word];
+                    string correctSpelling = commonMisspelledWordsDict[word.ToLower()];
                     results.ProblemsFound.Add("Incorrectly spelled word found: '" + word +
                                               "'. Please replace this with '" + correctSpelling + "'.");
                 }
