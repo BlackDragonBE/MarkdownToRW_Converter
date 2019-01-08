@@ -1,3 +1,5 @@
+## **NOTE: Logging in and uploading images doesn't work anymore due to changes made to the RW Wordpress. A workaround is in progress, but that will take a while to implement.**
+
 # MarkdownToRW Converter
 
 A handy cross platform tool to convert any markdown document to Ray Wenderlich WordPress ready HTML.
