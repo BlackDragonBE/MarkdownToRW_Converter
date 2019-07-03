@@ -1,5 +1,9 @@
 ## **NOTE: Logging in and uploading images doesn't work anymore due to changes made to the RW Wordpress. A workaround is in progress, but that will take a while to implement.**
 
+THIS APP WON'T BE UPDATED ANYMORE! CHECK OUT THE NEW VERSION:
+
+https://github.com/BlackDragonBE/MarkdownToRWHTMLUnity
+
 # MarkdownToRW Converter
 
 A handy cross platform tool to convert any markdown document to Ray Wenderlich WordPress ready HTML.
